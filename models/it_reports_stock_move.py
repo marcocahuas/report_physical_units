@@ -36,8 +36,9 @@ class ItStockMoveReport(models.Model):
 
         nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
+
             '00',
-            '140100',
+            '120100',
             '00',
             '1',
             str(count_sale),
@@ -69,7 +70,7 @@ class ItStockMoveReport(models.Model):
         nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
             '00',
-            '140100',
+            '130100',
             '00',
             '1',
             str(count_sale),
