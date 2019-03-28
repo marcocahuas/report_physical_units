@@ -38,8 +38,11 @@
 
                         </group>
                         <group col="3">
+                            <field name="txt_filename" invisible="1"/>
+                            <field filename="txt_filename" name="txt_binary" invisible="1"/>
                             <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
-                            <button name="download_txt_valuated_sunat" string="Descargar Inv. Valorizado TXT" type="object"/>
+                            <button name="download_txt_valuated_sunat" string="Descargar Inv. Valorizado TXT"
+                                    type="object"/>
                         </group>
 
                     </sheet>
@@ -56,13 +59,13 @@
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reports units move"
                   parent="account.menu_finance_reports" sequence="7"/>
         <!--<report-->
-                <!--id="it_account_sale_purchase_xlsx"-->
-                <!--model="it.books.account.sale.purchase"-->
-                <!--string="Exportar Libros Excel"-->
-                <!--report_type="xlsx"-->
-                <!--name="report_xlsx.it.books.account.sale.purchase_xlsx"-->
-                <!--file="Reporte"-->
-                <!--attachment_use="True"-->
+        <!--id="it_account_sale_purchase_xlsx"-->
+        <!--model="it.books.account.sale.purchase"-->
+        <!--string="Exportar Libros Excel"-->
+        <!--report_type="xlsx"-->
+        <!--name="report_xlsx.it.books.account.sale.purchase_xlsx"-->
+        <!--file="Reporte"-->
+        <!--attachment_use="True"-->
         <!--/>-->
     </data>
 </odoo>

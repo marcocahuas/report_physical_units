@@ -14,6 +14,8 @@ class ItStockMoveReport(models.Model):
     date_out = fields.Date(string='Fecha fin')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
+    txt_filename = fields.Char()
+    txt_binary = fields.Binary(string='Descargar Txt Sunat')
 
     @api.onchange("business_name")
     def _compute_it_ruc(self):
