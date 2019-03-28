@@ -15,7 +15,7 @@
         </record>
         <record id="it_units_move_report_form" model="ir.ui.view">
             <field name="name">Reports units move</field>
-            <field name="model">it.units.header.report</field>
+            <field name="model">it.units.move.report</field>
             <field name="arch" type="xml">
                 <form string="Reports units move">
                     <sheet string="Reports units move">
@@ -43,7 +43,6 @@
                             <!--</group>-->
                         </group>
                         <group>
-
                             <group>
                                 <!--<field name="txt_filename" invisible="1"/>-->
                                 <!--<field filename="txt_filename" name="txt_binary" invisible="1"/>-->
@@ -59,7 +58,7 @@
         </record>
         <record id="it_units_move_report_menu_action" model="ir.actions.act_window">
             <field name="name">Reports units move</field>
-            <field name="res_model">it.units.header.report</field>
+            <field name="res_model">it.units.move.report</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
