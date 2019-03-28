@@ -3,7 +3,7 @@
 # UNIDADES FISICAS y INVENTARIO VALORIZADO
 ###############################################################################
 {
-    "name": "Reporte Stock Move",
+    "name": "Reports Stock Move",
     "version": "0.1",
     "category": "Custom developer",
     "author": "Inti Tec Peru",

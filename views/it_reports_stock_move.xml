@@ -9,7 +9,7 @@
                     <field name="date_in"/>
                     <field name="date_out"/>
                     <field name="vat"/>
-                    <field name="razon_social"/>
+                    <field name="business_name"/>
                 </tree>
             </field>
         </record>
