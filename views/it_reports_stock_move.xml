@@ -6,8 +6,8 @@
             <field name="model">it.units.move.report</field>
             <field name="arch" type="xml">
                 <tree string="Reports units move">
-                    <field name="fecha_inicio"/>
-                    <field name="fecha_fin"/>
+                    <field name="date_in"/>
+                    <field name="date_out"/>
                     <field name="vat"/>
                     <field name="razon_social"/>
                 </tree>
