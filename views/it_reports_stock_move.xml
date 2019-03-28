@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="it_unidades_fisicas_tree" model="ir.ui.view">
+            <field name="name">Reports units move</field>
+            <field name="model">it.units.move.report</field>
+            <field name="arch" type="xml">
+                <tree string="Reports units move">
+                    <field name="descripcion"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <field name="ruc"/>
+                    <field name="razon_social"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
