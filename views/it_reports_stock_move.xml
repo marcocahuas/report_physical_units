@@ -17,8 +17,8 @@
             <field name="name">Reports units move</field>
             <field name="model">it.units.header.report</field>
             <field name="arch" type="xml">
-                <form string="Unidades Fisicas">
-                    <sheet string="Unidades Fisicas">
+                <form string="Reports units move">
+                    <sheet string="Reports units move">
                         <group>
                             <group>
                                 <field name="business_name" placeholder="Razon Social"/>
