@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<!-- path_to_your_module/static/src/xml/form_widgets.xml -->
+<t t-name="it_input_text">
+    <!-- for example I just added new <span> to all FieldChar -->
+    <span>my_val</span>
+    <!-- this is original content for CharField from path_to_odoo/addons/web/static/src/xml/base.xml -->
+    <span t-att-class="'oe_form_field '+widget.widget_class" t-att-style="widget.node.attrs.style">
+        <t t-if="!widget.get('effective_readonly')">
+            <input t-att-type="widget.password ? 'password' : 'text'"
+                t-att-barcode_events="widget.options.barcode_events"
+                t-att-id="widget.id_for_label"
+                t-att-tabindex="widget.node.attrs.tabindex"
+                t-att-autofocus="widget.node.attrs.autofocus"
+                t-att-placeholder="widget.node.attrs.placeholder"
+                t-att-maxlength="widget.field.size"
+                t-att-minlength="widget.field.size"
+            /><img class="oe_field_translate oe_input_icon" t-if="widget.field.translate" t-att-src='_s + "/web/static/src/img/icons/terp-translate.png"' width="16" height="16" border="0"/>
+        </t>
+        <t t-if="widget.get('effective_readonly')">
+            <span class="oe_form_char_content"></span>
+        </t>
+    </span>
+</t>
+    <!-- This is example template for my unique field -->
+    <!--<t t-name="MyUniqueChar">
+        <span>unique_char</span>
+    </t>
+    -->
+</templates>
