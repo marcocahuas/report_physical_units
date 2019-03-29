@@ -21,8 +21,9 @@ class ItStockMoveReport(models.Model):
     vat = fields.Char(string='RUC')
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
-    stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
-    stock_move_valuated = fields.Many2many(comodel_name="stock.quantity.history", string="Valuated", ondelete="cascade")
+    # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
+    stock_phisical_lines = fields.Many2many(comodel_name="it.units.move.report.phisical.line", string="Movimientos",
+                                            ondelete="cascade")
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
@@ -49,27 +50,42 @@ class ItStockMoveReport(models.Model):
 
         stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+
+        # GENERAR UN LOOP PARA OBTENER LOS SALDOS INCIALES:
+        # {} INGRESAR LOGICA PARA OBTENER EL SALDO INICIAL
+        # REGISTRAR SOBRE EL NUEVO MODELO
+        # TIPO 1 PARA SALDO INICIAL
+        # --------------------------------------------------
+        # GENERAR LOS MOVIMIENTOS:
         arry_stock = []
         if stock_move_after:
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
-                _logger.info("location_id.usage")
-                _logger.info(a)
-                _logger.info("location_dest_id.usage")
-                _logger.info(b)
                 if (a == 'internal') and (b != 'internal'):
                     arry_stock.append(before_in.id)
+                    json_stock_phisical = {
+                        "type": 0,
+                        "date": before_in.date,
+                        "reference": before_in.reference,
+                        "qty_done": before_in.qty_done
+                    }
+                    res_phisical = self.env["it.units.move.report.phisical.line"].create(json_stock_phisical)
+                    arry_stock.append(res_phisical.id)
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
-
                     pass
                 if (a != 'internal') and (b == 'internal'):
-                    arry_stock.append(before_in.id)
-                _logger.info("arry_stock")
-                _logger.info(len(arry_stock))
-            for item in self.stock_move_lines:
-                self.stock_move_lines = [(2, item.id)]
+                    json_stock_phisical = {
+                        "type": 0,
+                        "date": before_in.date,
+                        "reference": before_in.reference,
+                        "qty_done": before_in.qty_done
+                    }
+                    res_phisical = self.env["it.units.move.report.phisical.line"].create(json_stock_phisical)
+                    arry_stock.append(res_phisical.id)
+            for item in self.stock_phisical_lines:
+                self.stock_phisical_lines = [(2, item.id)]
             self.write({
                 "stock_move_lines": [(6, False, arry_stock)]
             })
@@ -144,3 +160,13 @@ class ItStockMoveReport(models.Model):
                 self.id) + "&filename_field=file_name&field=txt_binary&download=true&filename=" + self.txt_filename,
             "target": "new",
         }
+
+
+class ItStockMoveReportPhisicalLine(models.Model):
+    _name = "it.units.move.report.phisical.line"
+    _description = "Reporte Unidades Fisicas Detalle"
+
+    type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
+    date = fields.Datetime(string="Fecha")
+    reference = fields.Char(string="Referencia")
+    qty_done = fields.Float(string="Cantidad")
