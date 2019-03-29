@@ -7,6 +7,7 @@ class ItStockMoveReport(models.AbstractModel):
     _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, move):
+
         for obj in move:
             # CREAR LA CABECERA
             if obj.id is not False:
