@@ -49,7 +49,7 @@
                             <page string="Unidades Fisicas" name="units">
                                 <group>
                                     <record id="view_move_line_tree_inherit" model="ir.ui.view">
-                                        <field name="name">stock.move.line.tree.inherit</field>
+                                        <field name="name">stock_move_line_tree_inherit</field>
                                         <field name="model">stock.move.line</field>
                                         <field name="inherit_id" ref="stock.view_move_line_tree"/>
                                         <field name="arch" type="xml">
