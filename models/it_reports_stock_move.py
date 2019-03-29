@@ -64,6 +64,8 @@ class ItStockMoveReport(models.Model):
                     pass
                 if (a != 'internal') and (b == 'internal'):
                     arry_stock.append(before_in.id)
+                _logger.info("arry_stock")
+                _logger.info(len(arry_stock))
             self.write({
                 "stock_move_lines": (6, 0, [arry_stock])
             })
