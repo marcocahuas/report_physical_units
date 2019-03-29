@@ -29,6 +29,13 @@ class ItStockMoveReport(models.Model):
     # tipo operacion = ["A","M","C"] => M),
     #     }
 
+    @api.multi
+    def unlink(self):
+        if self.stock_phisical_lines:
+            self.stock_phisical_lines.unlink()
+        res = super(ItStockMoveReport, self).unlink()
+        return res
+
     @api.onchange("business_name")
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
