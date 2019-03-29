@@ -49,31 +49,44 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
-        stock_move_after = self.env["stock.move.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
-
         # GENERAR UN LOOP PARA OBTENER LOS SALDOS INCIALES:
         # {} INGRESAR LOGICA PARA OBTENER EL SALDO INICIAL
         # REGISTRAR SOBRE EL NUEVO MODELO
         # TIPO 1 PARA SALDO INICIAL
         # --------------------------------------------------
+        context = {'to_date': self.date_in_time}
+        initial = self.env["product.product"].with_context(context).search(
+            [('type', '=', 'product'), ('qty_available', '!=', 0)])
+        for product in initial:
+            json_stock_phisical = {
+                "type": 1,
+                "date": self.date_in_time,
+                "reference": "SALDO INICIAL",
+                "qty_done": product.qty_at_date,
+                "report_id": self.id,
+            }
+            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+
         # GENERAR LOS MOVIMIENTOS:
-        arry_stock = []
+
+        stock_move_after = self.env["stock.move.line"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+
         if stock_move_after:
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 if (a == 'internal') and (b != 'internal'):
-                    arry_stock.append(before_in.id)
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done,
-                        "report_id": self.id
+                        "report_id": self.id,
+                        "type_move": "out"
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-                    arry_stock.append(res_phisical.id)
+
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
                     pass
@@ -83,10 +96,10 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done,
-                        "report_id": self.id
+                        "report_id": self.id,
+                        "type_move": "in"
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-                    arry_stock.append(res_phisical.id)
 
     @api.multi
     def download_txt_units_sunat(self):
@@ -169,3 +182,5 @@ class ItStockMoveReportPhisicalLine(models.Model):
     reference = fields.Char(string="Referencia")
     qty_done = fields.Float(string="Cantidad")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
+    type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
+                                 string="Tipo de movimiento")

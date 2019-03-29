@@ -52,7 +52,7 @@
                                 <group>
                                     <field name="stock_phisical_lines">
                                         <tree>
-                                            <field name="type"/>
+                                            <field name="type" invisible="1"/>
                                             <field name="date"/>
                                             <field name="reference"/>
                                             <field name="qty_done"/>
