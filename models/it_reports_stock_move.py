@@ -85,7 +85,7 @@ class ItStockMoveReport(models.Model):
                         "qty_done": before_in.qty_done,
                         "report_id": self.id,
                         "type_move": "out",
-                        "product_id": before_in.product.id
+                        "product_id": before_in.product_id.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -100,7 +100,7 @@ class ItStockMoveReport(models.Model):
                         "qty_done": before_in.qty_done,
                         "report_id": self.id,
                         "type_move": "in",
-                        "product_id": before_in.product.id
+                        "product_id": before_in.product_id.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
