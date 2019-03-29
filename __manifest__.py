@@ -14,7 +14,7 @@
     ],
     "summary": "Physical units - valued inventory",
     "description": "",
-    "depends": ["base"],
+    "depends": ["base", 'stock'],
     "data": [
         'views/it_reports_stock_move.xml',
     ],
