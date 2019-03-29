@@ -10,7 +10,7 @@ from odoo.tools.pycompat import izip
 from odoo.tools.float_utils import float_round, float_compare, float_is_zero
 
 
-class StockMoveLine(models.Model):
+class StockMoveLineInherit(models.Model):
     _name = "stock.move.line"
     _description = "Product Moves (Stock Move Line)"
     _rec_name = "product_id"

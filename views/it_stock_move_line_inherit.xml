@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_move_line_tree" model="ir.ui.view">
+    <record id="view_move_line_tree_iherit" model="ir.ui.view">
         <field name="name">stock.move.line.tree</field>
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
@@ -18,7 +18,7 @@
             </tree>
         </field>
     </record>
-    <record id="view_move_line_form" model="ir.ui.view">
+    <record id="view_move_line_iherit_form" model="ir.ui.view">
         <field name="name">stock.move.line.form</field>
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
@@ -67,7 +67,7 @@
         </field>
     </record>
 
-    <record id="stock_move_line_view_search" model="ir.ui.view">
+    <record id="stock_move_line_view_iherit_search" model="ir.ui.view">
         <field name="name">stock.move.line.search</field>
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
@@ -99,7 +99,7 @@
         </field>
     </record>
 
-    <record id="view_stock_move_line_kanban" model="ir.ui.view">
+    <record id="view_stock_move_line_iherit_kanban" model="ir.ui.view">
         <field name="name">stock.move.line.kanban</field>
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
@@ -133,7 +133,7 @@
         </field>
     </record>
 
-    <record id="stock_move_line_action" model="ir.actions.act_window">
+    <record id="stock_move_line_iherit_action" model="ir.actions.act_window">
         <field name="name">Product Moves</field>
         <field name="res_model">stock.move.line</field>
         <field name="type">ir.actions.act_window</field>
@@ -149,7 +149,7 @@
     </record>
 
     <menuitem
-            action="stock_move_line_action"
+            action="stock_move_line_iherit_action"
             id="stock_move_line_menu"
-            parent="stock.menu_warehouse_report" sequence="150"/>
+            parent="account.menu_finance_reports" sequence="9"/>
 </odoo>
