@@ -40,9 +40,10 @@
                         <group col="3">
                             <field name="txt_filename" invisible="1"/>
                             <field filename="txt_filename" name="txt_binary" invisible="1"/>
-                            <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
                             <button name="download_txt_valuated_sunat" string="Descargar Inv. Valorizado TXT"
                                     type="object"/>
+                            <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
+
                         </group>
 
                     </sheet>
