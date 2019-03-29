@@ -58,15 +58,15 @@
         <!-- CONFIGURACION UNIDADES FISICAS-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reports units move"
                   parent="account.menu_finance_reports" sequence="7"/>
-        <!--<report-->
-                <!--id="it_stocks_move_xlsx"-->
-                <!--model="it.units.move.report"-->
-                <!--string="Exportar Excel"-->
-                <!--report_type="xlsx"-->
-                <!--name="report_xlsx.it.units.move.report_xlsx"-->
-                <!--file="Reporte"-->
-                <!--attachment_use="True"-->
-        <!--/>-->
+        <report
+                id="it_stocks_move_xlsx"
+                model="it.units.move.report"
+                string="Exportar Excel"
+                report_type="xlsx"
+                name="report_xlsx.it.units.move.report_xlsx"
+                file="Reporte"
+                attachment_use="True"
+        />
 
     </data>
 </odoo>
