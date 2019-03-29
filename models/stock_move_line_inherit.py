@@ -192,7 +192,7 @@ class StockMoveLineInherit(models.Model):
                     })
                     vals['move_id'] = new_move.id
 
-        mls = super(StockMoveLine, self).create(vals_list)
+        mls = super(StockMoveLineInherit, self).create(vals_list)
 
         for ml in mls:
             if ml.state == 'done':
@@ -235,7 +235,7 @@ class StockMoveLineInherit(models.Model):
         the old quants and allocate the new ones.
         """
         if self.env.context.get('bypass_reservation_update'):
-            return super(StockMoveLine, self).write(vals)
+            return super(StockMoveLineInherit, self).write(vals)
 
         Quant = self.env['stock.quant']
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
@@ -371,7 +371,7 @@ class StockMoveLineInherit(models.Model):
                 if ml.picking_id:
                     ml._log_message(ml.picking_id, ml, 'stock.track_move_template', vals)
 
-        res = super(StockMoveLine, self).write(vals)
+        res = super(StockMoveLineInherit, self).write(vals)
 
         # Update scrap object linked to move_lines to the new quantity.
         if 'qty_done' in vals:
@@ -412,7 +412,7 @@ class StockMoveLineInherit(models.Model):
                     else:
                         raise
         moves = self.mapped('move_id')
-        res = super(StockMoveLine, self).unlink()
+        res = super(StockMoveLineInherit, self).unlink()
         if moves:
             moves._recompute_state()
         return res
