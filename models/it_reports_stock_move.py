@@ -22,8 +22,9 @@ class ItStockMoveReport(models.Model):
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
-    stock_phisical_lines = fields.Many2many(comodel_name="it.units.move.report.phisical.line", string="Movimientos",
-                                            ondelete="cascade")
+    stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
+                                           string="Movimientos",
+                                           ondelete="cascade")
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
@@ -68,7 +69,8 @@ class ItStockMoveReport(models.Model):
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
-                        "qty_done": before_in.qty_done
+                        "qty_done": before_in.qty_done,
+                        "report_id": self.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
@@ -80,7 +82,8 @@ class ItStockMoveReport(models.Model):
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
-                        "qty_done": before_in.qty_done
+                        "qty_done": before_in.qty_done,
+                        "report_id": self.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
@@ -171,3 +174,4 @@ class ItStockMoveReportPhisicalLine(models.Model):
     date = fields.Datetime(string="Fecha")
     reference = fields.Char(string="Referencia")
     qty_done = fields.Float(string="Cantidad")
+    report_id = fields.Many2one("it.units.move.report", "Reporte")
