@@ -3,9 +3,9 @@
 from odoo import fields, models, api
 
 
-class ItStockMoveReport(models.Model):
+class ItStockMoveReport(models.AbstractModel):
     _name = "report.report_xlsx.it.stock.move.report_xlsx"
-    _description = "report.report_xlsx.abstract"
+    _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, move):
         for obj in move:
