@@ -64,6 +64,7 @@ class ItStockMoveReport(models.Model):
                 "reference": "SALDO INICIAL",
                 "qty_done": product.qty_at_date,
                 "report_id": self.id,
+                "product_id": product.id
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -83,7 +84,8 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done,
                         "report_id": self.id,
-                        "type_move": "out"
+                        "type_move": "out",
+                        "product_id": before_in.product.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -97,7 +99,8 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done,
                         "report_id": self.id,
-                        "type_move": "in"
+                        "type_move": "in",
+                        "product_id": before_in.product.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -184,3 +187,5 @@ class ItStockMoveReportPhisicalLine(models.Model):
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
                                  string="Tipo de movimiento", ondelete="cascade")
+
+    product_id = fields.Many2one("product.product", "Producto")
