@@ -23,7 +23,6 @@ class ItStockMoveReport(models.AbstractModel):
                     })
                 sheet.merge_range('A1:I4', self.env.user.company_id.name, font_titulo_empresa)
             # REPORTE STOCK MOVE
-            # COMPRAS
             if obj.id is not False:
                 name = 'Inventario Valorizado - %s' % (obj.business_name)
                 sheet = workbook.add_worksheet(name)
