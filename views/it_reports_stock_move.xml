@@ -61,7 +61,6 @@
                                                 <field name="product_id"/>
                                                 <field name="location_id"/>
                                                 <field name="location_dest_id"/>
-                                                <field name="qty_done" string="Quantity Done"/>
                                                 <field name="product_uom_id"
                                                        options="{'no_open': True, 'no_create': True}"
                                                        string="Unit of Measure" groups="uom.group_uom"/>
