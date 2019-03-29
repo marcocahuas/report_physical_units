@@ -87,7 +87,7 @@ class ItStockMoveReport(models.Model):
             for item in self.stock_phisical_lines:
                 self.stock_phisical_lines = [(2, item.id)]
             self.write({
-                "stock_move_lines": [(6, False, arry_stock)]
+                "stock_phisical_lines": [(6, False, arry_stock)]
             })
 
     @api.multi

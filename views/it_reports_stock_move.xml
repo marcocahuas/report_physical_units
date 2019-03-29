@@ -50,13 +50,12 @@
                         <notebook>
                             <page string="Unidades Fisicas" name="units">
                                 <group>
-                                    <field name="stock_move_lines">
+                                    <field name="stock_phisical_lines">
                                         <tree>
+                                            <field name="type"/>
                                             <field name="date"/>
                                             <field name="reference"/>
-                                            <field name="product_id"/>
                                             <field name="qty_done"/>
-                                            <field name="product_uom_id"/>
                                         </tree>
                                     </field>
                                 </group>
@@ -65,11 +64,11 @@
                                 <group>
                                     <!--<field name="stock_move_lines">-->
                                     <!--<tree>-->
-                                        <!--<field name="date"/>-->
-                                        <!--<field name="reference"/>-->
-                                        <!--<field name="product_id"/>-->
-                                        <!--<field name="qty_done"/>-->
-                                        <!--<field name="product_uom_id"/>-->
+                                    <!--<field name="date"/>-->
+                                    <!--<field name="reference"/>-->
+                                    <!--<field name="product_id"/>-->
+                                    <!--<field name="qty_done"/>-->
+                                    <!--<field name="product_uom_id"/>-->
                                     <!--</tree>-->
                                     <!--</field>-->
                                 </group>
