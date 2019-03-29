@@ -149,7 +149,7 @@
     </record>
 
     <menuitem
-            action="stock_move_line_inherit_action"
+            action="stock_move_line_action"
             id="stock_move_line_menu"
-            parent="stock.menu_warehouse_report" sequence="151"/>
+            parent="stock.menu_warehouse_report" sequence="150"/>
 </odoo>
