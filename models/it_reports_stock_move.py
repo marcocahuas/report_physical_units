@@ -70,7 +70,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done
                     }
-                    res_phisical = self.env["it.units.move.report.phisical.line"].create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
@@ -82,7 +82,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "qty_done": before_in.qty_done
                     }
-                    res_phisical = self.env["it.units.move.report.phisical.line"].create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
             for item in self.stock_phisical_lines:
                 self.stock_phisical_lines = [(2, item.id)]
