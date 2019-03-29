@@ -51,13 +51,15 @@ class ItStockMoveReport(models.Model):
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 if (a == 'internal') and (b != 'internal'):
-                    arry_stock.append(before_in)
+                    arry_stock.append(before_in.id)
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
                     pass
                 if (a != 'internal') and (b == 'internal'):
-                    arry_stock.append(before_in)
-            self.stock_move_lines = arry_stock
+                    arry_stock.append(before_in.id)
+            self.write({
+                "stock_move_lines": (6, 0, [arry_stock])
+            })
 
     @api.multi
     def download_txt_units_sunat(self):
