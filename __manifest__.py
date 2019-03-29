@@ -16,7 +16,7 @@
     "description": "",
     "depends": ["base", 'stock'],
     "data": [
-        #'views/it_reports_stock_move.xml',
+        'views/it_reports_stock_move.xml',
     ],
     'images': [
         'static/description/intitecperu.png',
