@@ -45,7 +45,7 @@ class ItStockMoveReport(models.Model):
 
         stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
-        if stock_move_after.exist():
+        if stock_move_after:
             self.stock_move_lines = stock_move_after
 
     @api.multi
