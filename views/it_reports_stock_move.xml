@@ -63,6 +63,15 @@
                             </page>
                             <page string="Inventario Valorizado" name="valuated">
                                 <group>
+                                    <field name="stock_move_lines">
+                                        <tree>
+                                            <field name="date"/>
+                                            <field name="reference"/>
+                                            <field name="product_id"/>
+                                            <field name="qty_done"/>
+                                            <field name="product_uom_id"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                         </notebook>
