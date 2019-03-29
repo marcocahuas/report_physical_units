@@ -12,6 +12,8 @@ class ItStockMoveReport(models.Model):
 
     date_in = fields.Date(string='Fecha inicio')
     date_out = fields.Date(string='Fecha fin')
+    date_in_time = fields.Datetime(string='Fecha inicio2')
+    date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
     txt_filename = fields.Char()
@@ -25,18 +27,35 @@ class ItStockMoveReport(models.Model):
     def download_txt_units_sunat(self):
         content = ""
         count_sale = 0
-        #stock_move_before = self.env["stock.move.line"].search([("date", "<", self.date_in_time)])
+        d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
+        # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
+        month = "%02d" % (d_ref.month,)
+        # DECLARAR FECHAS
 
+        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
+                                                   datetime.time(0, 0, 0))
+        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
+                                                   datetime.time(23, 59, 59))
+        self.date_in_time = date_in_before
+        self.date_out_time = date_out_after
+        # date_in_before = datetime.datetime.combine(self.date_in, datetime.time(0, 0, 0))
+        # date_out_after = datetime.datetime.combine(self.date_out, datetime.time(23, 59, 59))
+        stock_move_after = self.env["stock.move"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
-        stringventas = "%s|%s" % (
-            "Hola unidades fisicas",
-            "",  # campo 19
-        )
-        content += str(stringventas) + "\r\n"
+        for stock_out in stock_move_after:
+            stringventas = "%s|%s" % (
+                str(d_ref.year) + "" + str(month) + "00",  # campo 1
+                str("M") + str(stock_out.id),  # campo 2
+            )
+            content += str(stringventas) + "\r\n"
 
-        nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
+        nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
-
+            d_ref.year,  # Year
+            month,  # Month
             '00',
             '120100',
             '00',
@@ -69,6 +88,7 @@ class ItStockMoveReport(models.Model):
 
         nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
+
             '00',
             '130100',
             '00',
