@@ -71,7 +71,7 @@
                                         <field name="qty_done"/>
                                         <field name="product_uom_id"/>
                                     </tree>
-
+                                    </field>
                                 </group>
                             </page>
                         </notebook>
