@@ -88,10 +88,6 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
 
-            self.write({
-                "stock_phisical_lines": [(6, False, arry_stock)]
-            })
-
     @api.multi
     def download_txt_units_sunat(self):
         content = ""
