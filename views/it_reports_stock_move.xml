@@ -50,6 +50,12 @@
                         <notebook>
                             <page string="Unidades Fisicas" name="units">
                                 <group>
+                                        <search string="Search Invoice">
+                                            <field name="product_id"/>
+                                            <field name="product_id" string="Salesperson"/>
+                                        </search>
+                                </group>
+                                <group>
                                     <field name="stock_phisical_lines">
                                         <tree>
                                             <field name="product_id"/>

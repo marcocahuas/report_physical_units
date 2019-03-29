@@ -120,7 +120,12 @@ class ItStockMoveReport(models.Model):
         d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
         # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
         month = "%02d" % (d_ref.month,)
-        # DECLARAR FECHAS
+
+        @api.mode
+        def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+            name_search(name='', args=None, operator='ilike', limit=100)
+
+    # DECLARAR FECHAS
 
         for item in self.stock_move_lines:
             pass
