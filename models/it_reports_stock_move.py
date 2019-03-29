@@ -61,6 +61,7 @@ class ItStockMoveReport(models.Model):
                     arry_stock.append(before_in.id)
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
+
                     pass
                 if (a != 'internal') and (b == 'internal'):
                     arry_stock.append(before_in.id)
@@ -83,23 +84,8 @@ class ItStockMoveReport(models.Model):
         month = "%02d" % (d_ref.month,)
         # DECLARAR FECHAS
 
-        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
-                                                   datetime.time(0, 0, 0))
-        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
-                                                   datetime.time(23, 59, 59))
-        self.date_in_time = date_in_before
-        self.date_out_time = date_out_after
-
-        stock_move_after = self.env["stock.move.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
-
-        for stock_out in stock_move_after:
-            stringventas = "%s|%s|%s" % (
-                str(d_ref.year) + "" + str(month) + "00",  # campo 1
-                str("M") + str(stock_out.id),  # campo 2
-                stock_out.qty_done or 0,  # campo 3
-            )
-            content += str(stringventas) + "\r\n"
+        for item in self.stock_move_lines:
+            pass
 
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
