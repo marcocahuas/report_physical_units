@@ -45,8 +45,19 @@ class ItStockMoveReport(models.Model):
 
         stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+        arry_stock = []
         if stock_move_after:
-            self.stock_move_lines = stock_move_after
+            for before_in in stock_move_after:
+                a = before_in.location_id.usage
+                b = before_in.location_dest_id.usage
+                if (a == 'internal') and (b != 'internal'):
+                    arry_stock.append(before_in)
+                if (a == 'internal') and (b == 'internal'):
+                    # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
+                    pass
+                if (a != 'internal') and (b == 'internal'):
+                    arry_stock.append(before_in)
+            self.stock_move_lines = arry_stock
 
     @api.multi
     def download_txt_units_sunat(self):
