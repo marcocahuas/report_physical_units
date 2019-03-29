@@ -40,9 +40,8 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        # date_in_before = datetime.datetime.combine(self.date_in, datetime.time(0, 0, 0))
-        # date_out_after = datetime.datetime.combine(self.date_out, datetime.time(23, 59, 59))
-        stock_move_after = self.env["stock.move"].search(
+
+        stock_move_after = self.env["stock.move.lne"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in stock_move_after:
