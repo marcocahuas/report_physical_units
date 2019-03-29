@@ -46,10 +46,32 @@
 
                         </group>
                         <notebook>
-                            <page string="Units" name="Unidades Fisicas">
-
+                            <page string="Unidades Fisicas" name="units">
+                                <group>
+                                    <record id="view_move_line_tree_inherit" model="ir.ui.view">
+                                        <field name="name">stock.move.line.tree.inherit</field>
+                                        <field name="model">stock.move.line</field>
+                                        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+                                        <field name="arch" type="xml">
+                                            <tree decoration-muted="state == 'cancel'"
+                                                  decoration-danger="(state not in ('cancel','done'))"
+                                                  string="Move Lines" create="0" default_order="date">
+                                                <field name="date"/>
+                                                <field name="reference" string="Reference"/>
+                                                <field name="product_id"/>
+                                                <field name="location_id"/>
+                                                <field name="location_dest_id"/>
+                                                <field name="qty_done" string="Quantity Done"/>
+                                                <field name="product_uom_id"
+                                                       options="{'no_open': True, 'no_create': True}"
+                                                       string="Unit of Measure" groups="uom.group_uom"/>
+                                                <field name="state"/>
+                                            </tree>
+                                        </field>
+                                    </record>
+                                </group>
                             </page>
-                            <page string="Valuated" name="Inventario Valorizado">
+                            <page string="Inventario Valorizado" name="valuated">
                                 <group>
                                 </group>
                             </page>
