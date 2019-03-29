@@ -51,12 +51,12 @@
                         <notebook>
                             <page string="Unidades Fisicas" name="units">
                                 <group>
-                                    <!-- <field name="stock_move_lines">
-                                         <tree>
-                                             <field name="date"/>
-                                             <field name="qty_done"/>
-                                         </tree>
-                                     </field>-->
+                                    <field name="stock_move_lines">
+                                        <tree>
+                                            <field name="date"/>
+                                            <field name="qty_done"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Inventario Valorizado" name="valuated">
