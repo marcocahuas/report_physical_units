@@ -2,8 +2,11 @@
 
 import base64
 import datetime
+import logging
 
 from odoo import api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class ItStockMoveReport(models.Model):
@@ -50,6 +53,10 @@ class ItStockMoveReport(models.Model):
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
+                _logger.info("location_id.usage")
+                _logger.info(a)
+                _logger.info("location_dest_id.usage")
+                _logger.info(b)
                 if (a == 'internal') and (b != 'internal'):
                     arry_stock.append(before_in.id)
                 if (a == 'internal') and (b == 'internal'):
