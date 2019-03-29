@@ -45,6 +45,15 @@
                             <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
 
                         </group>
+                        <notebook>
+                            <page string="Units" name="Unidades Fisicas">
+
+                            </page>
+                            <page string="Valuated" name="Inventario Valorizado">
+                                <group>
+                                </group>
+                            </page>
+                        </notebook>
 
                     </sheet>
                 </form>
@@ -56,6 +65,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+
         <!-- CONFIGURACION UNIDADES FISICAS-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reports units move"
                   parent="account.menu_finance_reports" sequence="7"/>
