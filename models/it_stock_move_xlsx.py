@@ -10,7 +10,7 @@ class ItStockMoveReport(models.AbstractModel):
     def generate_xlsx_report(self, workbook, data, move):
         for obj in move:
             # CREAR LA CABECERA
-            name = 'Unidades Fisicas - %s' % (obj.date_in)
+            name = 'Unidades Fisicas - %s' % (obj.business_name)
             sheet = workbook.add_worksheet(name)
             font_titulo_empresa = workbook.add_format(
                 {
