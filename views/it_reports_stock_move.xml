@@ -54,7 +54,6 @@
                                     <field name="stock_move_lines">
                                         <tree>
                                             <field name="date"/>
-                                            <field name="reference"/>
                                             <field name="qty_done"/>
                                         </tree>
                                     </field>
