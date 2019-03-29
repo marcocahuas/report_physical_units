@@ -18,12 +18,35 @@ class ItStockMoveReport(models.Model):
     vat = fields.Char(string='RUC')
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
+    stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
 
-    # tipo operacion = ["A","M","C"] => M
+    # tipo operacion = ["A","M","C"] => M),
+    #     }
 
     @api.onchange("business_name")
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
+
+    @api.one
+    def generate_moves(self):
+        d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
+        # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
+        month = "%02d" % (d_ref.month,)
+        # DECLARAR FECHAS
+
+        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
+                                                   datetime.time(0, 0, 0))
+        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
+                                                   datetime.time(23, 59, 59))
+        self.date_in_time = date_in_before
+        self.date_out_time = date_out_after
+
+        stock_move_after = self.env["stock.move.line"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+        if stock_move_after.exist():
+            self.stock_move_lines = stock_move_after
 
     @api.multi
     def download_txt_units_sunat(self):

@@ -44,11 +44,20 @@
                                     type="object"/>
                             <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
 
+                            <button name="generate_moves" string="Generar Unidades Fisicas"
+                                    type="object"/>
+
                         </group>
                         <notebook>
                             <page string="Unidades Fisicas" name="units">
                                 <group>
-
+                                    <field name="stock_move_lines">
+                                        <tree>
+                                            <field name="date"/>
+                                            <field name="reference"/>
+                                            <field name="qty_done"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Inventario Valorizado" name="valuated">
