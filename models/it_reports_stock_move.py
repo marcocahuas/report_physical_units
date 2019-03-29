@@ -87,9 +87,7 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     arry_stock.append(res_phisical.id)
-            for item in self.stock_phisical_lines:
-                if item.id is not False:
-                    self.stock_phisical_lines = [(2, item.id)]
+
             self.write({
                 "stock_phisical_lines": [(6, False, arry_stock)]
             })
