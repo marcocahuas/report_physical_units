@@ -2,13 +2,13 @@
 
 import base64
 import datetime
-import logging
+
 from odoo import api, fields, models
 
 
 class ItStockMoveReport(models.Model):
-    _name = 'it.units.move.report'
-    _description = "Reporte Unidades Fisicas "
+    _name = "it.units.move.report"
+    _description = "Reporte Unidades Fisicas"
 
     date_in = fields.Date(string='Fecha inicio')
     date_out = fields.Date(string='Fecha fin')
@@ -18,6 +18,8 @@ class ItStockMoveReport(models.Model):
     vat = fields.Char(string='RUC')
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
+
+    # tipo operacion = ["A","M","C"] => M
 
     @api.onchange("business_name")
     def _compute_it_ruc(self):
@@ -41,13 +43,14 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
-        stock_move_after = self.env["stock.move.lne"].search(
+        stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in stock_move_after:
-            stringventas = "%s|%s" % (
+            stringventas = "%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.id),  # campo 2
+                stock_out.qty_done or 0,  # campo 3
             )
             content += str(stringventas) + "\r\n"
 
