@@ -66,8 +66,10 @@ class ItStockMoveReport(models.Model):
                     arry_stock.append(before_in.id)
                 _logger.info("arry_stock")
                 _logger.info(len(arry_stock))
+            for item in self.stock_move_lines:
+                self.stock_move_lines = [(2, item.id)]
             self.write({
-                "stock_move_lines": (6, 0, [arry_stock])
+                "stock_move_lines": [(6, False, arry_stock)]
             })
 
     @api.multi
