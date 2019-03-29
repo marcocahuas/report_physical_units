@@ -22,6 +22,7 @@ class ItStockMoveReport(models.Model):
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
+    stock_move_valuated = fields.Many2many(comodel_name="stock.quantity.history", string="Valuated", ondelete="cascade")
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
