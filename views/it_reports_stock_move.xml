@@ -55,12 +55,12 @@
 
                                 <group>
                                     <field name="stock_phisical_lines">
-                                        <div>
-                                            <search string="Search Invoice">
+                                        <tree>
+                                            <search string="Stock Moves">
+                                                <field name="reference" string="Reference"/>
                                                 <field name="product_id"/>
-                                                <field name="product_id" string="Salesperson"/>
                                             </search>
-                                        </div>
+                                        </tree>
                                         <tree>
                                             <field name="date"/>
                                             <field name="product_id"/>
