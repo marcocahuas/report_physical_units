@@ -64,8 +64,8 @@
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
                                             <field name="qty_done"/>
-                                            <field name="type_move"/>
-                                            <field name="type_move"/>
+                                            <field name="type_move" string="Entradas"/>
+                                            <field name="type_move" string="Salidas"/>
                                         </tree>
                                     </field>
                                 </group>
