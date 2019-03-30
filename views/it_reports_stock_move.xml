@@ -43,8 +43,9 @@
                             <button name="download_txt_valuated_sunat" string="Descargar Inv. Valorizado TXT"
                                     type="object"/>
                             <button name="download_txt_units_sunat" string="Descargar Und.Fisica TXT" type="object"/>
-
-                            <button name="generate_moves" string="Generar Unidades Fisicas"
+                        </group>
+                        <group>
+                            <button class="oe_highlight" name="generate_moves" string="Generar Unidades Fisicas"
                                     type="object"/>
                         </group>
                         <notebook>
