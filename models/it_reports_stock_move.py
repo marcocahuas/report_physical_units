@@ -198,6 +198,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     date = fields.Datetime(string="Fecha")
     reference = fields.Char(string="Referencia")
     qty_done = fields.Float(string="Cantidad")
+    product_uom_id = fields.Char(string="Uniddad M.")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
                                  string="Tipo de movimiento", ondelete="cascade")
