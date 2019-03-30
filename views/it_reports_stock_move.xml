@@ -64,7 +64,8 @@
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
                                             <field name="qty_done"/>
-                                            <field name="product_uom_id"/>
+                                            <field name="type_move"/>
+                                            <field name="type_move"/>
                                         </tree>
                                     </field>
                                 </group>
