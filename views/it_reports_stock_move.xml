@@ -37,7 +37,7 @@
                             </group>
 
                         </group>
-                        <group col="3">
+                        <group>
                             <field name="txt_filename" invisible="1"/>
                             <field filename="txt_filename" name="txt_binary" invisible="1"/>
                             <button name="download_txt_valuated_sunat" string="Descargar Inv. Valorizado TXT"
