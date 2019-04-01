@@ -10,7 +10,7 @@ class ItStockMoveReport(models.AbstractModel):
         for obj in move:
             if obj.id is not False:
                 # CREAR LA CABECERA
-                name = 'Inventario Valorizado - %s' % (obj.nonbre1)
+                name = 'U.F. - %s' % (obj.nonbre1)
                 sheet = workbook.add_worksheet(name)
                 font_titulo_empresa = workbook.add_format(
                     {
