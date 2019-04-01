@@ -3,7 +3,7 @@ from odoo import fields, models, api
 
 
 class ItStockMoveReport(models.AbstractModel):
-    _name = "report.report_xlsx.it.units.move.report.phisical.line_xlsx"
+    _name = "report.report_xlsx.it.stock.move.report_xlsx"
     _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, move):

@@ -98,10 +98,10 @@
                   parent="account.menu_finance_reports" sequence="7"/>
         <report
                 id="it_stocks_move_xlsx"
-                model="it.units.move.report.phisical.line"
+                model="it.units.move.report"
                 string="Exportar Excel"
                 report_type="xlsx"
-                name="report_xlsx.it.units.move.report.phisical.line_xlsx"
+                name="report_xlsx.it.units.move.report_xlsx"
                 file="Reporte"
                 attachment_use="True"
         />
