@@ -62,7 +62,6 @@
                                             <field name="product_id"/>
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
-                                            <field name="qty_done"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="out_salida" string="Salidas"/>
                                         </tree>

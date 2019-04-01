@@ -69,7 +69,7 @@ class ItStockMoveReport(models.Model):
                 "type": 1,
                 "date": self.date_in_time,
                 "reference": "SALDO INICIAL",
-                "qty_done": product.qty_at_date,
+                "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id
             }
@@ -89,7 +89,7 @@ class ItStockMoveReport(models.Model):
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
-                        "qty_done": before_in.qty_done,
+
                         "report_id": self.id,
                         "out_salida": before_in.qty_done,
                         "product_id": before_in.product_id.id
@@ -104,7 +104,6 @@ class ItStockMoveReport(models.Model):
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
-                        "qty_done": before_in.qty_done,
                         "report_id": self.id,
                         "in_entrada": before_in.qty_done,
                         "product_id": before_in.product_id.id
