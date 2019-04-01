@@ -24,16 +24,16 @@ class ItStockMoveReport(models.AbstractModel):
                 sheet.merge_range('A1:I4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 #======================================
-                context = {'to_date': self.date_in_time}
+                context = {'to_date': obj.date_in_time}
                 initial = self.env["product.product"].with_context(context).search(
                     [('type', '=', 'product'), ('qty_available', '!=', 0)])
                 for product in initial:
                     json_stock_phisical = {
                         "type": 1,
-                        "date": self.date_in_time,
+                        "date": obj.date_in_time,
                         "reference": "SALDO INICIAL",
                         "in_entrada": product.qty_at_date,
-                        "report_id": self.id,
+                        "report_id": obj.id,
                         "product_id": product.id
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
@@ -41,7 +41,7 @@ class ItStockMoveReport(models.AbstractModel):
                 # GENERAR LOS MOVIMIENTOS:
 
                 stock_move_after = self.env["stock.move.line"].search(
-                    [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+                    [("date", ">=", obj.date_in_time), ("date", "<=", obj.date_out_time)])
 
                 if stock_move_after:
                     for before_in in stock_move_after:
@@ -53,7 +53,7 @@ class ItStockMoveReport(models.AbstractModel):
                                 "date": before_in.date,
                                 "reference": before_in.reference,
 
-                                "report_id": self.id,
+                                "report_id": obj.id,
                                 "out_salida": before_in.qty_done,
                                 "product_id": before_in.product_id.id
                             }
@@ -68,7 +68,7 @@ class ItStockMoveReport(models.AbstractModel):
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
-                                "report_id": self.id,
+                                "report_id": obj.id,
                                 "in_entrada": before_in.qty_done,
                                 "product_id": before_in.product_id.id
                             }
