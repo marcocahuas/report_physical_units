@@ -40,7 +40,7 @@ class ItStockMoveReport(models.AbstractModel):
                     array_main.append(array_field)
                     contador = contador + 1
                 sheet.set_column('A:F', 6)
-                row_name = 'A8:F%s' % (int(contador + 1))
+                row_name = 'A8:F%s' % (int(contador + 6))
                 sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
                                                                            {'header': 'Producto'},
                                                                            {'header': 'Referencia'},
