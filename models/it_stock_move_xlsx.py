@@ -21,7 +21,7 @@ class ItStockMoveReport(models.AbstractModel):
                         'align': 'center',
                         'valign': 'vcenter'
                     })
-                sheet.merge_range('A1:I4', self.env.user.company_id.name, font_titulo_empresa)
+                sheet.merge_range('A1:F4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 # ======================================
 
