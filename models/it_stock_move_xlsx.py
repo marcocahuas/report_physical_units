@@ -28,12 +28,7 @@ class ItStockMoveReport(models.AbstractModel):
 
                 array_main = []
                 contador = 0
-                map_products_before = {}
                 for before_in in stock_move_before:
-                    if before_in.product_id.id is not False:
-                        str_product_id = str(before_in.product_id.id)
-                        map_products_before[str_product_id]
-
                     array_field = []
                     array_field.append(before_in.date)
                     array_field.append(before_in.product_id.name)
