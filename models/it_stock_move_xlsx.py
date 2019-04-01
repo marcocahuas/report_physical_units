@@ -75,8 +75,7 @@ class ItStockMoveReport(models.AbstractModel):
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
                 #======================================
-                stock_move_before = self.env["it.units.move.report.phisical.line"].search(
-                    [("date", ">=", obj.date_in_time), ("date", "<=", obj.date_out_time)])
+                stock_move_before = self.env["it.units.move.report.phisical.line"].search()
 
                 array_main = []
                 contador = 0
