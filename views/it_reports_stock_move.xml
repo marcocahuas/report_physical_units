@@ -56,7 +56,6 @@
                                 <group>
                                     <field name="stock_phisical_lines">
                                         <tree>
-                                        <tree>
                                             <search string="Stock Moves">
                                                 <field name="reference" string="Reference"/>
                                                 <field name="product_id"/>
@@ -70,7 +69,6 @@
                                             <field name="qty_done"/>
                                             <field name="type_move" string="Entradas"/>
                                             <field name="type_move" string="Salidas"/>
-                                        </tree>
                                         </tree>
                                     </field>
                                 </group>
