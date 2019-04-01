@@ -3,13 +3,13 @@ from odoo import fields, models, api
 
 
 class ItStockMoveReport(models.AbstractModel):
-    _name = "report.report_xlsx.it.stock.move.report_xlsx"
+    _name = "report.report_xlsx.it.units.move.report_xlsx"
     _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, move):
         for obj in move:
             # CREAR LA CABECERA
-            name = 'Inventario Valorizado - %s' % (obj.date_in)
+            name = 'Inventario Valorizado - %s' % (obj.business_name)
             sheet = workbook.add_worksheet(name)
             font_titulo_empresa = workbook.add_format(
                 {
