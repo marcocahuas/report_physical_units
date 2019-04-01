@@ -23,58 +23,9 @@ class ItStockMoveReport(models.AbstractModel):
                     })
                 sheet.merge_range('A1:I4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
-                #======================================
-                context = {'to_date': obj.date_in_time}
-                initial = self.env["product.product"].with_context(context).search(
-                    [('type', '=', 'product'), ('qty_available', '!=', 0)])
-                for product in initial:
-                    json_stock_phisical = {
-                        "type": 1,
-                        "date": obj.date_in_time,
-                        "reference": "SALDO INICIAL",
-                        "in_entrada": product.qty_at_date,
-                        "report_id": obj.id,
-                        "product_id": product.id
-                    }
-                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                # ======================================
 
-                # GENERAR LOS MOVIMIENTOS:
-
-                stock_move_after = self.env["stock.move.line"].search(
-                    [("date", ">=", obj.date_in_time), ("date", "<=", obj.date_out_time)])
-
-                if stock_move_after:
-                    for before_in in stock_move_after:
-                        a = before_in.location_id.usage
-                        b = before_in.location_dest_id.usage
-                        if (a == 'internal') and (b != 'internal'):
-                            json_stock_phisical = {
-                                "type": 0,
-                                "date": before_in.date,
-                                "reference": before_in.reference,
-
-                                "report_id": obj.id,
-                                "out_salida": before_in.qty_done,
-                                "product_id": before_in.product_id.id
-                            }
-                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
-                                json_stock_phisical)
-
-                        if (a == 'internal') and (b == 'internal'):
-                            # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
-                            pass
-                        if (a != 'internal') and (b == 'internal'):
-                            json_stock_phisical = {
-                                "type": 0,
-                                "date": before_in.date,
-                                "reference": before_in.reference,
-                                "report_id": obj.id,
-                                "in_entrada": before_in.qty_done,
-                                "product_id": before_in.product_id.id
-                            }
-                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
-                                json_stock_phisical)
-                #======================================
+                # ======================================
                 stock_move_before = self.env["it.units.move.report.phisical.line"].search(
                     [("date", ">=", obj.date_in_time), ("date", "<=", obj.date_out_time)])
 
@@ -88,7 +39,6 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.in_entrada)
                     array_field.append(before_in.out_salida)
                     array_field.append(before_in.date)
-                    array_main.append(0)
                     array_main.append(array_field)
 
                     contador = contador + 1
@@ -100,5 +50,4 @@ class ItStockMoveReport(models.AbstractModel):
                                                                            {'header': 'Entradas'},
                                                                            {'header': 'Salidas'},
                                                                            {'header': 'Saldo Final'},
-                                                                           {'header': 'oo1'},
                                                                            ]})
