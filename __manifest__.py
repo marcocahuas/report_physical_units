@@ -17,7 +17,6 @@
     "depends": ["base", 'stock'],
     "data": [
         'views/it_reports_stock_move.xml',
-        #'views/it_stock_move_line_inherit.xml',
     ],
     'images': [
         'static/description/intitecperu.png',

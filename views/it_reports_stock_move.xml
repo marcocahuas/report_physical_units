@@ -48,8 +48,8 @@
                         <group>
                             <button class="oe_highlight" name="generate_moves" string="Generar Unidades Fisicas"
                                     type="object"/>
-                            <button class="oe_highlight" name="generate_moves" string="Generar Inventario Valorizado"
-                                    type="object"/>
+                           <!-- <button class="oe_highlight" name="generate_moves" string="Generar Inventario Valorizado"
+                                    type="object"/>-->
                         </group>
                         <notebook>
                             <page string="Unidades Fisicas" name="units">

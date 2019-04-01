@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api
+from odoo import models
 
 
 class ItStockMoveReport(models.AbstractModel):
@@ -26,12 +26,10 @@ class ItStockMoveReport(models.AbstractModel):
                 # ======================================
 
                 # ======================================
-                stock_move_before = self.env["it.units.move.report.phisical.line"].search(
-                    [("date", ">=", obj.date_in_time), ("date", "<=", obj.date_out_time)])
 
                 array_main = []
                 contador = 0
-                for before_in in stock_move_before:
+                for before_in in obj.stock_phisical_lines:
                     array_field = []
                     array_field.append(before_in.date)
                     array_field.append(before_in.product_id.name)
