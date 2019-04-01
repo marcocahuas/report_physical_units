@@ -25,6 +25,7 @@ class ItStockMoveReport(models.Model):
     stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
+    name_units = fields.Char(string="Entrada")
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
@@ -55,6 +56,10 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
+
+        # DECLARAR FECHAS
+        nonbre1 = 'UNIDADES FISICAS'
+        self.name_units = nonbre1
 
         # GENERAR UN LOOP PARA OBTENER LOS SALDOS INCIALES:
         # {} INGRESAR LOGICA PARA OBTENER EL SALDO INICIAL
@@ -206,5 +211,6 @@ class ItStockMoveReportPhisicalLine(models.Model):
                                  string="Tipo de movimiento", ondelete="cascade")
     in_entrada = fields.Float(string="Entrada")
     out_salida = fields.Float(string="Salida")
+
 
     product_id = fields.Many2one("product.product", "Producto")
