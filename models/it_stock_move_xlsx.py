@@ -88,7 +88,7 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.in_entrada)
                     array_field.append(before_in.out_salida)
                     array_field.append(before_in.date)
-                    array_main.append(before_in.date)
+                    array_main.append(0)
                     array_main.append(array_field)
 
                     contador = contador + 1
@@ -100,5 +100,5 @@ class ItStockMoveReport(models.AbstractModel):
                                                                            {'header': 'Entradas'},
                                                                            {'header': 'Salidas'},
                                                                            {'header': 'Saldo Final'},
-                                                                           {'header': 'Saldo Final'},
+                                                                           {'header': 'oo1'},
                                                                            ]})
