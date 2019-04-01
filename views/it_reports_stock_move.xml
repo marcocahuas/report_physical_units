@@ -57,12 +57,6 @@
                                     <field name="stock_phisical_lines">
 
                                         <tree>
-                                            <tree>
-                                                <search string="Stock Moves">
-                                                    <field name="reference" string="Reference"/>
-                                                    <field name="product_id"/>
-                                                </search>
-                                            </tree>
                                             <field name="date"/>
                                             <field name="product_id"/>
                                             <field name="type" invisible="1"/>

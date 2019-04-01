@@ -121,15 +121,15 @@ class ItStockMoveReport(models.Model):
         # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
         month = "%02d" % (d_ref.month,)
 
-        @api.mode
-        def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
-            name_search(name='', args=None, operator='ilike', limit=100)
-
-    # DECLARAR FECHAS
-
-        for item in self.stock_move_lines:
-            pass
-
+        # DECLARAR FECHAS
+        stock_move_lines = self.env["it.units.move.report.phisical.line"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+        for stock_out in self.stock_move_lines:
+            stringventas = "%s|%s" % (
+                str(d_ref.year) + "" + str(month) + "00",  # campo 1
+                str("M") + str(stock_out.id),  # campo 2
+            )
+            content += str(stringventas) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
             d_ref.year,  # Year
