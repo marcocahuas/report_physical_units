@@ -46,3 +46,43 @@ class ItStockMoveReport(models.AbstractModel):
                                                                            {'header': 'Entradas'},
                                                                            {'header': 'Salidas'},
                                                                            ]})
+
+            # GENERAR INVENTARIO VALORIZADO
+            if obj.id is not False:
+                # CREAR LA CABECERA
+                name = 'Inventario Valorizado - %s' % ('I.V.')
+                sheet = workbook.add_worksheet(name)
+                font_titulo_empresa = workbook.add_format(
+                    {
+                        'bold': True,
+                        'font_color': '#0B173B',
+                        'font_size': 14,
+                        'border': 4,
+                        'align': 'center',
+                        'valign': 'vcenter'
+                    })
+                sheet.merge_range('A1:E4', self.env.user.company_id.name, font_titulo_empresa)
+                # REPORTE STOCK MOVE UNIDADES FISICAS
+                # ======================================
+
+                # ======================================
+
+                array_main = []
+                contador = 0
+                for before_in in obj.stock_phisical_lines:
+                    array_field = []
+                    array_field.append(before_in.date)
+                    array_field.append(before_in.product_id.name)
+                    array_field.append(before_in.reference)
+                    array_field.append(before_in.in_entrada)
+                    array_field.append(before_in.out_salida)
+                    array_main.append(array_field)
+                    contador = contador + 1
+                sheet.set_column('A:E', 20)
+                row_name = 'A8:E%s' % (int(contador + 8))
+                sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
+                                                                           {'header': 'Producto'},
+                                                                           {'header': 'Referencia'},
+                                                                           {'header': 'Entradas'},
+                                                                           {'header': 'Salidas'},
+                                                                           ]})
