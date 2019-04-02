@@ -80,6 +80,7 @@
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="in_saldo" sttring ="In Saldo"/>
                                             <field name="out_salida" string="Salidas"/>
+                                            <field name="out_saldo"/>
 
                                         </tree>
                                     </field>

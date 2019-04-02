@@ -212,6 +212,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     in_entrada = fields.Float(string="Entrada")
     out_salida = fields.Float(string="Salida")
     in_saldo = fields.Float(string="Saldo Entrada")
+    out_saldo = fields.Float(string="Saldo Salida")
 
 
     product_id = fields.Many2one("product.product", "Producto")
