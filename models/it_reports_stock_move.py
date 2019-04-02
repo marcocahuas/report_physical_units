@@ -108,7 +108,7 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": before_in.qty_done,
+                        "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id
 
                         #
@@ -125,7 +125,7 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "in_entrada": before_in.qty_done,
+                        "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id
 
                         # "in_saldo": before_in.stock_move_id.amount
