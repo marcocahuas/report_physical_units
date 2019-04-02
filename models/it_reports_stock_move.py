@@ -125,8 +125,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "report_id": self.id,
                         "in_entrada": before_in.qty_done,
-                        "product_id": before_in.product_id.id,
-                        "in_saldo": before_in.move_id.reference.amount
+                        "product_id": before_in.product_id.id
                         #"in_saldo": before_in.stock_move_id.amount
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
