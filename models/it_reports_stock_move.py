@@ -25,6 +25,9 @@ class ItStockMoveReport(models.Model):
     stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
+    stock_valuated_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
+                                           string="Movimientos",
+                                           ondelete="cascade")
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
@@ -33,6 +36,8 @@ class ItStockMoveReport(models.Model):
     def unlink(self):
         if self.stock_phisical_lines:
             self.stock_phisical_lines.unlink()
+        if self.stock_valuated_lines:
+            self.stock_valuated_lines.unlink()
         res = super(ItStockMoveReport, self).unlink()
         return res
 

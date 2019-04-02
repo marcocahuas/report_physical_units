@@ -70,7 +70,7 @@
                             </page>
                             <page string="Inventario Valorizado" name="valuated">
                                 <group>
-                                    <field name="stock_phisical_lines">
+                                    <field name="stock_valuated_lines">
 
                                         <tree>
                                             <field name="date"/>
