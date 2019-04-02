@@ -81,18 +81,18 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
-        # context = {'date': self.date_in_time}
-        # entry_balance = self.env["account.move"].with_context(context).search(('name', '=', 'name'))
-        # if entry_balance:
-        #     for valor in entry_balance:
-        #         json_stock_phisical = {
-        #
-        #             "date": self.date_in_time,
-        #             "in_saldo": valor.amount,
-        #             "report_id": self.id,
-        #             "product_id": valor.id,
-        #         }
-        #         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        context = {'date': self.date_in_time}
+        entry_balance = self.env["account.move"].with_context(context).search(('name_val', '=', 'name'))
+        if entry_balance:
+            for valor in entry_balance:
+                json_stock_phisical = {
+
+                    "date": self.date_in_time,
+                    "name_val": valor.amount,
+                    "report_id": self.id,
+                    "product_id": valor.id,
+                }
+                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
         stock_move_after = self.env["stock.move"].search(
@@ -237,3 +237,4 @@ class ItStockMoveReportPhisicalLine(models.Model):
 
     in_saldo = fields.Float(string="Saldo Entrada")
     out_saldo = fields.Float(string="Saldo Salida")
+    name_val = fields.Float(string="valor")
