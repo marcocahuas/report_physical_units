@@ -80,8 +80,22 @@ class ItStockMoveReport(models.Model):
                 "in_saldo": product.stock_value
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-
-        # GENERAR LOS MOVIMIENTOS:
+        #========================================================
+        # context = {'move_id': self.date_in_time}
+        # entry_balance = self.env["account.move.line"].with_context(context).search(
+        #     [('type', '=', 'product'), ('qty_available', '!=', 0)])
+        # if entry_balance:
+        #     for valor in entry_balance:
+        #         json_stock_phisical = {
+        #             "type": 1,
+        #             "date": self.date_in_time,
+        #             "reference": "SALDO INICIAL",
+        #             "in_entrada": valor.qty_at_date,
+        #             "report_id": self.id,
+        #             "product_id": valor.id
+        #         }
+        #         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        #=======================================================
 
         stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
