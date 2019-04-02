@@ -83,7 +83,7 @@ class ItStockMoveReport(models.Model):
         # ========================================================
         context = {'date': self.date_in_time}
         entry_balance = self.env["account.move"].with_context(context).search(
-            [('move', '=', 'stock_move_id')])
+            [('stock_move_id')])
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
