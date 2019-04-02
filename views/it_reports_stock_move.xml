@@ -64,6 +64,7 @@
                                             <field name="reference"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="out_salida" string="Salidas"/>
+                                            <field name="name_val" string="Valor"/>
                                         </tree>
                                     </field>
                                 </group>
