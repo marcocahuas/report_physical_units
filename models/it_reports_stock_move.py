@@ -110,7 +110,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "out_saldo": before_in.price_unit
+                        "out_saldo": before_in.price_unit * before_in.product_uom_qty
 
                         #
 
@@ -128,7 +128,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "in_saldo": before_in.price_unit
+                        "in_saldo": before_in.price_unit * before_in.product_uom_qty
 
                         # "in_saldo": before_in.stock_move_id.amount
                     }
