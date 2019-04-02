@@ -78,7 +78,9 @@
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
                                             <field name="in_entrada" string="Entradas"/>
+                                            <field name="in_saldo" sttring ="In Saldo"/>
                                             <field name="out_salida" string="Salidas"/>
+
                                         </tree>
                                     </field>
                                 </group>
