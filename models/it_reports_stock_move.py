@@ -80,21 +80,21 @@ class ItStockMoveReport(models.Model):
                 "in_saldo": product.stock_value
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-        #========================================================
-        # context = {'date': self.date_in_time}
-        # entry_balance = self.env["account.move.line"].with_context(context).search(
-        #     [('move_id', '=', 'name')])
-        # if entry_balance:
-        #     for valor in entry_balance:
-        #         json_stock_phisical = {
-        #             "date": self.date_in_time,
-        #             "reference": "SALDO INICIAL",
-        #             "in_saldo": valor.amount,
-        #             "report_id": self.id,
-        #             "product_id": valor.id
-        #         }
-        #         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-        #=======================================================
+        # ========================================================
+        context = {'date': self.date_in_time}
+        entry_balance = self.env["account.move.line"].with_context(context).search(
+            [('move_id', '=', 'name')])
+        if entry_balance:
+            for valor in entry_balance:
+                json_stock_phisical = {
+                    "date": self.date_in_time,
+                    "reference": "SALDO INICIAL",
+                    "in_saldo": valor.amount,
+                    "report_id": self.id,
+                    "product_id": valor.id
+                }
+                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        # =======================================================
 
         stock_move_after = self.env["stock.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
@@ -126,7 +126,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.qty_done,
                         "product_id": before_in.product_id.id
-                        #"in_saldo": before_in.stock_move_id.amount
+                        # "in_saldo": before_in.stock_move_id.amount
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -220,14 +220,16 @@ class ItStockMoveReportPhisicalLine(models.Model):
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
     reference = fields.Char(string="Referencia")
-    qty_done = fields.Float(string="Cantidad")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
-    type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
-                                 string="Tipo de movimiento", ondelete="cascade")
+    product_id = fields.Many2one("product.product", "Producto")
     in_entrada = fields.Float(string="Entrada")
     out_salida = fields.Float(string="Salida")
+    # qty_done = fields.Float(string="Cantidad")
+
+    # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
+    #                            string="Tipo de movimiento", ondelete="cascade")
+
+    # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
+
     in_saldo = fields.Float(string="Saldo Entrada")
     out_saldo = fields.Float(string="Saldo Salida")
-
-
-    product_id = fields.Many2one("product.product", "Producto")
