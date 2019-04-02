@@ -81,20 +81,21 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
-        context = {'date': self.date_in_time}
-        entry_balance = self.env["account.move"].with_context(context).search(('name', '=', 'name'))
-        if entry_balance:
-            for valor in entry_balance:
-                json_stock_phisical = {
-                    "date": self.date_in_time,
-                    "in_saldo": valor.amount,
-                    "report_id": self.id,
-                    "product_id": valor.id,
-                }
-                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        # context = {'date': self.date_in_time}
+        # entry_balance = self.env["account.move"].with_context(context).search(('name', '=', 'name'))
+        # if entry_balance:
+        #     for valor in entry_balance:
+        #         json_stock_phisical = {
+        #
+        #             "date": self.date_in_time,
+        #             "in_saldo": valor.amount,
+        #             "report_id": self.id,
+        #             "product_id": valor.id,
+        #         }
+        #         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
-        stock_move_after = self.env["stock.move.line"].search(
+        stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         if stock_move_after:
@@ -109,6 +110,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "out_salida": before_in.qty_done,
                         "product_id": before_in.product_id.id
+
                         #
 
                     }
@@ -125,6 +127,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.qty_done,
                         "product_id": before_in.product_id.id
+
                         # "in_saldo": before_in.stock_move_id.amount
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
