@@ -83,11 +83,11 @@ class ItStockMoveReport(models.Model):
         # ========================================================
 
         entry_balance = self.env["account.move.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('quantity', None)])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
-
+                    "date": valor.date,
                     "name_val": valor.credit,
                     "reference": "Ajuste de Costos",
                     "report_id": self.id,
