@@ -89,8 +89,8 @@ class ItStockMoveReport(models.Model):
 
                 json_stock_phisical = {
                     "date": valor.date,
-                    "in_saldo": valor.credit,
-                    "out_saldo": valor.debit,
+                    "in_saldo": valor.debit,
+                    "out_saldo": valor.credit,
                     "reference": "Ajuste de Costos",
                     "report_id": self.id,
                     "product_id": valor.product_id.id
