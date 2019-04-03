@@ -89,8 +89,7 @@ class ItStockMoveReport(models.Model):
                 json_stock_phisical = {
 
                     "name_val": valor.amount,
-                    "report_id": self.id,
-                    "product_id": valor.id,
+                    "report_id": self.id
                 }
                 res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
