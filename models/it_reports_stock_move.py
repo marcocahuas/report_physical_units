@@ -247,3 +247,9 @@ class ItStockMoveReportPhisicalLine(models.Model):
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
+
+    @api.onchange("in_entrada", "out_salida")
+    def _change_it_units(self):
+        if self.in_entrada is not False:
+            self.in_entrada = self.in_entrada == 0
+            self.out_salida = self.out_salida == 0
