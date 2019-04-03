@@ -88,10 +88,12 @@ class ItStockMoveReport(models.Model):
             for valor in entry_balance:
                 haber = valor.debit
                 debe = valor.credit
+
                 if (haber == 0) and (debe != 0):
+
                     json_stock_phisical = {
                         "date": valor.date,
-                        "in_saldo": valor.debit,
+                        "in_saldo": valor.credit,
                         "reference": "Ajuste de Costos",
                         "report_id": self.id,
                         "product_id": valor.product_id.id
