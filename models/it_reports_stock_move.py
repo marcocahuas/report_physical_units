@@ -89,8 +89,7 @@ class ItStockMoveReport(models.Model):
                 haber = valor.debit
                 debe = valor.credit
 
-                if (haber == 0) and (debe != 0):
-
+                if (debe != 0):
                     json_stock_phisical = {
                         "date": valor.date,
                         "in_saldo": valor.debit,
@@ -100,7 +99,7 @@ class ItStockMoveReport(models.Model):
 
                     }
                 res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-                if (haber != 0) and (debe == 0):
+                if (haber != 0):
                     json_stock_phisical = {
                         "date": valor.date,
                         "out_saldo": valor.credit,
