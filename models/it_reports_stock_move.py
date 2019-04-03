@@ -82,14 +82,17 @@ class ItStockMoveReport(models.Model):
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
-        entry_balance = self.env["account.move"].search(
+        entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
 
-                    "name_val": valor.amount,
-                    "report_id": self.id
+                    "name_val": valor.credit,
+                    "reference": "Ajuste de Costos",
+                    "report_id": self.id,
+                    "product_id": valor.product_id.id
+
                 }
                 res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
