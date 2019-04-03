@@ -86,29 +86,18 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5)])
         if entry_balance:
             for valor in entry_balance:
-                haber = valor.debit
-                debe = valor.credit
 
-                if (haber == 0) and (debe != 0):
-                    json_stock_phisical = {
-                        "date": valor.date,
-                        "in_saldo": valor.credit,
-                        "reference": "Ajuste de Costos",
-                        "report_id": self.id,
-                        "product_id": valor.product_id.id
+                json_stock_phisical = {
+                    "date": valor.date,
+                    "in_saldo": valor.credit,
+                    "out_saldo": valor.debit,
+                    "reference": "Ajuste de Costos",
+                    "report_id": self.id,
+                    "product_id": valor.product_id.id
 
-                    }
+                }
                 res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-                if (debe == 0) and (haber != 0):
-                    json_stock_phisical = {
-                        "date": valor.date,
-                        "out_saldo": valor.credit,
-                        "reference": "Ajuste de Costos",
-                        "report_id": self.id,
-                        "product_id": valor.product_id.id
 
-                    }
-                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
         stock_move_after = self.env["stock.move"].search(
