@@ -109,7 +109,9 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "out_saldo": before_in.price_unit * (- before_in.product_uom_qty)
+                        "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
+                        # otros campos para el txt
+                        "existence": before_in.product_id.it_existence.code
 
                         #
 
@@ -127,9 +129,10 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "in_saldo": before_in.price_unit * before_in.product_uom_qty
+                        "in_saldo": before_in.price_unit * before_in.product_uom_qty,
 
                         # "in_saldo": before_in.stock_move_id.amount
+                        "existence": before_in.product_id.it_existence.code
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -153,9 +156,10 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in stock_move_lines:
-            stringventas = "%s|%s" % (
+            stringventas = "%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.id),  # campo 2
+                stock_out.existence or "",   # campo 3
             )
             content += str(stringventas) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
@@ -237,3 +241,4 @@ class ItStockMoveReportPhisicalLine(models.Model):
     in_saldo = fields.Float(string="Saldo Entrada")
     out_saldo = fields.Float(string="Saldo Salida")
     name_val = fields.Float(string="valor")
+    existence = fields.Char(string="existence")
