@@ -81,13 +81,13 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
-        context = {'date': self.date_in_time}
-        entry_balance = self.env["account.move"].with_context(context).search(('amount'))
+
+        entry_balance = self.env["account.move"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
 
-                    "date": self.date_in_time,
                     "name_val": valor.amount,
                     "report_id": self.id,
                     "product_id": valor.id,
