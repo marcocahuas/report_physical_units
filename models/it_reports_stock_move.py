@@ -159,7 +159,7 @@ class ItStockMoveReport(models.Model):
             stringventas = "%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.id),  # campo 2
-                stock_out.existence,   # campo 3
+                stock_out.existence or 0,   # campo 3
             )
             content += str(stringventas) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
