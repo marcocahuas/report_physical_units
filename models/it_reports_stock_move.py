@@ -83,7 +83,7 @@ class ItStockMoveReport(models.Model):
         # ========================================================
 
         entry_balance = self.env["account.move.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('quantity', '!=', 0)])
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
@@ -162,7 +162,7 @@ class ItStockMoveReport(models.Model):
             stringventas = "%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.id),  # campo 2
-                stock_out.existence or 0,   # campo 3
+                stock_out.existence or 0,  # campo 3
             )
             content += str(stringventas) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
