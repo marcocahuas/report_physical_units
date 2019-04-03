@@ -86,11 +86,10 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5)])
         if entry_balance:
             for valor in entry_balance:
-
                 json_stock_phisical = {
                     "date": valor.date,
-                    "in_saldo": valor.debit or 0.00,
-                    "out_saldo": valor.credit or 0.00,
+                    "in_saldo": valor.debit,
+                    "out_saldo": valor.credit,
                     "reference": "Ajuste de Costos",
                     "report_id": self.id,
                     "product_id": valor.product_id.id
@@ -244,7 +243,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
 
-    in_saldo = fields.Float(string="Saldo Entrada")
-    out_saldo = fields.Float(string="Saldo Salida")
+    in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
+    out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
