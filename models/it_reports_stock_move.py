@@ -356,6 +356,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
 class ItStockMoveReportValuatedLine(models.Model):
     _name = "it.units.move.report.valuated.line"
     _description = "Reporte Inventario Valorizado Detalle"
+    _order = "product_name, is_saldo asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
@@ -365,6 +366,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     in_entrada = fields.Float(string="Entrada")
     out_salida = fields.Float(string="Salida")
     # qty_done = fields.Float(string="Cantidad")
+    is_saldo = fields.Char(string="saldo inicial")
 
     # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
     #                            string="Tipo de movimiento", ondelete="cascade")
