@@ -244,13 +244,13 @@ class ItStockMoveReport(models.Model):
                 "",
                 "",
                 "",
-                stock_out.existence or 0,  # campo 6
+                stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 "",  # campo 8
                 stock_out.date_gr or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
-                stock_out.type_operation or 0,  # campo 13 tipo operacion efect
+                stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or 0,
