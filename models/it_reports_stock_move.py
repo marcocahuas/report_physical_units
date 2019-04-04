@@ -262,7 +262,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
                 stock_out.product_name,  # campo 14   descripcion de la exist
                 stock_out.units_med,  # campo 15  cod uni med
-                stock_out.reference or "",
+                stock_out.product_id or "",
 
             )
             content += str(stringventas) + "\r\n"
@@ -344,7 +344,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     stock_id = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Datetime()
+    date_gr = fields.Date()
     series = fields.Char()
     correlative = fields.Char()
     type_operation = fields.Char()
