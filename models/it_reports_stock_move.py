@@ -236,16 +236,13 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
-        # stock_move_lines = self.env["it.units.move.report.phisical.line"].search(
-        #     [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
-
-        for stock_out in self.stock_phisical_lines:
-            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+        for stock_out in self.stock_phisical_lines.order("product_name"):
+            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
-                "",# campo 3
-                "",# campo 4
-                "",# campo 5
+                "",  # campo 3
+                "",  # campo 4
+                "",  # campo 5
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 "",  # campo 8
@@ -256,8 +253,10 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0,
-                stock_out.out_salida or 0,
+                stock_out.in_entrada or 0,  # campo 16
+                stock_out.out_salida or 0,  # campo 17
+                "",  # campo 17
+                "",  # campo 17
 
             )
             content += str(stringventas) + "\r\n"
