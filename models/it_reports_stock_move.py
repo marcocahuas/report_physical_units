@@ -236,10 +236,12 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
-        stock_move_lines = self.env["it.units.move.report.phisical.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+        # stock_move_lines = self.env["it.units.move.report.phisical.line"].search(
+        #     [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
-        for stock_out in stock_move_lines:
+
+
+        for stock_out in self.stock_phisical_lines:
             stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
@@ -249,7 +251,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or 0,  # campo 6
                 stock_out.existence_id,  # campo 7
                 "",  # campo 8
-                stock_out.date_gr,  # campo 10
+                stock_out.date_gr or "",  # campo 10
                 stock_out.series,  # campo 11
                 stock_out.correlative,  # campo 12
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
@@ -338,7 +340,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     stock_id = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Date()
+    date_gr = fields.Char()
     series = fields.Char()
     correlative = fields.Char()
     type_operation = fields.Char()
