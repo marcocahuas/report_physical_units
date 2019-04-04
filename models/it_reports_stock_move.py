@@ -25,7 +25,7 @@ class ItStockMoveReport(models.Model):
     stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
-    stock_valuated_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
+    stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
 
@@ -76,10 +76,68 @@ class ItStockMoveReport(models.Model):
                 "reference": "SALDO INICIAL",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
+                "product_id": product.id
+            }
+            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        # ========================================================
+
+        # ========================================================
+
+        stock_move_after = self.env["stock.move"].search(
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+
+        if stock_move_after:
+            for before_in in stock_move_after:
+                a = before_in.location_id.usage
+                b = before_in.location_dest_id.usage
+                if (a == 'internal') and (b != 'internal'):
+                    json_stock_phisical = {
+                        "type": 0,
+                        "date": before_in.date,
+                        "reference": before_in.reference,
+                        "report_id": self.id,
+                        "out_salida": before_in.product_uom_qty,
+                        "product_id": before_in.product_id.id,
+                        # otros campos para el txt
+                        "existence": before_in.product_id.it_existence.code
+
+                        #
+
+                    }
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+
+                if (a == 'internal') and (b == 'internal'):
+                    # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
+                    pass
+                if (a != 'internal') and (b == 'internal'):
+                    json_stock_phisical = {
+                        "type": 0,
+                        "date": before_in.date,
+                        "reference": before_in.reference,
+                        "report_id": self.id,
+                        "in_entrada": before_in.product_uom_qty,
+                        "product_id": before_in.product_id.id,
+
+                        # "in_saldo": before_in.stock_move_id.amount
+                        "existence": before_in.product_id.it_existence.code
+                    }
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+        #====================================================================================================
+        #  REPORTE DE INVENTARIO VALORIZADO
+        context = {'to_date': self.date_in_time}
+        initial = self.env["product.product"].with_context(context).search(
+            [('type', '=', 'product'), ('qty_available', '!=', 0)])
+        for product in initial:
+            json_stock_phisical = {
+                "type": 1,
+                "date": self.date_in_time,
+                "reference": "SALDO INICIAL",
+                "in_entrada": product.qty_at_date,
+                "report_id": self.id,
                 "product_id": product.id,
                 "in_saldo": product.stock_value
             }
-            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+            res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
         entry_balance = self.env["account.move.line"].search(
@@ -95,7 +153,7 @@ class ItStockMoveReport(models.Model):
                     "product_id": valor.product_id.id
 
                 }
-                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
         # ========================================================
 
@@ -121,7 +179,7 @@ class ItStockMoveReport(models.Model):
                         #
 
                     }
-                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
@@ -139,7 +197,7 @@ class ItStockMoveReport(models.Model):
                         # "in_saldo": before_in.stock_move_id.amount
                         "existence": before_in.product_id.it_existence.code
                     }
-                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
     @api.multi
     def download_txt_units_sunat(self):
@@ -242,9 +300,29 @@ class ItStockMoveReportPhisicalLine(models.Model):
     #                            string="Tipo de movimiento", ondelete="cascade")
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
+    existence = fields.Char(string="existence")
+
+class ItStockMoveReportValuatedLine(models.Model):
+    _name = "it.units.move.report.valuated.line"
+    _description = "Reporte Inventario Valorizado Detalle"
+
+    type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
+    date = fields.Datetime(string="Fecha")
+    reference = fields.Char(string="Referencia")
+    report_id = fields.Many2one("it.units.move.report", "Reporte")
+    product_id = fields.Many2one("product.product", "Producto")
+    in_entrada = fields.Float(string="Entrada")
+    out_salida = fields.Float(string="Salida")
+    # qty_done = fields.Float(string="Cantidad")
+
+    # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
+    #                            string="Tipo de movimiento", ondelete="cascade")
+
+    # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
 
     in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
+
 
