@@ -73,7 +73,8 @@ class ItStockMoveReport(models.Model):
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "- SALDO INICIAL",
+                "reference": "SALDO INICIAL",
+                "is_saldo": "AAAA",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
@@ -156,7 +157,8 @@ class ItStockMoveReport(models.Model):
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "-SALDO INICIAL",
+                "reference": "SALDO INICIAL",
+                "is_saldo": "AAAA",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
@@ -322,7 +324,7 @@ class ItStockMoveReport(models.Model):
 class ItStockMoveReportPhisicalLine(models.Model):
     _name = "it.units.move.report.phisical.line"
     _description = "Reporte Unidades Fisicas Detalle"
-    _order = "product_name, reference asc"
+    _order = "product_name, is_saldo asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
@@ -332,6 +334,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     in_entrada = fields.Float(string="Entrada")
     out_salida = fields.Float(string="Salida")
     # qty_done = fields.Float(string="Cantidad")
+    is_saldo = fields.Char(string="saldo inicial")
 
     # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
     #                            string="Tipo de movimiento", ondelete="cascade")
