@@ -201,7 +201,7 @@ class ItStockMoveReport(models.Model):
                         "product_id": before_in.product_id.id,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-
+                        "product_name": before_in.product_id.name,
                         #
 
                     }
@@ -218,8 +218,8 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "in_saldo": before_in.price_unit * before_in.product_uom_qty
-
+                        "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                        "product_name": before_in.product_id.name,
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -372,7 +372,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     #                            string="Tipo de movimiento", ondelete="cascade")
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
-
+    product_name = fields.Char()
     in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
