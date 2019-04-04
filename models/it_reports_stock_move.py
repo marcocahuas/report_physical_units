@@ -240,7 +240,7 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in stock_move_lines:
-            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
                 "",
@@ -255,7 +255,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
                 stock_out.product_name,  # campo 14   descripcion de la exist
                 stock_out.units_med,  # campo 15  cod uni med
-                stock_out.reference or "",
+                stock_out.in_entrada or 0,
+                stock_out.out_salida or 0,
 
             )
             content += str(stringventas) + "\r\n"
