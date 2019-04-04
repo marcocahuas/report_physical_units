@@ -236,7 +236,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
-        for stock_out in self.stock_phisical_lines.order("product_name"):
+        for stock_out in self.stock_phisical_lines:
             stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
@@ -321,6 +321,7 @@ class ItStockMoveReport(models.Model):
 class ItStockMoveReportPhisicalLine(models.Model):
     _name = "it.units.move.report.phisical.line"
     _description = "Reporte Unidades Fisicas Detalle"
+    _order = "product_id desc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
@@ -335,6 +336,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     #                            string="Tipo de movimiento", ondelete="cascade")
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
+
     stock_id = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
