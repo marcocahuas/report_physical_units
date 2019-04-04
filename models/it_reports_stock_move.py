@@ -79,7 +79,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "product_name": product.name,
+                "product_name": product.product_id.name,
                 "units_med": product.uom_id.code_unit_measure.code
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
@@ -262,7 +262,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
                 stock_out.product_name,  # campo 14   descripcion de la exist
                 stock_out.units_med,  # campo 15  cod uni med
-                stock_out.product_id or "",
+                stock_out.reference or "",
 
             )
             content += str(stringventas) + "\r\n"
