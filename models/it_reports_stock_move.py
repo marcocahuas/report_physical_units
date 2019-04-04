@@ -78,6 +78,7 @@ class ItStockMoveReport(models.Model):
                 "report_id": self.id,
                 "product_id": product.id,
                 # campos adicionales
+                "stock_id": product.id,
                 "product_name": product.name,
                 "units_med": product.uom_id.code_unit_measure.code
             }
