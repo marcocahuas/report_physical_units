@@ -108,6 +108,7 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
+                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
                         "type_operation": before_in.picking_id.type_transaction.code,
@@ -135,6 +136,7 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
+                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
                         "type_operation": before_in.picking_id.type_transaction.code,
@@ -238,16 +240,17 @@ class ItStockMoveReport(models.Model):
         #     [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in self.stock_phisical_lines:
-            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
-                "",
-                "",
-                "",
+                "",# campo 3
+                "",# campo 4
+                "",# campo 5
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 "",  # campo 8
-                stock_out.date_gr or "",  # campo 10
+                stock_out.date_gr or "",  # campo 9
+                stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
@@ -337,6 +340,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Char()
+    catalog_01_id = fields.Char()
     series = fields.Char()
     correlative = fields.Char()
     type_operation = fields.Char()
