@@ -73,7 +73,7 @@ class ItStockMoveReport(models.Model):
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "A SALDO INICIAL",
+                "reference": "- SALDO INICIAL",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
@@ -156,7 +156,7 @@ class ItStockMoveReport(models.Model):
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "A SALDO INICIAL",
+                "reference": "- SALDO INICIAL",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
