@@ -69,7 +69,7 @@ class ItStockMoveReport(models.AbstractModel):
 
                 array_main = []
                 contador = 0
-                for before_in in obj.stock_phisical_lines:
+                for before_in in obj.stock_valuated_lines:
                     array_field = []
                     array_field.append(before_in.date)
                     array_field.append(before_in.product_id.name)

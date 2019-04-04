@@ -122,8 +122,9 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-        #====================================================================================================
+        #  ====================================================================================================
         #  REPORTE DE INVENTARIO VALORIZADO
+        #  ====================================================================================================
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
