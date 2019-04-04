@@ -80,6 +80,7 @@ class ItStockMoveReport(models.Model):
                 # campos adicionales
                 "stock_id": product.id,
                 "product_name": product.name,
+                "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
@@ -133,8 +134,8 @@ class ItStockMoveReport(models.Model):
                         "stock_id": before_in.id,
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
-                        "date_gr": before_in.picking_id.it_date_gr or "",
-                        "series": before_in.picking_id.series.series or "",
+                        "date_gr": before_in.picking_id.it_date_gr,
+                        "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
                         "type_operation": before_in.picking_id.type_transaction.code,
                         "product_name": before_in.product_id.name,
@@ -196,6 +197,7 @@ class ItStockMoveReport(models.Model):
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
 
+
                         #
 
                     }
@@ -213,6 +215,7 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty
+
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -248,7 +251,7 @@ class ItStockMoveReport(models.Model):
                 "",  # campo 8
                 stock_out.date_gr,  # campo 10
                 stock_out.series,  # campo 11
-                stock_out.correlative  or "",  # campo 12
+                stock_out.correlative,  # campo 12
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
                 stock_out.product_name,  # campo 14   descripcion de la exist
                 stock_out.units_med,  # campo 15  cod uni med
@@ -335,11 +338,11 @@ class ItStockMoveReportPhisicalLine(models.Model):
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Date()
-    series = fields.Char()
-    correlative = fields.Char()
-    type_operation = fields.Char()
+    series = fields.many2one()
+    correlative = fields.many2one()
+    type_operation = fields.many2one()
     product_name = fields.Char()
-    units_med = fields.Char()
+    units_med = fields.many2one()
 
 
 class ItStockMoveReportValuatedLine(models.Model):
