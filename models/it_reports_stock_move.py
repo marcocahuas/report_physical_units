@@ -76,6 +76,7 @@ class ItStockMoveReport(models.Model):
                 "reference": "SALDO INICIAL",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
+                "product_name": product.name,
                 "product_id": product.id
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
@@ -255,7 +256,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.date_gr,  # campo 10
                 stock_out.series,  # campo 11
                 stock_out.correlative,  # campo 12
-                stock_out.type_operation,  # campo 13 tipo operacion efect
+                stock_out.type_operation or 0,  # campo 13 tipo operacion efect
                 stock_out.product_name,  # campo 14   descripcion de la exist
                 stock_out.units_med,  # campo 15  cod uni med
 
