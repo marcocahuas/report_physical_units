@@ -174,8 +174,16 @@ class ItStockMoveReport(models.Model):
                         "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
-                        # otros campos para el txt
-                        "existence": before_in.product_id.it_existence.code
+                        # OTROS CAMPOS  PARA EL TXTSUNAT
+                        "stock_id": before_in.id,
+                        "existence": before_in.product_id.it_existence.code,
+                        "existence_id": before_in.product_id.it_existence.id,
+                        "date_gr": before_in.picking_id.it_date_gr,
+                        "series": before_in.picking_id.series.series,
+                        "correlative": before_in.picking_id.correlative,
+                        "type_operation": before_in.picking_id.type_transaction.code,
+                        "product_name": before_in.product_id.name,
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
                         #
 
@@ -193,10 +201,10 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                        "in_saldo": before_in.price_unit * before_in.product_uom_qty
 
                         # "in_saldo": before_in.stock_move_id.amount
-                        "existence": before_in.product_id.it_existence.code
+
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -220,10 +228,22 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
         for stock_out in stock_move_lines:
-            stringventas = "%s|%s|%s" % (
+            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
-                str("M") + str(stock_out.id),  # campo 2
-                stock_out.existence or 0,  # campo 3
+                str("M") + str(stock_out.stock_id),  # campo 2
+                "",
+                "",
+                "",
+                stock_out.existence or 0,  # campo 6
+                stock_out.existence_id or "",  # campo 7
+                "",  # campo 8
+                stock_out.date_gr or "",  # campo 10
+                stock_out.series or "",  # campo 11
+                stock_out.correlative or "",  # campo 12
+                stock_out.type_operation or "",  # campo 13 tipo operacion efect
+                stock_out.product_name or "",  # campo 14   descripcion de la exist
+                stock_out.units_med or "",  # campo 15  cod uni med
+
             )
             content += str(stringventas) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
@@ -301,7 +321,16 @@ class ItStockMoveReportPhisicalLine(models.Model):
     #                            string="Tipo de movimiento", ondelete="cascade")
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
-    existence = fields.Char(string="existence")
+    stock_id = fields.Char()
+    existence = fields.Char()
+    existence_id = fields.Char()
+    date_gr = fields.Char()
+    series = fields.Char()
+    correlative = fields.Char()
+    type_operation = fields.Char()
+    product_name = fields.Char()
+    units_med = fields.Char()
+
 
 class ItStockMoveReportValuatedLine(models.Model):
     _name = "it.units.move.report.valuated.line"
@@ -325,5 +354,3 @@ class ItStockMoveReportValuatedLine(models.Model):
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
-
-
