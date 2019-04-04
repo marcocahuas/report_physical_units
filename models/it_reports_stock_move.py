@@ -162,7 +162,8 @@ class ItStockMoveReport(models.Model):
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
-                "in_saldo": product.stock_value
+                "in_saldo": product.stock_value,
+                "product_name": product.name
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
