@@ -245,12 +245,12 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or 0,  # campo 6
                 stock_out.existence_id,  # campo 7
                 "",  # campo 8
-                stock_out.date_gr or 0,  # campo 10
-                stock_out.series or 0,  # campo 11
-                stock_out.correlative or 0,  # campo 12
-                stock_out.type_operation or 0,  # campo 13 tipo operacion efect
-                stock_out.product_name or 0,  # campo 14   descripcion de la exist
-                stock_out.units_med or 0,  # campo 15  cod uni med
+                stock_out.date_gr,  # campo 10
+                stock_out.series,  # campo 11
+                stock_out.correlative,  # campo 12
+                stock_out.type_operation,  # campo 13 tipo operacion efect
+                stock_out.product_name,  # campo 14   descripcion de la exist
+                stock_out.units_med,  # campo 15  cod uni med
 
             )
             content += str(stringventas) + "\r\n"
@@ -337,7 +337,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     correlative = fields.Char()
     type_operation = fields.Char()
     product_name = fields.Char()
-    units_med = fields.Char()
+    units_med = fields.Many2one()
 
 
 class ItStockMoveReportValuatedLine(models.Model):
