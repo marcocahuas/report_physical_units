@@ -146,7 +146,7 @@ class ItStockMoveReport(models.Model):
         if entry_balance:
             for valor in entry_balance:
                 json_stock_phisical = {
-                    "date": valor.date,
+                    "date": self.date_in_time,
                     "in_saldo": valor.debit,
                     "out_saldo": valor.credit,
                     "reference": "Ajuste de Costos",
