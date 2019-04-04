@@ -339,11 +339,11 @@ class ItStockMoveReportPhisicalLine(models.Model):
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Date()
-    series = fields.many2one()
-    correlative = fields.many2one()
-    type_operation = fields.many2one()
+    series = fields.Char()
+    correlative = fields.Char()
+    type_operation = fields.Char()
     product_name = fields.Char()
-    units_med = fields.many2one()
+    units_med = fields.Char()
 
 
 class ItStockMoveReportValuatedLine(models.Model):
