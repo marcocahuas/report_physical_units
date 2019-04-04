@@ -197,7 +197,6 @@ class ItStockMoveReport(models.Model):
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
 
-
                         #
 
                     }
@@ -215,7 +214,6 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty
-
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -239,8 +237,6 @@ class ItStockMoveReport(models.Model):
         # stock_move_lines = self.env["it.units.move.report.phisical.line"].search(
         #     [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
-
-
         for stock_out in self.stock_phisical_lines:
             stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
@@ -249,14 +245,14 @@ class ItStockMoveReport(models.Model):
                 "",
                 "",
                 stock_out.existence or 0,  # campo 6
-                stock_out.existence_id,  # campo 7
+                stock_out.existence_id or "",  # campo 7
                 "",  # campo 8
                 stock_out.date_gr or "",  # campo 10
-                stock_out.series,  # campo 11
-                stock_out.correlative,  # campo 12
+                stock_out.series or "",  # campo 11
+                stock_out.correlative or "",  # campo 12
                 stock_out.type_operation or 0,  # campo 13 tipo operacion efect
-                stock_out.product_name,  # campo 14   descripcion de la exist
-                stock_out.units_med,  # campo 15  cod uni med
+                stock_out.product_name or "",  # campo 14   descripcion de la exist
+                stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or 0,
                 stock_out.out_salida or 0,
 
