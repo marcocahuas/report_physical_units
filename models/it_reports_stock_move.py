@@ -163,7 +163,12 @@ class ItStockMoveReport(models.Model):
                 "report_id": self.id,
                 "product_id": product.id,
                 "in_saldo": product.stock_value,
-                "product_name": product.name
+                # campos adicionales
+                "stock_id": product.id,
+                "type_operation": "16",
+                "product_name": product.name,
+                "existence": product.it_existence.code,
+                "units_med": product.uom_id.code_unit_measure.code
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
@@ -178,7 +183,9 @@ class ItStockMoveReport(models.Model):
                     "out_saldo": valor.credit,
                     "reference": "Ajuste de Costos",
                     "report_id": self.id,
-                    "product_id": valor.product_id.id
+                    "product_id": valor.product_id.id,
+                    # campos adicionales
+                    "product_name": valor.product_id.name,
 
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -202,8 +209,16 @@ class ItStockMoveReport(models.Model):
                         "product_id": before_in.product_id.id,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
+                        "stock_id": before_in.id,
+                        "existence": before_in.product_id.it_existence.code,
+                        "existence_id": before_in.product_id.it_existence.id,
+                        "date_gr": before_in.picking_id.it_date_gr,
+                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
+                        "series": before_in.picking_id.series.series,
+                        "correlative": before_in.picking_id.correlative,
+                        "type_operation": before_in.picking_id.type_transaction.code,
                         "product_name": before_in.product_id.name,
-                        #
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -220,7 +235,17 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                        # OTROS CAMPOS  PARA EL TXTSUNAT
+                        "stock_id": before_in.id,
+                        "existence": before_in.product_id.it_existence.code,
+                        "existence_id": before_in.product_id.it_existence.id,
+                        "date_gr": before_in.picking_id.it_date_gr,
+                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
+                        "series": before_in.picking_id.series.series,
+                        "correlative": before_in.picking_id.correlative,
+                        "type_operation": before_in.picking_id.type_transaction.code,
                         "product_name": before_in.product_id.name,
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -241,7 +266,7 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_phisical_lines:
-            stringventas = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
                 "",  # campo 3
@@ -263,7 +288,7 @@ class ItStockMoveReport(models.Model):
                 "",  # campo 17
 
             )
-            content += str(stringventas) + "\r\n"
+            content += str(stringunits) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
             d_ref.year,  # Year
@@ -292,11 +317,42 @@ class ItStockMoveReport(models.Model):
     def download_txt_valuated_sunat(self):
         content = ""
         count_sale = 0
-        stringventas = "%s|%s" % (
-            "Hola inventario valorizado",
-            "",  # campo 19
-        )
-        content += str(stringventas) + "\r\n"
+        d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
+        d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
+        # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
+        month = "%02d" % (d_ref.month,)
+        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
+                                                   datetime.time(0, 0, 0))
+        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
+                                                   datetime.time(23, 59, 59))
+        self.date_in_time = date_in_before
+        self.date_out_time = date_out_after
+
+        for stock_out in self.stock_valuated_lines:
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                str(d_ref.year) + "" + str(month) + "00",  # campo 1
+                str("M") + str(stock_out.stock_id),  # campo 2
+                "",  # campo 3
+                "",  # campo 4
+                "",  # campo 5
+                stock_out.existence or "",  # campo 6
+                stock_out.existence_id or "",  # campo 7
+                "",  # campo 8
+                stock_out.date_gr or "",  # campo 9
+                stock_out.catalog_01_id or "",  # campo 10
+                stock_out.series or "",  # campo 11
+                stock_out.correlative or "",  # campo 12
+                stock_out.type_operation or "",  # campo 13 tipo operacion efect
+                stock_out.product_name or "",  # campo 14   descripcion de la exist
+                stock_out.units_med or "",  # campo 15  cod uni med
+                stock_out.in_entrada or 0,  # campo 16
+                stock_out.out_salida or 0,  # campo 17
+                "",  # campo 17
+                "",  # campo 17
+
+            )
+            content += str(stringvaluated) + "\r\n"
 
         nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
@@ -337,11 +393,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
 
-    # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
-    #                            string="Tipo de movimiento", ondelete="cascade")
-
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
-
     stock_id = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
@@ -357,7 +409,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
 class ItStockMoveReportValuatedLine(models.Model):
     _name = "it.units.move.report.valuated.line"
     _description = "Reporte Inventario Valorizado Detalle"
-    _order = "product_name, is_saldo asc"
+    _order = "product_name, is_saldo, date asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
@@ -369,12 +421,18 @@ class ItStockMoveReportValuatedLine(models.Model):
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
 
-    # type_move = fields.Selection([("in", "Entrada"), ("out", "Salida")],
-    #                            string="Tipo de movimiento", ondelete="cascade")
-
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
-    product_name = fields.Char()
     in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
+    # ====================================================
+    stock_id = fields.Char()
+    existence_id = fields.Char()
+    date_gr = fields.Char()
+    catalog_01_id = fields.Char()
+    series = fields.Char()
+    correlative = fields.Char()
+    type_operation = fields.Char()
+    product_name = fields.Char()
+    units_med = fields.Char()
