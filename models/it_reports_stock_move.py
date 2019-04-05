@@ -325,7 +325,7 @@ class ItStockMoveReport(models.Model):
 class ItStockMoveReportPhisicalLine(models.Model):
     _name = "it.units.move.report.phisical.line"
     _description = "Reporte Unidades Fisicas Detalle"
-    _order = "product_name, is_saldo asc"
+    _order = "product_name, is_saldo, date asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
