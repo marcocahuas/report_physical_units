@@ -118,7 +118,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": before_in.picking_id.type_transaction.code,
+                        "type_operation": self.type_operation,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
@@ -157,7 +157,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": before_in.picking_id.type_transaction.code,
+                        "type_operation": self.type_operation,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
