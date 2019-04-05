@@ -95,13 +95,14 @@ class ItStockMoveReport(models.Model):
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
-                if before_in.create_uid == 6:
-                    self.type_operation = "6"
+
+                if (a == 'internal') and (b != 'internal'):
+                    if before_in.create_uid == 6:
+                        self.type_operation = "6"
                     if before_in.create_uid == 10:
                         self.type_operation = "10"
-                        if before_in.create_uid == 12:
-                            self.type_operation = "12"
-                if (a == 'internal') and (b != 'internal'):
+                    if before_in.create_uid == 12:
+                        self.type_operation = "12"
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
