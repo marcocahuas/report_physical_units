@@ -28,7 +28,6 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
-    type_operation =fields.Char()
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
@@ -96,14 +95,13 @@ class ItStockMoveReport(models.Model):
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
-
-                if (a == 'internal') and (b != 'internal'):
-                    if before_in.create_uid == 6:
-                        self.type_operation = "6"
+                if before_in.create_uid == 6:
+                    self.type_operation = "6"
                     if before_in.create_uid == 10:
                         self.type_operation = "10"
-                    if before_in.create_uid == 12:
-                        self.type_operation = "12"
+                        if before_in.create_uid == 12:
+                            self.type_operation = "12"
+                if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -119,7 +117,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": self.type_operation,
+                        "type_operation": before_in.picking_id.type_transaction.code,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
@@ -158,7 +156,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": self.type_operation,
+                        "type_operation": before_in.picking_id.type_transaction.code,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
