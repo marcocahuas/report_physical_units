@@ -28,6 +28,7 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Movimientos",
                                            ondelete="cascade")
+    type_operation =fields.Char()
 
     # tipo operacion = ["A","M","C"] => M),
     #     }
