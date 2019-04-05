@@ -88,8 +88,6 @@ class ItStockMoveReport(models.Model):
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ========================================================
 
-        # ========================================================
-
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
 
@@ -97,6 +95,12 @@ class ItStockMoveReport(models.Model):
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
+                if before_in.create_uid == 6:
+                    self.type_operation = "6"
+                    if before_in.create_uid == 10:
+                        self.type_operation = "10"
+                        if before_in.create_uid == 12:
+                            self.type_operation = "12"
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -294,7 +298,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or 0,  # campo 16 entrada
-                stock_out.in_saldo or 0,    #campo 17  salida
+                stock_out.in_saldo or 0,  # campo 17  salida
                 stock_out.out_salida or 0,  # campo 18  salida
                 stock_out.out_saldo or 0,  # campo 19  salida
                 "",  # campo 20
