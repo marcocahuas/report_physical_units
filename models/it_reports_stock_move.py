@@ -89,7 +89,7 @@ class ItStockMoveReport(models.Model):
         # ========================================================
 
         stock_move_after = self.env["stock.move"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=" "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
@@ -117,7 +117,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": before_in.picking_id.type_transaction.code,
+                        "type_operation": self.type_operation,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
@@ -136,6 +136,8 @@ class ItStockMoveReport(models.Model):
                             "in_entrada": before_in.product_uom_qty,
                             "product_id": before_in.product_id.id,
                             "stock_id": before_in.id,
+                            "product_name": before_in.product_id.name,
+                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
                         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
