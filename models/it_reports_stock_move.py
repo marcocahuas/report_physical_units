@@ -132,7 +132,7 @@ class ItStockMoveReport(models.Model):
                             "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                             "series": before_in.picking_id.series.series,
                             "correlative": before_in.picking_id.correlative,
-                            "type_operation": before_in.picking_id.type_transaction.code or "01",
+                            "type_operation": before_in.picking_id.type_transaction.code or "24",
                             "product_name": before_in.product_id.name,
                             "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
@@ -246,7 +246,16 @@ class ItStockMoveReport(models.Model):
                             "report_id": self.id,
                             "in_entrada": before_in.product_uom_qty,
                             "product_id": before_in.product_id.id,
+                            "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                            # OTROS CAMPOS  PARA EL TXTSUNAT
                             "stock_id": before_in.id,
+                            "existence": before_in.product_id.it_existence.code,
+                            "existence_id": before_in.product_id.it_existence.id,
+                            "date_gr": before_in.picking_id.it_date_gr,
+                            "catalog_01_id": before_in.picking_id.catalog_01_id.code,
+                            "series": before_in.picking_id.series.series,
+                            "correlative": before_in.picking_id.correlative,
+                            "type_operation": before_in.picking_id.type_transaction.code,
                             "product_name": before_in.product_id.name,
                             "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
