@@ -241,8 +241,19 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
-                    # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
-                    pass
+                    if before_in.picking_type_id.it_is_kardex is True:
+                        json_stock_phisical = {
+                            "type": 0,
+                            "date": before_in.date,
+                            "reference": before_in.reference,
+                            "report_id": self.id,
+                            "in_entrada": before_in.product_uom_qty,
+                            "product_id": before_in.product_id.id,
+                            "stock_id": before_in.id,
+                            "product_name": before_in.product_id.name,
+                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                        }
+                        res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
                 if (a != 'internal') and (b == 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -412,7 +423,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
 
-    # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
+    # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
