@@ -89,21 +89,14 @@ class ItStockMoveReport(models.Model):
         # ========================================================
 
         stock_move_after = self.env["stock.move"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time)])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
-                operation = ""
 
                 if (a == 'internal') and (b != 'internal'):
-                    if (a == 5) and (b != 5):
-                        operation = "05"
-                    if (a == 10) and (b != 10):
-                        operation = "10"
-                    if (a == 13) and (b != 13):
-                        operation = "13"
 
                     json_stock_phisical = {
                         "type": 0,
@@ -120,7 +113,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
-                        "type_operation": operation,
+                        "type_operation": before_in.picking_id.type_transaction.code or "01",
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
@@ -161,6 +154,7 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
+                        "type_operation": before_in.picking_id.type_transaction.code or "02",
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
