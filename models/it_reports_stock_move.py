@@ -120,30 +120,31 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
-                    if before_in.picking_type_id.it_is_kardex is True:
-
-                        json_stock_phisical = {
-                            "type": 0,
-                            "date": before_in.date,
-                            "reference": before_in.reference,
-                            "report_id": self.id,
-                            "out_salida": before_in.product_uom_qty,
-                            "product_id": before_in.product_id.id,
-                            # OTROS CAMPOS  PARA EL TXTSUNAT
-                            "stock_id": before_in.id,
-                            "existence": before_in.product_id.it_existence.code,
-                            "existence_id": before_in.product_id.it_existence.id,
-                            "date_gr": before_in.picking_id.it_date_gr,
-                            "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                            "series": before_in.picking_id.series.series,
-                            "correlative": before_in.picking_id.correlative,
-                            "type_operation": before_in.picking_id.type_transaction.code,
-                            "product_name": before_in.product_id.name,
-                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
-                        }
+                    pass
+                    # if before_in.picking_type_id.it_is_kardex is True:
+                    #
+                    #     json_stock_phisical = {
+                    #         "type": 0,
+                    #         "date": before_in.date,
+                    #         "reference": before_in.reference,
+                    #         "report_id": self.id,
+                    #         "out_salida": before_in.product_uom_qty,
+                    #         "product_id": before_in.product_id.id,
+                    #         # OTROS CAMPOS  PARA EL TXTSUNAT
+                    #         "stock_id": before_in.id,
+                    #         "existence": before_in.product_id.it_existence.code,
+                    #         "existence_id": before_in.product_id.it_existence.id,
+                    #         "date_gr": before_in.picking_id.it_date_gr,
+                    #         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
+                    #         "series": before_in.picking_id.series.series,
+                    #         "correlative": before_in.picking_id.correlative,
+                    #         "type_operation": before_in.picking_id.type_transaction.code,
+                    #         "product_name": before_in.product_id.name,
+                    #         "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                    #     }
                     # if(a == 'internal') and (b == 'production'):
 
-                        res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                        # res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
 
                 if (a != 'internal') and (b == 'internal'):
