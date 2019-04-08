@@ -121,6 +121,7 @@ class ItStockMoveReport(models.Model):
 
                 if (a == 'internal') and (b == 'internal'):
                     if before_in.picking_type_id.it_is_kardex is True:
+
                         json_stock_phisical = {
                             "type": 0,
                             "date": before_in.date,
@@ -140,6 +141,27 @@ class ItStockMoveReport(models.Model):
                             "product_name": before_in.product_id.name,
                             "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
+                    if(a == 'internal') and (b == 'production'):
+                        json_stock_phisical = {
+                            "type": 0,
+                            "date": before_in.date,
+                            "reference": before_in.reference,
+                            "report_id": self.id,
+                            "in_entrada": before_in.product_uom_qty,
+                            "product_id": before_in.product_id.id,
+                            # OTROS CAMPOS  PARA EL TXTSUNAT
+                            "stock_id": before_in.id,
+                            "existence": before_in.product_id.it_existence.code,
+                            "existence_id": before_in.product_id.it_existence.id,
+                            "date_gr": before_in.picking_id.it_date_gr,
+                            "catalog_01_id": before_in.picking_id.catalog_01_id.code,
+                            "series": before_in.picking_id.series.series,
+                            "correlative": before_in.picking_id.correlative,
+                            "type_operation": before_in.picking_id.type_transaction.code,
+                            "product_name": before_in.product_id.name,
+                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                        }
+
                         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
 
@@ -304,7 +326,7 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_phisical_lines:
-            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -313,17 +335,18 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 "",  # campo 7 corregir
                 "",  # campo 8
-                stock_out.date_gr or "",  # campo 9
-                stock_out.catalog_01_id or "",  # campo 10
-                stock_out.series or "",  # campo 11
-                stock_out.correlative or "",  # campo 12
-                stock_out.type_operation or "",  # campo 13 tipo operacion efect
-                stock_out.product_name or "",  # campo 14   descripcion de la exist
+                "",  # campo 9
+                stock_out.date_gr or "",  # campo 10
+                stock_out.catalog_01_id or "",  # campo 11
+                stock_out.series or "",  # campo 12
+                stock_out.correlative or "",  # campo 13
+                stock_out.type_operation or "",  # campo 14 tipo operacion efect
+                stock_out.product_name or "",  # campo 15   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0,  # campo 16 entrada
-                stock_out.out_salida or 0,  # campo 11  salida
-                "",  # campo 18
+                stock_out.in_entrada or 0,  # campo 17 entrada
+                stock_out.out_salida or 0,  # campo 18  salida
                 "",  # campo 19
+                "",  # campo 20
 
             )
             content += str(stringunits) + "\r\n"
