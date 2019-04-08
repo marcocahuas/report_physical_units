@@ -115,12 +115,7 @@ class ItStockMoveReport(models.Model):
                 if (location == 'internal') and (location_dest == 'internal'):
                     if before_in.picking_type_id.it_is_kardex is True:
                         a = before_in.warehouse_id.it_establishment.code
-
-                        if (a == "1") and (a == "3"):
-                            is_in_or_out = "out_salida"
-                            type_operation_sunat = ""
-                        if (a == "3") and (a == "1"):
-                            is_in_or_out = "out_salida"
+                        if (a == "1") and (a == "3") or (a == "3") and (a == "1"):
                             type_operation_sunat = ""
 
                 # INTERNAL DIF A UNA INTERNAL  TP = 00 =>SALIDA
