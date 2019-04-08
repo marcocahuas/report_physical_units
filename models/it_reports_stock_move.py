@@ -119,7 +119,7 @@ class ItStockMoveReport(models.Model):
 
                 # INTERNAL DIF A UNA INTERNAL  TP = 00 =>SALIDA
                 if (location != 'internal') and (location_dest == 'internal'):
-                    is_in_or_out = "in_entrada"
+                    is_in_or_out = "out_salida"
                     type_operation_sunat = ""
                     # Campo adicional para
                 # if (location_dest == 'internal') and (location != 'internal'):
