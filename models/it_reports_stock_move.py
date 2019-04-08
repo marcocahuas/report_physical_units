@@ -76,6 +76,10 @@ class ItStockMoveReport(models.Model):
                 "stock_id": product.id,
                 "type_operation": "16",
                 "product_name": product.name,
+                "date_gr": self.date_in_time,
+                "catalog_01_id": "00",
+                "series": "0",
+                "correlative": "0",
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code
             }
@@ -302,12 +306,12 @@ class ItStockMoveReport(models.Model):
         for stock_out in self.stock_phisical_lines:
             stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
-                str("M") + str(stock_out.stock_id),  # campo 2
-                "",  # campo 3
-                "",  # campo 4
+                stock_out.stock_id,
+                str("M") + str(stock_out.stock_id),  # campo 3
+                "",  # campo 4 agregar
                 "",  # campo 5
                 stock_out.existence or "",  # campo 6
-                stock_out.existence_id or "",  # campo 7
+                stock_out.existence_id or "",  # campo 7 corregir
                 "",  # campo 8
                 stock_out.date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
