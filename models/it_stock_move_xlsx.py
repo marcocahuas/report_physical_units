@@ -21,7 +21,7 @@ class ItStockMoveReport(models.AbstractModel):
                         'align': 'center',
                         'valign': 'vcenter'
                     })
-                sheet.merge_range('A1:E4', self.env.user.company_id.name, font_titulo_empresa)
+                sheet.merge_range('A1:F4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 # ======================================
 
@@ -36,15 +36,17 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.reference)
                     array_field.append(before_in.in_entrada)
                     array_field.append(before_in.out_salida)
+                    array_field.append(before_in.out_salida)
                     array_main.append(array_field)
                     contador = contador + 1
-                sheet.set_column('A:E', 20)
-                row_name = 'A8:E%s' % (int(contador + 8))
+                sheet.set_column('A:F', 20)
+                row_name = 'A8:F%s' % (int(contador + 8))
                 sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
                                                                            {'header': 'Producto'},
                                                                            {'header': 'Referencia'},
                                                                            {'header': 'Entradas'},
                                                                            {'header': 'Salidas'},
+                                                                           {'header': 'Saldo Final'},
                                                                            ]})
 
             # GENERAR INVENTARIO VALORIZADO
