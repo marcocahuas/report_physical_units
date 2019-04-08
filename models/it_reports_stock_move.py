@@ -141,7 +141,7 @@ class ItStockMoveReport(models.Model):
                             "product_name": before_in.product_id.name,
                             "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
-                    if(a == 'internal') and (b == 'production'):
+                    # if(a == 'internal') and (b == 'production'):
 
                         res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                     # PENDIENTE MOVIMIENTO ENTRE ALMACENES QUE VAN AL ESTE REPORTE
