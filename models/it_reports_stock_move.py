@@ -47,6 +47,9 @@ class ItStockMoveReport(models.Model):
 
     @api.one
     def generate_moves(self):
+        if self.stock_phisical_lines:
+            self.stock_phisical_lines.unlink()
+
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
