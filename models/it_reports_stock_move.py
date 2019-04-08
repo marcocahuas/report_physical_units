@@ -99,26 +99,34 @@ class ItStockMoveReport(models.Model):
 
                 type_operation_sunat = ""
                 is_in_or_out = ""
-                # PRDYCCION A INYTERNO SU CODIFO ES 23
+                # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
                 if (location == "production") and (location_dest == "internal"):
-                    is_in_or_out = ""
-                    type_operation_sunat = "35"  # Cambiar
-
+                    is_in_or_out = "in_entrada"
+                    type_operation_sunat = "19"  # Cambiar
+                # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
                 if (location == "internal") and (location_dest == "production"):
-                    is_in_or_out = ""
-                    type_operation_sunat = "36"
-
+                    is_in_or_out = "out_salida"
+                    type_operation_sunat = "10"
+                # INTERNAL A UNA INTERNAL DIF  TP = 00 =>SALIDA
                 if (location == 'internal') and (location_dest != 'internal'):
                     is_in_or_out = "out_salida"
-                    type_operation_sunat = "37"
+                    type_operation_sunat = ""
 
                 if (location == 'internal') and (location_dest == 'internal'):
-                    is_in_or_out = ""
-                    type_operation_sunat = "37"
-
+                    if before_in.picking_type_id.it_is_kardex is True:
+                        is_in_or_out = "out_salida"
+                        type_operation_sunat = ""
+                    # if before_in.picking_type_id.it_is_kardex is False:
+                    #     is_in_or_out = "in_entrada"
+                    #     type_operation_sunat = ""
+                # INTERNAL DIF A UNA INTERNAL  TP = 00 =>SALIDA
                 if (location != 'internal') and (location_dest == 'internal'):
                     is_in_or_out = "in_entrada"
-                    type_operation_sunat = "37"
+                    type_operation_sunat = ""
+                    # Campo adicional para
+                # if (location_dest == 'internal') and (location != 'internal'):
+                #     is_in_or_out = "in_entrada"
+                #     type_operation_sunat = ""
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
