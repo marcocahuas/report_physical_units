@@ -121,10 +121,6 @@ class ItStockMoveReport(models.Model):
                 if (location != 'internal') and (location_dest == 'internal'):
                     is_in_or_out = "in_entrada"
                     type_operation_sunat = ""
-                    # Campo adicional para
-                # if (location_dest == 'internal') and (location != 'internal'):
-                #     is_in_or_out = "in_entrada"
-                #     type_operation_sunat = ""
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
