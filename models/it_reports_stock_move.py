@@ -311,7 +311,7 @@ class ItStockMoveReport(models.Model):
                 "",  # campo 4 agregar
                 "",  # campo 5
                 stock_out.existence or "",  # campo 6
-                stock_out.existence_id or "",  # campo 7 corregir
+                "",  # campo 7 corregir
                 "",  # campo 8
                 stock_out.date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
