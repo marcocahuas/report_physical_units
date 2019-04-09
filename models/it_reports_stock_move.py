@@ -97,7 +97,7 @@ class ItStockMoveReport(models.Model):
                 location = before_in.location_id.usage
                 location_dest = before_in.location_dest_id.usage
 
-                type_operation_sunat = ""
+                #type_operation_sunat = ""
                 is_in_or_out = ""
                 # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
                 # if (location == "production") and (location_dest == "internal"):
