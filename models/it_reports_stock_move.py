@@ -120,7 +120,7 @@ class ItStockMoveReport(models.Model):
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
-                        "establecimiento": before_in.it_code,
+                        "establecimiento": before_in.location_id.it_establishment.code,
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -147,7 +147,7 @@ class ItStockMoveReport(models.Model):
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
-                                "establecimiento": before_in.it_code,
+                                "establecimiento": before_in.location_id.it_establishment.code,
                                 "existence": before_in.product_id.it_existence.code,
                                 "existence_id": before_in.product_id.it_existence.id,
                                 "date_gr": before_in.picking_id.it_date_gr,
@@ -173,7 +173,7 @@ class ItStockMoveReport(models.Model):
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
-                                "establecimiento": before_in.it_des_code,
+                                "establecimiento": before_in.location_dest_id.it_establishment.code,
                                 "existence": before_in.product_id.it_existence.code,
                                 "existence_id": before_in.product_id.it_existence.id,
                                 "date_gr": before_in.picking_id.it_date_gr,
@@ -197,7 +197,7 @@ class ItStockMoveReport(models.Model):
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
-                        "establecimiento": before_in.it_des_code,
+                        "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
