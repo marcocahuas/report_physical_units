@@ -64,6 +64,7 @@
                                             <field name="reference"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="out_salida" string="Salidas"/>
+                                            <field name="type_operation" string="Type Operation"/>
 
                                         </tree>
                                     </field>
