@@ -100,13 +100,13 @@ class ItStockMoveReport(models.Model):
                 type_operation_sunat = ""
                 is_in_or_out = ""
                 # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
-                if (location == "production") and (location_dest == "internal"):
-                    is_in_or_out = "in_entrada"
-                    type_operation_sunat = "19"  # Cambiar
-                # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
-                if (location == "internal") and (location_dest == "production"):
-                    is_in_or_out = "out_salida"
-                    type_operation_sunat = "10"
+                # if (location == "production") and (location_dest == "internal"):
+                #     is_in_or_out = "in_entrada"
+                #     type_operation_sunat = "19"  # Cambiar
+                # # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
+                # if (location == "internal") and (location_dest == "production"):
+                #     is_in_or_out = "out_salida"
+                #     type_operation_sunat = "10"
                 # INTERNAL A UNA INTERNAL DIF  TP = 00 =>SALIDA
                 if (location == 'internal') and (location_dest != 'internal'):
                     is_in_or_out = "out_salida"
