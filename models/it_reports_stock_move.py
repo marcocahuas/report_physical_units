@@ -100,6 +100,7 @@ class ItStockMoveReport(models.Model):
                 it_code = before_in.location_id.it_establishment.code
                 it_des_code = before_in.location_dest_id.it_establishment.code
                 type_operation_sunat = ""
+                is_scrap = before_in.location_dest_id.scrap_location
 
                 # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
                 if (a == "production") and (b == "internal"):
@@ -113,6 +114,9 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UNA PRODUCCION TP = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
+                if (a == "internal") and (b == "inventory"):
+                    if is_scrap is True:
+                        type_operation_sunat = "13"
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
