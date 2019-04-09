@@ -77,6 +77,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
+                "establecimiento": "000",
                 "type_operation": "16",
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
