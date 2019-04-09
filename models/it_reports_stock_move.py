@@ -115,6 +115,8 @@ class ItStockMoveReport(models.Model):
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
                 if (a == "internal") and (b == "inventory"):
+                    type_operation_sunat = "28"
+                if (a == "internal") and (b == "inventory"):
                     if is_scrap is True:
                         type_operation_sunat = "13"
 
