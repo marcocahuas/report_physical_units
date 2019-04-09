@@ -23,10 +23,8 @@ class ItStockMoveReport(models.Model):
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
     stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
-                                           string="Movimientos",
                                            ondelete="cascade")
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
-                                           string="Movimientos",
                                            ondelete="cascade")
 
     # tipo operacion = ["A","M","C"] => M),
@@ -355,7 +353,7 @@ class ItStockMoveReport(models.Model):
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,
                 str("M") + str(stock_out.stock_id),  # campo 3
-                "",  # campo 4 agregar
+                stock_out.establecimiento or "",  # campo 4
                 "",  # campo 5
                 stock_out.existence or "",  # campo 6
                 "",  # campo 7 corregir
