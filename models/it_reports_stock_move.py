@@ -134,7 +134,9 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b == 'internal'):
 
                     if before_in.picking_type_id.it_is_kardex is True:
-                        if before_in.picking_id.type_transaction.code =="11":
+                        it_code = before_in.location_id.it_establishment.code
+                        it_des_code = before_in.location_dest_id.it_establishment.code
+                        if it_code is True:
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -155,14 +157,15 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code
                             }
-                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-                        if before_in.picking_id.type_transaction.code =="21":
+                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
+                                json_stock_phisical)
+                        if it_des_code is True:
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "in_entrada": before_in.product_uom_qty,
+                                "in_salida": before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
@@ -177,7 +180,8 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code
                             }
-                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
+                                json_stock_phisical)
                 if (a != 'internal') and (b == 'internal'):
                     json_stock_phisical = {
                         "type": 0,
