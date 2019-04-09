@@ -118,7 +118,7 @@ class ItStockMoveReport(models.Model):
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
 
                     }
-                    res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
 
@@ -143,7 +143,7 @@ class ItStockMoveReport(models.Model):
                             "product_name": before_in.product_id.name,
                             "units_med": before_in.product_id.uom_id.code_unit_measure.code
                         }
-                        res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                        res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
                 if (a != 'internal') and (b == 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -165,7 +165,7 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
                     }
-                    res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                    res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
         #  ====================================================================================================
         #  REPORTE DE INVENTARIO VALORIZADO
