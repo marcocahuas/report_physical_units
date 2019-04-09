@@ -117,7 +117,7 @@ class ItStockMoveReport(models.Model):
                         is_in_or_out = "in_entrada"
                         type_operation_sunat = ""
                 if (location == 'internal') and (location_dest == 'internal'):
-                    a = before_in.warehouse_id.lot_stock_id
+                    a = before_in.warehouse_id.it_establishment.code
                     if (a == "0001") and (a == "0003"):
                         is_in_or_out = "out_salida"
                         type_operation_sunat = ""
