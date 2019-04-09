@@ -107,6 +107,13 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
+                # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
+                if (a == "internal") and (b == "customer"):
+                    type_operation_sunat = "01"
+                # INTERNAL A UNA PRODUCCION TP = 28 =>SALIDA
+                if (a == "inventory") and (b == "internal"):
+                    type_operation_sunat = "28"
+
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
 
