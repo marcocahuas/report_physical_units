@@ -133,7 +133,7 @@ class ItStockMoveReport(models.Model):
                     "date": before_in.date,
                     "reference": before_in.reference,
                     "report_id": self.id,
-                    is_in_or_out: before_in.product_uom_qty,
+                    #is_in_or_out: before_in.product_uom_qty,
                     "product_id": before_in.product_id.id,
                     # OTROS CAMPOS  PARA EL TXTSUNAT
                     "stock_id": before_in.id,
