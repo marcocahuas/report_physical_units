@@ -132,11 +132,10 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
-
                     if before_in.picking_type_id.it_is_kardex is True:
                         it_code = before_in.location_id.it_establishment.code
                         it_des_code = before_in.location_dest_id.it_establishment.code
-                        if it_code is True:
+                        if it_code is not False:
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -159,7 +158,7 @@ class ItStockMoveReport(models.Model):
                             }
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
-                        if it_des_code is True:
+                        if it_des_code is not False:
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
