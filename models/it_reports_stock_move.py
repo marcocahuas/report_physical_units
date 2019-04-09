@@ -120,6 +120,7 @@ class ItStockMoveReport(models.Model):
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
+                        "establecimiento": before_in.it_code,
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -146,6 +147,7 @@ class ItStockMoveReport(models.Model):
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
+                                "establecimiento": before_in.it_code,
                                 "existence": before_in.product_id.it_existence.code,
                                 "existence_id": before_in.product_id.it_existence.id,
                                 "date_gr": before_in.picking_id.it_date_gr,
@@ -171,6 +173,7 @@ class ItStockMoveReport(models.Model):
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
+                                "establecimiento": before_in.it_des_code,
                                 "existence": before_in.product_id.it_existence.code,
                                 "existence_id": before_in.product_id.it_existence.id,
                                 "date_gr": before_in.picking_id.it_date_gr,
@@ -194,6 +197,7 @@ class ItStockMoveReport(models.Model):
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
+                        "establecimiento": before_in.it_des_code,
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -478,6 +482,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
+    establecimiento = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Char()
