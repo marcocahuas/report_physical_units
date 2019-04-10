@@ -69,7 +69,7 @@ class ItStockMoveReport(models.AbstractModel):
                         'align': 'center',
                         'valign': 'vcenter'
                     })
-                sheet.merge_range('A1:O4', self.env.user.company_id.name, font_titulo_empresa)
+                sheet.merge_range('A1:N4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 # ======================================
 
@@ -91,10 +91,12 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.out_salida)
                     array_field.append()  # COST UNIT
                     array_field.append(before_in.out_saldo) # COST TOTAL
+                    array_field.append()  # COST entrada total
+                    array_field.append()  # COST salida  total
                     array_main.append(array_field)
                     contador = contador + 1
-                sheet.set_column('A:O', 20)
-                row_name = 'A8:O%s' % (int(contador + 8))
+                sheet.set_column('A:N', 20)
+                row_name = 'A8:N%s' % (int(contador + 8))
                 sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
                                                                            {'header': 'Producto'},
                                                                            {'header': 'Referencia'},
@@ -107,7 +109,6 @@ class ItStockMoveReport(models.AbstractModel):
                                                                            {'header': 'Cantidad Salidas'},
                                                                            {'header': 'Salida Costo Unit.'},
                                                                            {'header': 'Salida Costo Total.'},
-                                                                           {'header': 'Cantidad Saldo Final'},
-                                                                           {'header': 'Entradas Saldo Final'},
-                                                                           {'header': 'Salidas Saldo Final'},
+                                                                           {'header': 'COSTO UNITARIO SALDO FINAL'},
+                                                                           {'header': 'COSTO TOTAL SALDO FINAL'},
                                                                            ]})

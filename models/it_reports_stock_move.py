@@ -29,13 +29,6 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    # @api.one("saldo_final")
-    # def calular_saldo_total(self):
-    #     for sale_item in self.stock_phisical_lines:
-    #         self.saldo_final = 0.0
-    #     for sale_item_sum in self.stock_phisical_lines:
-    #         self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
-
     @api.multi
     def unlink(self):
         if self.stock_phisical_lines:
@@ -90,9 +83,9 @@ class ItStockMoveReport(models.Model):
                 "series": "0",
                 "correlative": "0",
                 "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code,
-                "saldo_entrada": 0.0,
-                "saldo_salida": 0.0
+                "units_med": product.uom_id.code_unit_measure.code
+                # "saldo_entrada": 0.0,
+                # "saldo_salida": 0.0
 
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
