@@ -29,12 +29,12 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    @api.one("saldo_final")
-    def calular_saldo_total(self):
-        for sale_item in self.stock_phisical_lines:
-            self.saldo_final = 0.0
-        for sale_item_sum in self.stock_phisical_lines:
-            self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
+    # @api.one("saldo_final")
+    # def calular_saldo_total(self):
+    #     for sale_item in self.stock_phisical_lines:
+    #         self.saldo_final = 0.0
+    #     for sale_item_sum in self.stock_phisical_lines:
+    #         self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
 
     @api.multi
     def unlink(self):
