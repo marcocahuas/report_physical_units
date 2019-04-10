@@ -516,7 +516,9 @@ class ItStockMoveReportPhisicalLine(models.Model):
     @api.onchange("saldo_final")
     def _calular_saldo_total(self):
         for sale_item in self.stock_phisical_lines:
-            sale_item.saldo_final = sale_item.in_entrada - sale_item.out_salida + sale_item.saldo_final
+            self.saldo_final = 0.0
+        for sale_item_sum in self.stock_phisical_lines:
+            self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
 
     # @api.one
     # def calcular_prorrateo(self):
