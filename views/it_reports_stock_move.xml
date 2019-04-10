@@ -70,8 +70,8 @@
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="out_salida" string="Salidas"/>
                                             <field name="saldo_final" string="Saldo Final"/>
-                                            <field name="saldo_final" string="Saldo Final"/>
-                                            <field name="saldo_final" string="Saldo Final"/>
+                                            <field name="saldo_final" string="Saldo Final" invisible="1"/>
+                                            <field name="saldo_final" string="Saldo Final" invisible="1"/>
 
                                         </tree>
                                     </field>
