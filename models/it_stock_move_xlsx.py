@@ -69,7 +69,7 @@ class ItStockMoveReport(models.AbstractModel):
                         'align': 'center',
                         'valign': 'vcenter'
                     })
-                sheet.merge_range('A1:K4', self.env.user.company_id.name, font_titulo_empresa)
+                sheet.merge_range('A1:O4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 # ======================================
 
@@ -86,22 +86,28 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.correlative or "0")
                     array_field.append(before_in.type_operation)
                     array_field.append(before_in.in_entrada)
-                    array_field.append(before_in.in_saldo)
+                    array_field.append()   # COST UNIT
+                    array_field.append(before_in.in_saldo) # COST TOTAL
                     array_field.append(before_in.out_salida)
-                    array_field.append(before_in.out_saldo)
+                    array_field.append()  # COST UNIT
+                    array_field.append(before_in.out_saldo) # COST TOTAL
                     array_main.append(array_field)
                     contador = contador + 1
-                sheet.set_column('A:K', 20)
-                row_name = 'A8:K%s' % (int(contador + 8))
+                sheet.set_column('A:O', 20)
+                row_name = 'A8:O%s' % (int(contador + 8))
                 sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
                                                                            {'header': 'Producto'},
                                                                            {'header': 'Referencia'},
                                                                            {'header': 'Serie'},
                                                                            {'header': 'N° Comprobante'},
                                                                            {'header': 'Tipo Operacion'},
-                                                                           {'header': 'Entradas'},
-                                                                           {'header': 'In.Costo Total'},
-                                                                           {'header': 'Salidas'},
-                                                                           {'header': 'Out.Costo Total'},
-                                                                           {'header': 'Saldo Final'},
+                                                                           {'header': 'Cantidad Entradas'},
+                                                                           {'header': 'Entradas Costo Unit.'},
+                                                                           {'header': 'Entradas Costo Total'},
+                                                                           {'header': 'Cantidad Salidas'},
+                                                                           {'header': 'Salida Costo Unit.'},
+                                                                           {'header': 'Salida Costo Total.'},
+                                                                           {'header': 'Cantidad Saldo Final'},
+                                                                           {'header': 'Entradas Saldo Final'},
+                                                                           {'header': 'Salidas Saldo Final'},
                                                                            ]})

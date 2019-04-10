@@ -67,6 +67,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
+
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -89,7 +90,10 @@ class ItStockMoveReport(models.Model):
                 "series": "0",
                 "correlative": "0",
                 "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code
+                "units_med": product.uom_id.code_unit_measure.code,
+                "saldo_entrada": 0.0,
+                "saldo_salida": 0.0
+
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
@@ -151,7 +155,9 @@ class ItStockMoveReport(models.Model):
                         "correlative": before_in.picking_id.correlative,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
-                        "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+                        # saldo final
+                        # identificar el saldo inicial
 
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
@@ -159,7 +165,6 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b == 'internal'):
                     if it_code is not False and before_in.location_id.is_kardex is True:
                         if before_in.picking_type_id.it_is_kardex is True:
-
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -180,8 +185,10 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code
                             }
+
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
+
                 if (a == 'internal') and (b == 'internal'):
                     if it_des_code is not False and before_in.location_id.is_kardex is True:
                         if before_in.picking_type_id.it_is_kardex is True:
@@ -342,7 +349,6 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b == 'internal'):
                     if it_code is not False and before_in.location_id.is_kardex is True:
                         if before_in.picking_type_id.it_is_kardex is True:
-
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -563,6 +569,8 @@ class ItStockMoveReportPhisicalLine(models.Model):
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
+    calculo_entrada = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
+    calculo_salida = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
@@ -576,14 +584,6 @@ class ItStockMoveReportPhisicalLine(models.Model):
     type_operation = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
-
-    # @api.onchange("saldo_final")
-    # def _calular_saldo_total(self):
-    #     for sale_item in self.stock_phisical_lines:
-    #         self.saldo_final = 0.0
-    #     for sale_item_sum in self.stock_phisical_lines:
-    #         self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
-
 
 
 class ItStockMoveReportValuatedLine(models.Model):
