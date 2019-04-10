@@ -183,7 +183,7 @@ class ItStockMoveReport(models.Model):
                                 json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal'):
-                    if it_des_code is not False and before_in.location_id.is_kardex is True:
+                    if it_des_code is not False and before_in.location_dest_id.is_kardex is True:
                         if before_in.picking_type_id.it_is_kardex is True:
                             json_stock_phisical = {
                                 "type": 0,
