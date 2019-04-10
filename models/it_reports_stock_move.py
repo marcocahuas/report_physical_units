@@ -517,12 +517,12 @@ class ItStockMoveReportPhisicalLine(models.Model):
     product_name = fields.Char()
     units_med = fields.Char()
 
-    # @api.onchange("saldo_final")
-    # def _calular_saldo_total(self):
-    #     for sale_item in self.stock_phisical_lines:
-    #         self.saldo_final = 0.0
-    #     for sale_item_sum in self.stock_phisical_lines:
-    #         self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
+    @api.onchange("saldo_final")
+    def _calular_saldo_total(self):
+        for sale_item in self.stock_phisical_lines:
+            self.saldo_final = 0.0
+        for sale_item_sum in self.stock_phisical_lines:
+            self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
 
 
 
