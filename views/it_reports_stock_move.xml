@@ -62,10 +62,13 @@
                                             <field name="product_id"/>
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
+                                            <field name="series"/>
+                                            <field name="correlative"/>
+                                            <field name="type_operation" string="Tipo operacion"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="out_salida" string="Salidas"/>
-                                            <field name="type_operation" string="Tipo operacion"/>
-                                            <field name="establecimiento" sttring="establecimiento"/>
+                                            <!--<field name="saldo_final" string="Saldo Final"/>-->
+
                                         </tree>
                                     </field>
                                 </group>
