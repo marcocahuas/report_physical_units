@@ -57,7 +57,7 @@
                             <page string="Unidades Fisicas" name="units">
 
                                 <group>
-                                    <field name="stock_phisical_lines" invisible="1">
+                                    <field name="stock_phisical_lines">
 
                                         <tree>
                                             <field name="date"/>
@@ -77,7 +77,7 @@
                             </page>
                             <page string="Inventario Valorizado" name="valuated">
                                 <group>
-                                    <field name="stock_valuated_lines" invisible="1">
+                                    <field name="stock_valuated_lines">
 
                                         <tree>
                                             <field name="date"/>
