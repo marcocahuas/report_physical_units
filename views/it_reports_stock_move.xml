@@ -84,10 +84,13 @@
                                             <field name="product_id"/>
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
+                                            <field name="series"/>
+                                            <field name="correlative"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="in_saldo" sttring ="In Saldo" widget="monetary"/>
                                             <field name="out_salida" string="Salidas"/>
                                             <field name="out_saldo"/>
+                                            <field name="saldo_final" string="Saldo Final" invisible="1"/>
 
                                         </tree>
                                     </field>
