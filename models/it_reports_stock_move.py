@@ -498,6 +498,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     out_salida = fields.Float(string="Salida")
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
+    saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
@@ -511,6 +512,26 @@ class ItStockMoveReportPhisicalLine(models.Model):
     type_operation = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
+
+    @api.onchange("saldo_final")
+    def _calular_saldo_total(self):
+        for sale_item in self.stock_phisical_lines:
+            sale_item.saldo_final = sale_item.in_entrada - sale_item.out_salida + sale_item.saldo_final
+
+    # @api.one
+    # def calcular_prorrateo(self):
+    #     for sale_item in self.order_line:
+    #         sale_item.it_can_vol = sale_item.product_uom_qty * sale_item.product_id.volume
+    #     sumatoria = 0.0
+    #     for sale_item_sum in self.order_line:
+    #         sumatoria = sumatoria + sale_item_sum.it_can_vol
+    #     for sale_item in self.order_line:
+    #         sale_item.it_factor_prorrateo = sale_item.it_can_vol / sumatoria
+    #     for sale_item in self.order_line:
+    #         sale_item.it_flete_seguro = sale_item.it_factor_prorrateo * self.it_total_fs
+    #     for sale_item in self.order_line:
+    #         sale_item.it_nuevo_price = sale_item.price_unit
+    #     current_price_unit = 0.00
 
 
 class ItStockMoveReportValuatedLine(models.Model):
