@@ -29,8 +29,8 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    @api.onchange("saldo_final")
-    def _calular_saldo_total(self):
+    @api.one("saldo_final")
+    def calular_saldo_total(self):
         for sale_item in self.stock_phisical_lines:
             self.saldo_final = 0.0
         for sale_item_sum in self.stock_phisical_lines:
