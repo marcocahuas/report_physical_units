@@ -92,6 +92,7 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append("0.0")  # COST UNIT
                     array_field.append(before_in.out_saldo) # COST TOTAL
                     array_field.append("0.0")  # COST entrada total
+                    array_field.append("0.0")  # COST entrada total
                     array_field.append("0.0")  # COST salida  total
                     array_main.append(array_field)
                     contador = contador + 1
@@ -109,6 +110,7 @@ class ItStockMoveReport(models.AbstractModel):
                                                                            {'header': 'Cantidad Salidas'},
                                                                            {'header': 'Salida Costo Unit.'},
                                                                            {'header': 'Salida Costo Total.'},
+                                                                           {'header': 'COSTO CANTIDAD SALDO FINAL'},
                                                                            {'header': 'COSTO UNITARIO SALDO FINAL'},
                                                                            {'header': 'COSTO TOTAL SALDO FINAL'},
                                                                            ]})
