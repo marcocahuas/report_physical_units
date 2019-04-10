@@ -29,8 +29,12 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    # tipo operacion = ["A","M","C"] => M),
-    #     }
+    @api.onchange("saldo_final")
+    def _calular_saldo_total(self):
+        for sale_item in self.stock_phisical_lines:
+            self.saldo_final = 0.0
+        for sale_item_sum in self.stock_phisical_lines:
+            self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
 
     @api.multi
     def unlink(self):
@@ -513,27 +517,13 @@ class ItStockMoveReportPhisicalLine(models.Model):
     product_name = fields.Char()
     units_med = fields.Char()
 
-    @api.onchange("saldo_final")
-    def _calular_saldo_total(self):
-        for sale_item in self.stock_phisical_lines:
-            self.saldo_final = 0.0
-        for sale_item_sum in self.stock_phisical_lines:
-            self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
+    # @api.onchange("saldo_final")
+    # def _calular_saldo_total(self):
+    #     for sale_item in self.stock_phisical_lines:
+    #         self.saldo_final = 0.0
+    #     for sale_item_sum in self.stock_phisical_lines:
+    #         self.saldo_final = sale_item_sum.in_entrada - sale_item_sum.out_salida + sale_item.saldo_final
 
-    # @api.one
-    # def calcular_prorrateo(self):
-    #     for sale_item in self.order_line:
-    #         sale_item.it_can_vol = sale_item.product_uom_qty * sale_item.product_id.volume
-    #     sumatoria = 0.0
-    #     for sale_item_sum in self.order_line:
-    #         sumatoria = sumatoria + sale_item_sum.it_can_vol
-    #     for sale_item in self.order_line:
-    #         sale_item.it_factor_prorrateo = sale_item.it_can_vol / sumatoria
-    #     for sale_item in self.order_line:
-    #         sale_item.it_flete_seguro = sale_item.it_factor_prorrateo * self.it_total_fs
-    #     for sale_item in self.order_line:
-    #         sale_item.it_nuevo_price = sale_item.price_unit
-    #     current_price_unit = 0.00
 
 
 class ItStockMoveReportValuatedLine(models.Model):
