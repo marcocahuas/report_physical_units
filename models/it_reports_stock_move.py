@@ -269,6 +269,7 @@ class ItStockMoveReport(models.Model):
                     "product_id": valor.product_id.id,
                     # campos adicionales
                     "product_name": valor.product_id.name,
+                    "type_operation": "00",
 
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
