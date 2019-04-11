@@ -259,6 +259,7 @@ class ItStockMoveReport(models.Model):
                 "in_saldo": product.stock_value,
                 # campos adicionales
                 "stock_id": product.id,
+                "codigo_propio": "6000000000000000",
                 "type_operation": "16",
                 "product_name": product.name,
                 "existence": product.it_existence.code,
@@ -279,8 +280,10 @@ class ItStockMoveReport(models.Model):
                 "report_id": self.id,
                 "product_id": valor.product_id.id,
                 # campos adicionales
+                "existence": "9",
+                "codigo_propio": "6000000000000000",
                 "product_name": valor.product_id.name,
-                "type_operation": "00",
+                "type_operation": "99",
                 "stock_id": valor.id,
 
             }
@@ -336,7 +339,8 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
-                        "existence": before_in.product_id.it_existence.code,
+                        "existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
@@ -363,7 +367,8 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
-                        "existence": before_in.product_id.it_existence.code,
+                        "existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
@@ -389,7 +394,8 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
-                        "existence": before_in.product_id.it_existence.code,
+                        "existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
@@ -413,7 +419,8 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
-                        "existence": before_in.product_id.it_existence.code,
+                        "existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
@@ -506,15 +513,14 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_valuated_lines:
-            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 str("M") + str(stock_out.stock_id),  # campo 2
                 "",  # campo 3
                 stock_out.establecimiento or "",  # campo 4
-                "",
-                stock_out.existence or "",  # campo 6
+                stock_out.catalogo_existence or "",  # campo 5
+                stock_out.codigo_propio or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
-                "",  # campo 8
                 stock_out.date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
@@ -614,6 +620,8 @@ class ItStockMoveReportValuatedLine(models.Model):
     # ====================================================
     stock_id = fields.Char()
     establecimiento = fields.Char()
+    catalogo_existence = fields.Char()
+    codigo_propio = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Char()
     catalog_01_id = fields.Char()
