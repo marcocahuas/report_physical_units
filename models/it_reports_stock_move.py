@@ -106,40 +106,46 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
                 if (location == "production") and (location_dest == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    is_in_or_out = "in_entrada"
                 # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
                 if (location == "internal") and (location_dest == "production"):
                     type_operation_sunat = "10"
+                    is_in_or_out = "in_salida"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (location == "internal") and (location_dest == "customer"):
                     type_operation_sunat = "01"
+                    is_in_or_out = "in_salida"
                 if (location == "customer") and (location_dest == "internal"):
                     type_operation_sunat = "24"
+                    is_in_or_out = "in_entrada"
                 # INTERNAL A UNA PRODUCCION TP = 28 =>SALIDA
                 if (location == "inventory") and (location_dest == "internal"):
+                    is_in_or_out = "in_salida"
                     type_operation_sunat = "28"
                 if (location == "internal") and (location_dest == "inventory"):
                     type_operation_sunat = "28"
-                if (location == "internal") and (location_dest == "inventory"):
-                    if is_scrap is True:
-                        type_operation_sunat = "13"
-                if (location == "internal") and (location_dest == "supplier"):
-                    if is_scrap is True:
-                        type_operation_sunat = "25"
+                    is_in_or_out = "in_salida"
+                if (location == "internal") and (location_dest == "inventory")and is_scrap is True:
+                    type_operation_sunat = "13"
+                    is_in_or_out = "in_salida"
+                if (location == "internal") and (location_dest == "supplier")and is_scrap is True:
+                    type_operation_sunat = "25"
+                    is_in_or_out = "in_salida"
                 # ============================================
                 if (location == 'internal') and (location_dest != 'internal'):
                     is_in_or_out = "out_salida"
                     type_operation_sunat = ""
 
-                if (location == 'internal') and (location_dest == 'internal'):
-                    if it_code is not False and before_in.location_id.is_kardex is True:
-                        if before_in.picking_type_id.it_is_kardex is True:
-                            is_in_or_out = "out_salida"
-                            type_operation_sunat = ""
-                if (location == 'internal') and (location_dest == 'internal'):
-                    if it_des_code is not False and before_in.location_dest_id.is_kardex is True:
-                        if before_in.picking_type_id.it_is_kardex is True:
-                            is_in_or_out = "in_entrada"
-                            type_operation_sunat = ""
+                if (location == 'internal') and (location_dest == 'internal')\
+                        and (it_code is not False and before_in.location_id.is_kardex is True)\
+                        and before_in.picking_type_id.it_is_kardex is True:
+                    is_in_or_out = "out_salida"
+                    type_operation_sunat = ""
+                if (location == 'internal') and (location_dest == 'internal')\
+                        and (it_des_code is not False and before_in.location_dest_id.is_kardex is True)\
+                        and (before_in.picking_type_id.it_is_kardex is True):
+                    is_in_or_out = "in_entrada"
+                    type_operation_sunat = ""
                 # INTERNAL DIF A UNA INTERNAL  TP = 00 =>SALIDA
                 if (location != 'internal') and (location_dest == 'internal'):
                     is_in_or_out = "in_entrada"
