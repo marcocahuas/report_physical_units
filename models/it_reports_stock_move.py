@@ -77,6 +77,8 @@ class ItStockMoveReport(models.Model):
                 "stock_id": product.id,
                 "establecimiento": "0001",
                 "catalogo_existence": "9",
+                "existence_id": "OTROS",
+                "codigo_propio": "6000000000000000",
                 "type_operation": "16",
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
@@ -142,8 +144,9 @@ class ItStockMoveReport(models.Model):
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
-                        "existence_id": before_in.product_id.it_existence.id,
+                        "existence_id": "OTROS",
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
@@ -170,8 +173,9 @@ class ItStockMoveReport(models.Model):
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
-                        "existence_id": before_in.product_id.it_existence.id,
+                        "existence_id": "OTROS",
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
@@ -197,8 +201,9 @@ class ItStockMoveReport(models.Model):
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "catalogo_existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
-                        "existence_id": before_in.product_id.it_existence.id,
+                        "existence_id": "OTROS",
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
@@ -222,8 +227,9 @@ class ItStockMoveReport(models.Model):
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "catalogo_existence": "9",
+                        "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
-                        "existence_id": before_in.product_id.it_existence.id,
+                        "existence_id": "OTROS",
                         "date_gr": before_in.picking_id.it_date_gr,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
@@ -441,8 +447,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.establecimiento or "",  # campo 4
                 stock_out.catalogo_existence or "",  # campo 5
                 stock_out.existence or "",  # campo 6
-                "",  # campo 7 corregir
-                "",  # campo 9
+                stock_out.existence_id or "",  # campo 7
+                stock_out.codigo_propio or "",  # campo 9
                 stock_out.date_gr or "",  # campo 10
                 stock_out.catalog_01_id or "",  # campo 11
                 stock_out.series or "",  # campo 12
@@ -570,6 +576,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     stock_id = fields.Char()
     establecimiento = fields.Char()
     catalogo_existence = fields.Char()
+    codigo_propio = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Char()
