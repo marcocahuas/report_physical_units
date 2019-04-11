@@ -75,7 +75,8 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "establecimiento": "000",
+                "establecimiento": "0001",
+                "catalogo_existence": "9",
                 "type_operation": "16",
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
@@ -140,6 +141,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -154,9 +156,9 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
-                if (a == 'internal') and (b == 'internal')\
-                        and(it_code is not False and before_in.location_id.is_kardex is True)\
-                        and(before_in.picking_type_id.it_is_kardex is True):
+                if (a == 'internal') and (b == 'internal') \
+                        and (it_code is not False and before_in.location_id.is_kardex is True) \
+                        and (before_in.picking_type_id.it_is_kardex is True):
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -167,6 +169,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -180,9 +183,9 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                         json_stock_phisical)
 
-                if (a == 'internal') and (b == 'internal')\
-                        and(it_des_code is not False and before_in.location_dest_id.is_kardex is True)\
-                        and(before_in.picking_type_id.it_is_kardex is True):
+                if (a == 'internal') and (b == 'internal') \
+                        and (it_des_code is not False and before_in.location_dest_id.is_kardex is True) \
+                        and (before_in.picking_type_id.it_is_kardex is True):
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -193,6 +196,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -217,6 +221,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": before_in.product_id.it_existence.id,
                         "date_gr": before_in.picking_id.it_date_gr,
@@ -229,9 +234,9 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
-#  ====================================================================================================
-#  REPORTE DE INVENTARIO VALORIZADO
-#  ====================================================================================================
+        #  ====================================================================================================
+        #  REPORTE DE INVENTARIO VALORIZADO
+        #  ====================================================================================================
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -429,15 +434,14 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_phisical_lines:
-            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
-                stock_out.stock_id,
+                stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
                 stock_out.establecimiento or "",  # campo 4
-                "",  # campo 5
+                stock_out.catalogo_existence or "",  # campo 5
                 stock_out.existence or "",  # campo 6
                 "",  # campo 7 corregir
-                "",  # campo 8
                 "",  # campo 9
                 stock_out.date_gr or "",  # campo 10
                 stock_out.catalog_01_id or "",  # campo 11
@@ -499,7 +503,7 @@ class ItStockMoveReport(models.Model):
                 str("M") + str(stock_out.stock_id),  # campo 2
                 "",  # campo 3
                 stock_out.establecimiento or "",  # campo 4
-                "",  # campo 5
+                "",
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 "",  # campo 8
@@ -565,6 +569,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
     establecimiento = fields.Char()
+    catalogo_existence = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
     date_gr = fields.Char()
