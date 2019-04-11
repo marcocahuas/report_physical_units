@@ -92,13 +92,13 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
-        stock_account_after =self.env["account.invoice"].search([("product"), ("origin")])
-        if stock_account_after:
-            for acount in stock_account_after:
-                fecha = acount.date_invoice
-                tipo_doc = acount.catalog_01_id.code
-                series = acount.series.series
-                correlativo = acount.correlative
+        # stock_account_after =self.env["account.invoice"].search([("product"), ("origin")])
+        # if stock_account_after:
+        #     for acount in stock_account_after:
+        #         fecha = acount.date_invoice
+        #         tipo_doc = acount.catalog_01_id.code
+        #         series = acount.series.series
+        #         correlativo = acount.correlative
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
@@ -146,8 +146,8 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
-                if(before_in.product_id.it_existence.code is not True):
-                    before_in.picking_id.origin = fecha
+                # if(before_in.product_id.it_existence.code is not True):
+                #     before_in.picking_id.origin = fecha
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
