@@ -104,9 +104,9 @@ class ItStockMoveReport(models.Model):
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
                     fecha = stock_account_after.date_invoice
-                    # tipo_doc = stock_account_after.catalog_01_id.code
-                    # serie = stock_account_after.series.series
-                    # correlativ = stock_account_after.correlative
+                    tipo_doc = stock_account_after.catalog_01_id.code
+                    serie = stock_account_after.series.series
+                    correlativo = stock_account_after.correlative
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
@@ -151,6 +151,15 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.it_date_gr is not False:
                      fecha = before_in.picking_id.it_date_gr
 
+                if before_in.picking_id.catalog_01_id.code is not False:
+                    tipo_doc = before_in.picking_id.catalog_01_id.code
+
+                if before_in.picking_id.series.series is not False:
+                    serie = before_in.picking_id.series.series
+
+                if before_in.picking_id.correlative is not False:
+                    correlativo = before_in.picking_id.correlative
+
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -167,9 +176,9 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
                         "date_gr": fecha,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
@@ -196,9 +205,9 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
                         "date_gr": fecha,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
@@ -224,9 +233,9 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
                         "date_gr": fecha,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
@@ -250,9 +259,9 @@ class ItStockMoveReport(models.Model):
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
                         "date_gr": fecha,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
