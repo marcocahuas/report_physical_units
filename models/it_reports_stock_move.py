@@ -149,7 +149,7 @@ class ItStockMoveReport(models.Model):
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if before_in.picking_id.it_date_gr is not False:
-                     fecha = before_in.it_date_gr
+                     fecha = before_in.picking_id.it_date_gr
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
