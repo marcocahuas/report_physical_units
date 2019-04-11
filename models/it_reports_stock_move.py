@@ -60,7 +60,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
-
+        #
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -77,7 +77,7 @@ class ItStockMoveReport(models.Model):
                 "stock_id": product.id,
                 "establecimiento": "0001",
                 "catalogo_existence": "9",
-                "existence_id": "OTROS",
+                "existence_id": "OTROS", 
                 "codigo_propio": "6000000000000000",
                 "type_operation": "16",
                 "product_name": product.name,
@@ -93,7 +93,7 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
-
+        # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
@@ -240,9 +240,10 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
-        #  ====================================================================================================
-        #  REPORTE DE INVENTARIO VALORIZADO
-        #  ====================================================================================================
+#  ====================================================================================================
+#  REPORTE DE INVENTARIO VALORIZADO
+#  ====================================================================================================
+        # OBTENEMOS EL SALDO INICIAL
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -285,6 +286,7 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
+        # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
@@ -530,9 +532,10 @@ class ItStockMoveReport(models.Model):
             )
             content += str(stringvaluated) + "\r\n"
 
-        nametxt = 'LE%s%s%s%s%s%s%s%s.TXT' % (
+        nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
             self.env.user.company_id.partner_id.vat,
-
+            d_ref.year,  # Year
+            month,  # Month
             '00',
             '130100',
             '00',
