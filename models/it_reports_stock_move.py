@@ -103,10 +103,10 @@ class ItStockMoveReport(models.Model):
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
-                    stock_account_after.date_invoice = "date_gr"
-                    stock_account_after.catalog_01_id.code = "catalog_01_id"
-                    stock_account_after.series.series = "series"
-                    stock_account_after.correlative = "correlative"
+                    fecha = stock_account_after.date_invoice
+                    # tipo_doc = stock_account_after.catalog_01_id.code
+                    # serie = stock_account_after.series.series
+                    # correlativ = stock_account_after.correlative
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
@@ -148,6 +148,8 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
+                if before_in.picking_id.it_date_gr is not False:
+                     fecha = before_in.it_date_gr
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -164,7 +166,7 @@ class ItStockMoveReport(models.Model):
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
-                        "date_gr": before_in.picking_id.it_date_gr,
+                        "date_gr": fecha,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
@@ -193,7 +195,7 @@ class ItStockMoveReport(models.Model):
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
-                        "date_gr": before_in.picking_id.it_date_gr,
+                        "date_gr": fecha,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
@@ -221,7 +223,7 @@ class ItStockMoveReport(models.Model):
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
-                        "date_gr": before_in.picking_id.it_date_gr,
+                        "date_gr": fecha,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
@@ -247,7 +249,7 @@ class ItStockMoveReport(models.Model):
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
                         "existence_id": "OTROS",
-                        "date_gr": before_in.picking_id.it_date_gr,
+                        "date_gr": fecha,
                         "catalog_01_id": before_in.picking_id.catalog_01_id.code,
                         "series": before_in.picking_id.series.series,
                         "correlative": before_in.picking_id.correlative,
