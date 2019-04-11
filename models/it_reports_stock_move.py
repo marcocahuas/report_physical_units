@@ -92,13 +92,6 @@ class ItStockMoveReport(models.Model):
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
-        # stock_account_after =self.env["account.invoice"].search([("product"), ("origin")])
-        # if stock_account_after:
-        #     for acount in stock_account_after:
-        #         fecha = acount.date_invoice
-        #         tipo_doc = acount.catalog_01_id.code
-        #         series = acount.series.series
-        #         correlativo = acount.correlative
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
@@ -106,6 +99,15 @@ class ItStockMoveReport(models.Model):
 
         if stock_move_after:
             for before_in in stock_move_after:
+                # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
+                stock_account_after = self.env["account.invoice"].search(
+                    [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
+                if stock_account_after is not False:
+                    stock_account_after.date_invoice = "date_gr"
+                    stock_account_after.catalog_01_id.code = "catalog_01_id"
+                    stock_account_after.series.series = "series"
+                    stock_account_after.correlative = "correlative"
+
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
@@ -146,8 +148,6 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
-                # if(before_in.product_id.it_existence.code is not True):
-                #     before_in.picking_id.origin = fecha
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -343,8 +343,7 @@ class ItStockMoveReport(models.Model):
                         type_operation_sunat = "13"
                 #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
                 if (a == "internal") and (b == "supplier"):
-                    if is_scrap is True:
-                        type_operation_sunat = "25"
+                    type_operation_sunat = "25"
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
@@ -478,18 +477,18 @@ class ItStockMoveReport(models.Model):
                 stock_out.catalogo_existence or "",  # campo 5
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
-                stock_out.codigo_propio or "",  # campo 9
-                stock_out.date_gr or "",  # campo 10
-                stock_out.catalog_01_id or "",  # campo 11
-                stock_out.series or "",  # campo 12
-                stock_out.correlative or "",  # campo 13
-                stock_out.type_operation or "",  # campo 14 tipo operacion efect
-                stock_out.product_name or "",  # campo 15   descripcion de la exist
+                stock_out.codigo_propio or "",  # campo 8
+                stock_out.date_gr or "",  # campo 9
+                stock_out.catalog_01_id or "",  # campo 10
+                stock_out.series or "",  # campo 11
+                stock_out.correlative or "",  # campo 12
+                stock_out.type_operation or "",  # campo 13
+                stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or "0.00",  # campo 17 entrada
-                stock_out.out_salida or "0.00",  # campo 18  salida
+                stock_out.in_entrada or "0.00",  # campo 16 entrada
+                stock_out.out_salida or "0.00",  # campo 17  salida
+                "",  # campo 18
                 "",  # campo 19
-                "",  # campo 20
 
             )
             content += str(stringunits) + "\r\n"
@@ -534,14 +533,15 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_valuated_lines:
-            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
                 stock_out.establecimiento or "",  # campo 4
                 stock_out.catalogo_existence or "",  # campo 5
-                stock_out.codigo_propio or "",  # campo 6
+                stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
+                stock_out.codigo_propio or "",  # campo 8
                 stock_out.date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
@@ -549,10 +549,10 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0.00,  # campo 16
-                stock_out.in_saldo or 0.00,  # campo 17  salida
-                stock_out.out_salida or 0.00,  # campo 18  salida
-                stock_out.out_saldo or 0.00,  # campo 19  salida
+                stock_out.in_entrada or "0.00",  # campo 16
+                stock_out.in_saldo or "0.00",  # campo 17  salida
+                stock_out.out_salida or "0.00",  # campo 18  salida
+                stock_out.out_saldo or "0.00",  # campo 19  salida
                 "",  # campo 20
                 "",  # campo 21
 
@@ -594,8 +594,8 @@ class ItStockMoveReportPhisicalLine(models.Model):
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto")
-    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default="0.00")
-    out_salida = fields.Float(string="Salida", digits=(12, 2), default="0.00")
+    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default=0.00)
+    out_salida = fields.Float(string="Salida", digits=(12, 2), default=0.00)
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
