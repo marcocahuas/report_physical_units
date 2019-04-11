@@ -465,8 +465,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 14 tipo operacion efect
                 stock_out.product_name or "",  # campo 15   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0.00,  # campo 17 entrada
-                stock_out.out_salida or 0.00,  # campo 18  salida
+                stock_out.in_entrada or 00.00,  # campo 17 entrada
+                stock_out.out_salida or 00.00,  # campo 18  salida
                 "",  # campo 19
                 "",  # campo 20
 
@@ -528,10 +528,10 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0.00,  # campo 16
-                stock_out.in_saldo or 0.00,  # campo 17  salida
-                stock_out.out_salida or 0.00,  # campo 18  salida
-                stock_out.out_saldo or 0.00,  # campo 19  salida
+                stock_out.in_entrada or 00.00,  # campo 16
+                stock_out.in_saldo or 00.00,  # campo 17  salida
+                stock_out.out_salida or 00.00,  # campo 18  salida
+                stock_out.out_saldo or 00.00,  # campo 19  salida
                 "",  # campo 20
                 "",  # campo 21
 
