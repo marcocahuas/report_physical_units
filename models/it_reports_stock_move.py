@@ -77,7 +77,7 @@ class ItStockMoveReport(models.Model):
                 "stock_id": product.id,
                 "establecimiento": "0001",
                 "catalogo_existence": "9",
-                "existence_id": "OTROS", 
+                "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
                 "type_operation": "16",
                 "product_name": product.name,
@@ -89,10 +89,17 @@ class ItStockMoveReport(models.Model):
                 "units_med": product.uom_id.code_unit_measure.code
                 # "saldo_entrada": 0.0,
                 # "saldo_salida": 0.0
-
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
+        stock_account_after =self.env["account.invoice"].search([("product"), ("origin")])
+        if stock_account_after:
+            for acount in stock_account_after:
+                fecha = acount.date_invoice
+                tipo_doc = acount.catalog_01_id.code
+                series = acount.series.series
+                correlativo = acount.correlative
+
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
@@ -106,31 +113,41 @@ class ItStockMoveReport(models.Model):
                 type_operation_sunat = ""
                 is_scrap = before_in.location_dest_id.scrap_location
 
-                # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
+                # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
-                # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
+                # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
+                # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
-                # INTERNAL A UNA PRODUCCION TP = 28 =>SALIDA
+                # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
+                # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
                 if (a == "internal") and (b == "inventory"):
                     type_operation_sunat = "28"
+                #  INTERNAL INVENTORY IF MERMAS
                 if (a == "internal") and (b == "inventory"):
                     if is_scrap is True:
                         type_operation_sunat = "13"
+                #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
                 if (a == "internal") and (b == "supplier"):
-                    if is_scrap is True:
-                        type_operation_sunat = "25"
+                    type_operation_sunat = "25"
+                # INTERNAL A PRODUCTION DESECHOS TP=99 => SALIDA
+                # if (a == "internal") and (b == "production"):
+                #     if before_in.location_id.is_kardex is True:
+                #         type_operation_sunat = "99"  # falta analizar
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
+                # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
+                if(before_in.product_id.it_existence.code is not True):
+                    before_in.picking_id.origin = fecha
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -240,9 +257,9 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
-#  ====================================================================================================
-#  REPORTE DE INVENTARIO VALORIZADO
-#  ====================================================================================================
+        #  ====================================================================================================
+        #  REPORTE DE INVENTARIO VALORIZADO
+        #  ====================================================================================================
         # OBTENEMOS EL SALDO INICIAL
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
@@ -302,25 +319,29 @@ class ItStockMoveReport(models.Model):
                 type_operation_sunat = ""
                 is_scrap = before_in.location_dest_id.scrap_location
 
-                # PRODUCCION A UNA INTERNAL TP = 10 =>ENTRADA
+                # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
-                # INTERNAL A UNA PRODUCCION TP = 19 =>SALIDA
+                # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
+                # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
-                # INTERNAL A UNA PRODUCCION TP = 28 =>SALIDA
+                # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
+                # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
                 if (a == "internal") and (b == "inventory"):
                     type_operation_sunat = "28"
+                #  INTERNAL INVENTORY IF MERMAS
                 if (a == "internal") and (b == "inventory"):
                     if is_scrap is True:
                         type_operation_sunat = "13"
+                #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
                 if (a == "internal") and (b == "supplier"):
                     if is_scrap is True:
                         type_operation_sunat = "25"
@@ -465,8 +486,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 14 tipo operacion efect
                 stock_out.product_name or "",  # campo 15   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or 0.000,  # campo 17 entrada
-                stock_out.out_salida or 0.000,  # campo 18  salida
+                stock_out.in_entrada or "0.00",  # campo 17 entrada
+                stock_out.out_salida or "0.00",  # campo 18  salida
                 "",  # campo 19
                 "",  # campo 20
 
@@ -515,8 +536,8 @@ class ItStockMoveReport(models.Model):
         for stock_out in self.stock_valuated_lines:
             stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
-                str("M") + str(stock_out.stock_id),  # campo 2
-                "",  # campo 3
+                stock_out.stock_id,  # campo 2
+                str("M") + str(stock_out.stock_id),  # campo 3
                 stock_out.establecimiento or "",  # campo 4
                 stock_out.catalogo_existence or "",  # campo 5
                 stock_out.codigo_propio or "",  # campo 6
@@ -573,8 +594,8 @@ class ItStockMoveReportPhisicalLine(models.Model):
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto")
-    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default=0.00)
-    out_salida = fields.Float(string="Salida", digits=(12, 2), default=0.00)
+    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default="0.00")
+    out_salida = fields.Float(string="Salida", digits=(12, 2), default="0.00")
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
@@ -607,10 +628,10 @@ class ItStockMoveReportValuatedLine(models.Model):
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto")
-    in_entrada = fields.Float(string="Entrada")
-    out_salida = fields.Float(string="Salida")
+    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default=0.00)
+    out_salida = fields.Float(string="Salida", digits=(12, 2), default=0.00)
     # qty_done = fields.Float(string="Cantidad")
-    is_saldo = fields.Char(string="saldo inicial")
+    is_saldo = fields.Char(string="saldo inicial", digits=(12, 2), default=0.00)
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
     in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
