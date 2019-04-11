@@ -147,7 +147,7 @@ class ItStockMoveReport(models.Model):
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
-                # DECLARAMOS EL TIPO DE DOCUMENTOS PARA MOSTRAR
+                # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if before_in.picking_id.it_date_gr is not False:
                      fecha = before_in.picking_id.it_date_gr
 
@@ -323,6 +323,14 @@ class ItStockMoveReport(models.Model):
 
         if stock_move_after:
             for before_in in stock_move_after:
+                # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
+                stock_account_after = self.env["account.invoice"].search(
+                    [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
+                if stock_account_after is not False:
+                    fecha = stock_account_after.date_invoice
+                    tipo_doc = stock_account_after.catalog_01_id.code
+                    serie = stock_account_after.series.series
+                    correlativo = stock_account_after.correlative
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
@@ -358,6 +366,19 @@ class ItStockMoveReport(models.Model):
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
+                # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
+                if before_in.picking_id.it_date_gr is not False:
+                    fecha = before_in.picking_id.it_date_gr
+
+                if before_in.picking_id.catalog_01_id.code is not False:
+                    tipo_doc = before_in.picking_id.catalog_01_id.code
+
+                if before_in.picking_id.series.series is not False:
+                    serie = before_in.picking_id.series.series
+
+                if before_in.picking_id.correlative is not False:
+                    correlativo = before_in.picking_id.correlative
+
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -373,10 +394,10 @@ class ItStockMoveReport(models.Model):
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
-                        "date_gr": before_in.picking_id.it_date_gr,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "date_gr": fecha,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
@@ -401,10 +422,10 @@ class ItStockMoveReport(models.Model):
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
-                        "date_gr": before_in.picking_id.it_date_gr,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "date_gr": fecha,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
@@ -428,10 +449,10 @@ class ItStockMoveReport(models.Model):
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
-                        "date_gr": before_in.picking_id.it_date_gr,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "date_gr": fecha,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
@@ -453,10 +474,10 @@ class ItStockMoveReport(models.Model):
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": before_in.product_id.it_existence.id,
-                        "date_gr": before_in.picking_id.it_date_gr,
-                        "catalog_01_id": before_in.picking_id.catalog_01_id.code,
-                        "series": before_in.picking_id.series.series,
-                        "correlative": before_in.picking_id.correlative,
+                        "date_gr": fecha,
+                        "catalog_01_id": tipo_doc,
+                        "series": serie,
+                        "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code
