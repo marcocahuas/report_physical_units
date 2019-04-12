@@ -118,9 +118,15 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    tipo_doc = "00"
+                    serie ="0"
+                    correlativo ="0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
+                    tipo_doc = "00"
+                    serie = "0"
+                    correlativo = "0"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
@@ -151,7 +157,7 @@ class ItStockMoveReport(models.Model):
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
                     if before_in.picking_id.it_date_gr is False:
-                     fecha = before_in.picking_id.scheduled_date
+                        fecha = before_in.picking_id.scheduled_date
 
                 if before_in.picking_id.catalog_01_id.code is not False:
                     tipo_doc = before_in.picking_id.catalog_01_id.code
@@ -293,7 +299,7 @@ class ItStockMoveReport(models.Model):
                 "report_id": self.id,
                 "product_id": product.id,
                 "in_saldo": product.stock_value,
-                "calculo_unit_in": (product.stock_value/product.qty_at_date),
+                "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 # campos adicionales
                 "stock_id": product.id,
                 "establecimiento": "0001",
@@ -337,7 +343,7 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "type_operation": "99",
                 "stock_id": valor.id,
-                "units_med": "NIU", # ver si tiene unidad de medida
+                "units_med": valor.uom_id.code_unit_measure.code,  # ver si tiene unidad de medida
 
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -366,9 +372,15 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    tipo_doc = "00"
+                    serie = "0"
+                    correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
-                    type_operation_sunat = "10"
+                    type_operation_sunat = "10"  # considerar tipdoc 00 serie 0 correlative 0
+                    tipo_doc = "00"
+                    serie = "0"
+                    correlativo = "0"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
@@ -395,7 +407,7 @@ class ItStockMoveReport(models.Model):
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
                     if before_in.picking_id.it_date_gr is False:
-                     fecha = before_in.picking_id.scheduled_date
+                        fecha = before_in.picking_id.scheduled_date
 
                 if before_in.picking_id.catalog_01_id.code is not False:
                     tipo_doc = before_in.picking_id.catalog_01_id.code
