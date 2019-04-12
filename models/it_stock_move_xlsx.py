@@ -86,11 +86,11 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.correlative or "0")
                     array_field.append(before_in.type_operation)
                     array_field.append(before_in.in_entrada)
-                    array_field.append("0.0")   # COST UNIT
-                    array_field.append(before_in.in_saldo) # COST TOTAL
+                    array_field.append(before_in.calculo_unit_in)  # COST UNIT
+                    array_field.append(before_in.in_saldo)  # COST TOTAL
                     array_field.append(before_in.out_salida)
-                    array_field.append("0.0")  # COST UNIT
-                    array_field.append(before_in.out_saldo) # COST TOTAL
+                    array_field.append(before_in.calculo_unit_out)  # COST UNIT
+                    array_field.append(before_in.out_saldo)  # COST TOTAL
                     array_field.append("0.0")  # COST entrada total
                     array_field.append("0.0")  # COST entrada total
                     array_field.append("0.0")  # COST salida  total

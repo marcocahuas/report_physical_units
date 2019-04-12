@@ -293,6 +293,7 @@ class ItStockMoveReport(models.Model):
                 "report_id": self.id,
                 "product_id": product.id,
                 "in_saldo": product.stock_value,
+                "calculo_unit_in": (product.stock_value/product.qty_at_date),
                 # campos adicionales
                 "stock_id": product.id,
                 "codigo_propio": "6000000000000000",
@@ -315,6 +316,7 @@ class ItStockMoveReport(models.Model):
                 "reference": "AJUSTE DE COSTOS",
                 "report_id": self.id,
                 "product_id": valor.product_id.id,
+                "calculo_unit_out": "0.00",
                 # campos adicionales
                 "existence": "9",
                 "codigo_propio": "6000000000000000",
@@ -396,6 +398,7 @@ class ItStockMoveReport(models.Model):
                         "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
+                        "calculo_unit_out": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
@@ -424,6 +427,7 @@ class ItStockMoveReport(models.Model):
                         "out_salida": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
+                        "calculo_unit_out": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
@@ -451,6 +455,7 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                        "calculo_unit_in": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
@@ -476,6 +481,7 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
+                        "calculo_unit_in": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
@@ -639,8 +645,6 @@ class ItStockMoveReportPhisicalLine(models.Model):
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial")
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
-    calculo_entrada = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
-    calculo_salida = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
 
     # CAMPOS ADICIONALES PARA EL REPORTE DE UNIDADES FISICAS
     stock_id = fields.Char()
@@ -676,6 +680,11 @@ class ItStockMoveReportValuatedLine(models.Model):
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
     in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
     out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
+
+    calculo_unit_in = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
+    calculo_unit_out = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
+
+    calculo_costo = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
     # ====================================================
