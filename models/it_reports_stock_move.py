@@ -190,58 +190,60 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b == 'internal')  \
                         and (before_in.picking_type_id.it_is_kardex is True):
                     if (it_code is not False)and (it_des_code is False):
-                        json_stock_phisical = {
-                            "type": 0,
-                            "date": before_in.date,
-                            "reference": before_in.reference,
-                            "report_id": self.id,
-                            "out_salida": before_in.product_uom_qty,
-                            "product_id": before_in.product_id.id,
-                            # OTROS CAMPOS  PARA EL TXTSUNAT
-                            "stock_id": before_in.id,
-                            "establecimiento": before_in.location_id.it_establishment.code,
-                            "catalogo_existence": "9",
-                            "codigo_propio": "6000000000000000",
-                            "existence": before_in.product_id.it_existence.code,
-                            "existence_id": "OTROS",
-                            "date_gr": fecha,
-                            "catalog_01_id": tipo_doc,
-                            "series": serie,
-                            "correlative": correlativo,
-                            "type_operation": type_operation_sunat,
-                            "product_name": before_in.product_id.name,
-                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
-                        }
-                        res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
-                            json_stock_phisical)
+                        if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
+                            json_stock_phisical = {
+                                "type": 0,
+                                "date": before_in.date,
+                                "reference": before_in.reference,
+                                "report_id": self.id,
+                                "out_salida": before_in.product_uom_qty,
+                                "product_id": before_in.product_id.id,
+                                # OTROS CAMPOS  PARA EL TXTSUNAT
+                                "stock_id": before_in.id,
+                                "establecimiento": before_in.location_id.it_establishment.code,
+                                "catalogo_existence": "9",
+                                "codigo_propio": "6000000000000000",
+                                "existence": before_in.product_id.it_existence.code,
+                                "existence_id": "OTROS",
+                                "date_gr": fecha,
+                                "catalog_01_id": tipo_doc,
+                                "series": serie,
+                                "correlative": correlativo,
+                                "type_operation": type_operation_sunat,
+                                "product_name": before_in.product_id.name,
+                                "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                            }
+                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
+                                json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
                         and (before_in.picking_type_id.it_is_kardex is True):
                     if (it_des_code is not False) and (it_code is False):
-                        json_stock_phisical = {
-                            "type": 0,
-                            "date": before_in.date,
-                            "reference": before_in.reference,
-                            "report_id": self.id,
-                            "in_entrada": before_in.product_uom_qty,
-                            "product_id": before_in.product_id.id,
-                            # OTROS CAMPOS  PARA EL TXTSUNAT
-                            "stock_id": before_in.id,
-                            "establecimiento": before_in.location_dest_id.it_establishment.code,
-                            "catalogo_existence": "9",
-                            "codigo_propio": "6000000000000000",
-                            "existence": before_in.product_id.it_existence.code,
-                            "existence_id": "OTROS",
-                            "date_gr": fecha,
-                            "catalog_01_id": tipo_doc,
-                            "series": serie,
-                            "correlative": correlativo,
-                            "type_operation": type_operation_sunat,
-                            "product_name": before_in.product_id.name,
-                            "units_med": before_in.product_id.uom_id.code_unit_measure.code
-                        }
-                        res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
-                            json_stock_phisical)
+                        if before_in.location_dest_id.is_kardex is False and before_in.location_id.is_kardex is not True:
+                            json_stock_phisical = {
+                                "type": 0,
+                                "date": before_in.date,
+                                "reference": before_in.reference,
+                                "report_id": self.id,
+                                "in_entrada": before_in.product_uom_qty,
+                                "product_id": before_in.product_id.id,
+                                # OTROS CAMPOS  PARA EL TXTSUNAT
+                                "stock_id": before_in.id,
+                                "establecimiento": before_in.location_dest_id.it_establishment.code,
+                                "catalogo_existence": "9",
+                                "codigo_propio": "6000000000000000",
+                                "existence": before_in.product_id.it_existence.code,
+                                "existence_id": "OTROS",
+                                "date_gr": fecha,
+                                "catalog_01_id": tipo_doc,
+                                "series": serie,
+                                "correlative": correlativo,
+                                "type_operation": type_operation_sunat,
+                                "product_name": before_in.product_id.name,
+                                "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                            }
+                            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
+                                json_stock_phisical)
 
                 if (a != 'internal') and (b == 'internal'):
                     json_stock_phisical = {
