@@ -150,6 +150,7 @@ class ItStockMoveReport(models.Model):
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if before_in.picking_id.it_date_gr is not False:
                     fecha = before_in.picking_id.it_date_gr
+
                 # if before_in.picking_id.it_date_gr is False:
                 #     fecha = before_in.picking_id.scheduled_date
 
@@ -158,13 +159,13 @@ class ItStockMoveReport(models.Model):
 
                 if before_in.picking_id.series.series is not False:
                     serie = before_in.picking_id.series.series
-                # if before_in.picking_id.series.series is False:
-                #     serie = before_in.picking_id.serie
+                    if before_in.picking_id.series.series is False:
+                        serie = before_in.picking_id.serie
 
                 if before_in.picking_id.correlative is not False:
                     correlativo = before_in.picking_id.correlative
-                # if before_in.picking_id.correlative is False:
-                #     correlativo = before_in.picking_id.it_correlative_manual
+                    if before_in.picking_id.correlative is False:
+                        correlativo = before_in.picking_id.it_correlative_manual
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -193,9 +194,9 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
-                if (a == 'internal') and (b == 'internal')  \
+                if (a == 'internal') and (b == 'internal') \
                         and (before_in.picking_type_id.it_is_kardex is True):
-                    if (it_code is not False)and (it_des_code is False):
+                    if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
                             json_stock_phisical = {
                                 "type": 0,
