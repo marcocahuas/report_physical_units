@@ -348,8 +348,8 @@ class ItStockMoveReport(models.Model):
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
-                if (a == "customer") and (b == "internal"):
-                    type_operation_sunat = "24"
+                # if (a == "customer") and (b == "internal"):  activar !!!!!!!!!!!
+                #     type_operation_sunat = "24"
                 # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
