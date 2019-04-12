@@ -148,21 +148,20 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
-                if before_in.picking_id.it_date_gr is not False:
+                if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
-
-                # if before_in.picking_id.it_date_gr is False:
-                #     fecha = before_in.picking_id.scheduled_date
+                    if before_in.picking_id.it_date_gr is False:
+                     fecha = before_in.picking_id.scheduled_date
 
                 if before_in.picking_id.catalog_01_id.code is not False:
                     tipo_doc = before_in.picking_id.catalog_01_id.code
 
-                if before_in.picking_id.series.series is not False:
+                if serie is False:
                     serie = before_in.picking_id.series.series
                     if before_in.picking_id.series.series is False:
                         serie = before_in.picking_id.serie
 
-                if before_in.picking_id.correlative is not False:
+                if correlativo is False:
                     correlativo = before_in.picking_id.correlative
                     if before_in.picking_id.correlative is False:
                         correlativo = before_in.picking_id.it_correlative_manual
