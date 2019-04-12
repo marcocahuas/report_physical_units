@@ -188,7 +188,7 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
-                        and (it_code is not False and before_in.location_id.is_kardex is not False) \
+                        and (it_code is not False and before_in.location_id.is_kardex is False) \
                         and (before_in.picking_type_id.it_is_kardex is True):
                     json_stock_phisical = {
                         "type": 0,
@@ -216,7 +216,7 @@ class ItStockMoveReport(models.Model):
                         json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
-                        and (it_des_code is not False and before_in.location_dest_id.is_kardex is not False) \
+                        and (it_des_code is not False and before_in.location_dest_id.is_kardex is False) \
                         and (before_in.picking_type_id.it_is_kardex is True):
                     json_stock_phisical = {
                         "type": 0,
@@ -348,8 +348,8 @@ class ItStockMoveReport(models.Model):
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
-                # if (a == "customer") and (b == "internal"):  activar !!!!!!!!!!!
-                #     type_operation_sunat = "24"
+                if (a == "customer") and (b == "internal"):
+                    type_operation_sunat = "24"
                 # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
