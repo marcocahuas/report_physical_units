@@ -84,6 +84,7 @@
                                             <field name="reference"/>
                                             <field name="series"/>
                                             <field name="correlative"/>
+                                            <field name="type_operation" string="Tipo operacion"/>
                                             <field name="in_entrada" string="Entradas"/>
                                             <field name="in_saldo" sttring ="In Saldo" widget="monetary"/>
                                             <field name="out_salida" string="Salidas"/>
