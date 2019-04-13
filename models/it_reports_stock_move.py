@@ -118,12 +118,14 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    fecha = ""
                     tipo_doc = "00"
                     serie ="0"
                     correlativo ="0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
+                    fecha = ""
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
@@ -372,12 +374,14 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    fecha = ""
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
-                    type_operation_sunat = "10"  # considerar tipdoc 00 serie 0 correlative 0
+                    type_operation_sunat = "10"
+                    fecha = ""
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
@@ -706,17 +710,17 @@ class ItStockMoveReportValuatedLine(models.Model):
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto")
-    in_entrada = fields.Float(string="Entrada", digits=(12, 2), default=0.00)
-    out_salida = fields.Float(string="Salida", digits=(12, 2), default=0.00)
+    in_entrada = fields.Float(string="Cantidad Entrada", digits=(12, 2), default=0.00)
+    out_salida = fields.Float(string="Cantidad Salida", digits=(12, 2), default=0.00)
     # qty_done = fields.Float(string="Cantidad")
     is_saldo = fields.Char(string="saldo inicial", digits=(12, 2), default=0.00)
     saldo_final = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
     # CAMPOS ADICIONALES PARA EL REPORTE DE INVENTARIO VALORIZADO
-    in_saldo = fields.Float(string="Saldo Entrada", digits=(12, 2), default=0.00, )
-    out_saldo = fields.Float(string="Saldo Salida", digits=(12, 2), default=0.00, )
+    in_saldo = fields.Float(string="Entradas Costo Total", digits=(12, 2), default=0.00, )
+    out_saldo = fields.Float(string="Salida Costo Total", digits=(12, 2), default=0.00, )
 
-    calculo_unit_in = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
-    calculo_unit_out = fields.Float(string="saldo ", digits=(12, 2), default=0.00)
+    calculo_unit_in = fields.Float(string="Entradas Costo Unit.", digits=(12, 2), default=0.00)
+    calculo_unit_out = fields.Float(string="Salida Costo Unit.", digits=(12, 2), default=0.00)
 
     calculo_costo = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
     name_val = fields.Float(string="valor")
