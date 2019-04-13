@@ -118,14 +118,14 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
-                    fecha = ""
+                    fecha = before_in.date
                     tipo_doc = "00"
                     serie ="0"
                     correlativo ="0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
-                    fecha = ""
+                    fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
@@ -374,14 +374,14 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
-                    fecha = ""
+                    fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
-                    fecha = ""
+                    fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
