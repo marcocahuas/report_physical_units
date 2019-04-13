@@ -343,7 +343,7 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "type_operation": "99",
                 "stock_id": valor.id,
-                "units_med": valor.uom_id.code_unit_measure.code,  # ver si tiene unidad de medida
+                "units_med": "NIU",  # ver si tiene unidad de medida
 
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
