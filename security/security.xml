@@ -3,7 +3,9 @@
     <data>
         <record id="it_group_intitec_reports_valuated" model="res.groups">
             <field name="name">Reporte - Inventario</field>
-            <field name="category_id" ref="report_physical_units"/>
+            <field name="description">
+                    Intitec Reportes..
+            </field>
         </record>
 
     </data>
