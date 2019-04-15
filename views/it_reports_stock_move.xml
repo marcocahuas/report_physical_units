@@ -110,7 +110,7 @@
         </record>
         <!-- CONFIGURACION UNIDADES FISICAS-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reportes de Inventario"
-                  parent="account.menu_finance_reports" sequence="9"/>
+                  groups="report_physical_units.group_intitec_reports_valuated" parent="account.menu_finance_reports" sequence="9"/>
         <report
                 id="it_stocks_move_xlsx"
                 model="it.units.move.report"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="group_intitec_reports_valuated" model="res.groups">
+            <field name="name">Reporte - Inventario</field>
+            <field name="category_id" ref="report_physical_units"/>
+        </record>
+
+    </data>
+</odoo>

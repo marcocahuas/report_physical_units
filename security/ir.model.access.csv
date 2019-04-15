@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_it_units_move_report,it.units.move.report,model_it_units_move_report,report_physical_units.group_intitec_reports_valuated,1,1,1,1
