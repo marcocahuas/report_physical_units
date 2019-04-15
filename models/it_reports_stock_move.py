@@ -370,9 +370,9 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                    saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                        [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
-                    saldo = saldo_inicial.in_entrada
+                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                    [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+                saldo = saldo_inicial.in_entrada
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
