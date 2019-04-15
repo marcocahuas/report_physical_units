@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="group_intitec_reports_valuated" model="res.groups">
+        <record id="it_group_intitec_reports_valuated" model="res.groups">
             <field name="name">Reporte - Inventario</field>
             <field name="category_id" ref="report_physical_units"/>
         </record>
