@@ -292,7 +292,6 @@ class ItStockMoveReport(models.Model):
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
         for product in initial:
-            saldo_inicial = product.qty_at_date,
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
@@ -369,6 +368,10 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
+                initial = self.env["product.product"].with_context(context).search(
+                    [('type', '=', 'product'), ('qty_available', '!=', 0)])
+                if product in initial:
+                    saldo_inicial = product.qty_at_date,
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
