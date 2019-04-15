@@ -361,6 +361,7 @@ class ItStockMoveReport(models.Model):
         if stock_move_after:
             for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
+                saldo_inicial = []
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
