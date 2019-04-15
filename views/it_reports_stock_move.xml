@@ -110,7 +110,7 @@
         </record>
         <!-- CONFIGURACION UNIDADES FISICAS-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reportes de Inventario"
-                  parent="intitec_localizacion_PE_v11.sriid015" sequence="1"/>
+                  parent="dropdown-header o_menu_header_lvl_2" sequence="1"/>
         <report
                 id="it_stocks_move_xlsx"
                 model="it.units.move.report"
