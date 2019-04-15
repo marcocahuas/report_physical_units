@@ -746,7 +746,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     calculo_unit_in = fields.Float(string="Entradas Costo Unit.", digits=(12, 2), default=0.00)
     calculo_unit_out = fields.Float(string="Salida Costo Unit.", digits=(12, 2), default=0.00)
 
-    cantidad_saldo_final = fields.Float(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
+    cantidad_saldo_final = fields.Char(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
     costo_unit_final = fields.Float(string="Costo Unitario Saldo Final", digits=(12, 2), default=0.00)
     costo_total_final = fields.Float(string="Costo Total Saldo Final", digits=(12, 2), default=0.00)
     saldo_inicial = fields.Float()
