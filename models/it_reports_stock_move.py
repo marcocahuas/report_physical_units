@@ -28,7 +28,6 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
-    saldo_inicial = fields.Float(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
 
     @api.multi
     def unlink(self):
@@ -374,7 +373,7 @@ class ItStockMoveReport(models.Model):
                 initial = self.env["product.product"].with_context(context).search(
                     [('type', '=', 'product'), ('qty_available', '!=', 0)])
                 if product in initial:
-                    saldo_inicial = self.saldo_inicial + product.qty_at_date,
+                    saldo_inicial = product.qty_at_date,
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
@@ -753,7 +752,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     saldo_inicial = fields.Float()
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
-
+    saldo_inicial = fields.Float(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
     # ====================================================
     stock_id = fields.Char()
     establecimiento = fields.Char()
