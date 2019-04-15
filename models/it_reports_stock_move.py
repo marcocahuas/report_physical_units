@@ -295,7 +295,7 @@ class ItStockMoveReport(models.Model):
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "aa SALDO INICIAL",
+                "reference": "SALDO INICIAL",
                 "is_saldo": "AAAA",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
@@ -723,7 +723,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
 class ItStockMoveReportValuatedLine(models.Model):
     _name = "it.units.move.report.valuated.line"
     _description = "Reporte Inventario Valorizado Detalle"
-    _order = "product_name, is_saldo, date asc"
+    _order = "product_name, date asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
     date = fields.Datetime(string="Fecha")
