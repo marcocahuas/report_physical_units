@@ -109,8 +109,8 @@
             <field name="view_mode">tree,form</field>
         </record>
         <!-- CONFIGURACION UNIDADES FISICAS-->
-        <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reports units move"
-                  parent="account.menu_finance_reports" sequence="7"/>
+        <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reportes de Inventario"
+                  parent="account.menu_finance_reports" sequence="11"/>
         <report
                 id="it_stocks_move_xlsx"
                 model="it.units.move.report"
