@@ -110,7 +110,8 @@
         </record>
         <!-- CONFIGURACION UNIDADES FISICAS-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report_menu" name="Reportes de Inventario"
-                  parent="dropdown-header o_menu_header_lvl_2" sequence="1"/>
+                  parent="stock.menu_stock_config_settings" sequence="17"/>
+
         <report
                 id="it_stocks_move_xlsx"
                 model="it.units.move.report"
