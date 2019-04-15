@@ -7,6 +7,10 @@
                     Intitec Reportes..
             </field>
         </record>
+        <record id="group_report_inventory" model="res.groups">
+            <field name="name">Reporte</field>
+            <field name="category_id" ref="it_group_intitec_reports_valuated"/>
+        </record>
 
     </data>
 </odoo>
