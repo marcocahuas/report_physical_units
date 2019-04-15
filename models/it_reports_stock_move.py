@@ -300,8 +300,6 @@ class ItStockMoveReport(models.Model):
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
                 "product_id": product.id,
-                "in_saldo": product.stock_value,
-                "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 # campos adicionales
                 "stock_id": product.id,
                 "establecimiento": "0001",
@@ -315,7 +313,13 @@ class ItStockMoveReport(models.Model):
                 "series": "0",
                 "correlative": "0",
                 "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code
+                "units_med": product.uom_id.code_unit_measure.code,
+
+                "in_saldo": product.stock_value,  #Entradas Costo Unit.
+                "calculo_unit_in": (product.stock_value / product.qty_at_date),
+                "cantidad_saldo_final": product.qty_at_date,
+                "costo_unit_final": (product.stock_value / product.qty_at_date),
+                "costo_total_final": product.stock_value
 
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -722,7 +726,9 @@ class ItStockMoveReportValuatedLine(models.Model):
     calculo_unit_in = fields.Float(string="Entradas Costo Unit.", digits=(12, 2), default=0.00)
     calculo_unit_out = fields.Float(string="Salida Costo Unit.", digits=(12, 2), default=0.00)
 
-    calculo_costo = fields.Float(string="Saldo Final", digits=(12, 2), default=0.00)
+    cantidad_saldo_final = fields.Float(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
+    costo_unit_final = fields.Float(string="Costo Unitario Saldo Final", digits=(12, 2), default=0.00)
+    costo_total_final = fields.Float(string="Costo Total Saldo Final", digits=(12, 2), default=0.00)
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
     # ====================================================
