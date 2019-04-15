@@ -493,6 +493,10 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
+                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "costo_unit_final": before_in.price_unit,
+                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
                                 json_stock_phisical)
@@ -522,6 +526,10 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+
+                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "costo_unit_final": before_in.price_unit,
+                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
 
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
