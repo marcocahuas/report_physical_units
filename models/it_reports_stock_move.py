@@ -120,8 +120,8 @@ class ItStockMoveReport(models.Model):
                     type_operation_sunat = "19"  # Cambiar
                     fecha = before_in.date
                     tipo_doc = "00"
-                    serie ="0"
-                    correlativo ="0"
+                    serie = "0"
+                    correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
@@ -292,10 +292,11 @@ class ItStockMoveReport(models.Model):
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
         for product in initial:
+            saldo_inicial = product.qty_at_date,
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
-                "reference": "SALDO INICIAL",
+                "reference": "aa SALDO INICIAL",
                 "is_saldo": "AAAA",
                 "in_entrada": product.qty_at_date,
                 "report_id": self.id,
@@ -315,7 +316,7 @@ class ItStockMoveReport(models.Model):
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code,
 
-                "in_saldo": product.stock_value,  #Entradas Costo Unit.
+                "in_saldo": product.stock_value,  # Entradas Costo Unit.
                 "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 "cantidad_saldo_final": product.qty_at_date,
                 "costo_unit_final": (product.stock_value / product.qty_at_date),
@@ -349,7 +350,7 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "type_operation": "99",
                 "stock_id": valor.id,
-                "units_med": "NIU" #valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
+                "units_med": "NIU"  # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
 
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -453,6 +454,11 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
+                        "saldo_inicial": saldo_inicial,
+                        "cantidad_saldo_final": before_in.product_uom_qty - saldo_inicial,
+                        "costo_unit_final": before_in.price_unit,
+                        "costo_total_final": (before_in.product_uom_qty - saldo_inicial) * (before_in.price_unit),
+
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -481,7 +487,9 @@ class ItStockMoveReport(models.Model):
                                 "correlative": correlativo,
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
-                                "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                                "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+
+                                "saldo_inicial": saldo_inicial
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
                                 json_stock_phisical)
@@ -510,7 +518,9 @@ class ItStockMoveReport(models.Model):
                                 "correlative": correlativo,
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
-                                "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                                "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+
+                                "saldo_inicial": saldo_inicial
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
                                 json_stock_phisical)
@@ -536,7 +546,12 @@ class ItStockMoveReport(models.Model):
                         "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
-                        "units_med": before_in.product_id.uom_id.code_unit_measure.code
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+
+                        "saldo_inicial": saldo_inicial,
+                        "cantidad_saldo_final": before_in.product_uom_qty + saldo_inicial,
+                        "costo_unit_final": before_in.price_unit,
+                        "costo_total_final": (before_in.product_uom_qty + saldo_inicial) * (before_in.price_unit),
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -729,6 +744,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     cantidad_saldo_final = fields.Float(string="Cantidad Saldo Final", digits=(12, 2), default=0.00)
     costo_unit_final = fields.Float(string="Costo Unitario Saldo Final", digits=(12, 2), default=0.00)
     costo_total_final = fields.Float(string="Costo Total Saldo Final", digits=(12, 2), default=0.00)
+    saldo_inicial = fields.Float()
     name_val = fields.Float(string="valor")
     existence = fields.Char(string="existence")
     # ====================================================
