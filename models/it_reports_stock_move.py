@@ -361,7 +361,7 @@ class ItStockMoveReport(models.Model):
         if stock_move_after:
             for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
-                saldo_inicial = 0.00
+
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
@@ -369,6 +369,7 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
+
                 initial = self.env["product.product"].with_context(context).search(
                     [('type', '=', 'product'), ('qty_available', '!=', 0)])
                 if product in initial:
@@ -458,9 +459,10 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                        "cantidad_saldo_final": round(before_in.product_uom_qty - saldo_inicial),
+                        "cantidad_saldo_final": ((before_in.product_uom_qty,) - (saldo_inicial)),
                         "costo_unit_final": before_in.price_unit,
-                        "costo_total_final": ((before_in.product_uom_qty - saldo_inicial) * (before_in.price_unit)),
+                        "costo_total_final": (
+                                    ((before_in.product_uom_qty,) - (saldo_inicial)) * (before_in.price_unit)),
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
