@@ -374,6 +374,7 @@ class ItStockMoveReport(models.Model):
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
                 saldo = saldo_inicial.in_entrada
+                costo_final = saldo_inicial.stock_value
                 #     if operation.in_entrada is not False:
                 #         total = 0.00
                 #         resul = operation.in_entrada + before_in.product_uom_qty
@@ -468,7 +469,7 @@ class ItStockMoveReport(models.Model):
 
                         "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
                         "costo_unit_final": before_in.price_unit,
-                        "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                        "costo_total_final": costo_final,
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -502,7 +503,7 @@ class ItStockMoveReport(models.Model):
 
                                 "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
                                 "costo_unit_final": before_in.price_unit,
-                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                                "costo_total_final": costo_final,
 
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
@@ -536,7 +537,7 @@ class ItStockMoveReport(models.Model):
 
                                 "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
                                 "costo_unit_final": before_in.price_unit,
-                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                                "costo_total_final": costo_final,
 
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
@@ -567,7 +568,7 @@ class ItStockMoveReport(models.Model):
 
                         "cantidad_saldo_final": (before_in.product_uom_qty + saldo),
                         "costo_unit_final": before_in.price_unit,
-                        "costo_total_final": ((before_in.product_uom_qty + saldo) * before_in.price_unit),
+                        "costo_total_final": costo_final,
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
