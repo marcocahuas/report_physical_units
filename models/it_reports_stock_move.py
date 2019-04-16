@@ -370,7 +370,9 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                costo_finaly = self.env["product.product"].search([("qty_at_date", ">=", self.date_in_time), ("qty_at_date", "<=", self.date_out_time)], limit=1)
+                costo_finaly = self.env["product.product"].search(
+                    [("qty_at_date", ">=", self.date_in_time), ("qty_at_date", "<=", self.date_out_time),
+                     ('type', '=', 'product')], limit=1)
                 costo_final = costo_finaly.stock_value
 
                 saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
