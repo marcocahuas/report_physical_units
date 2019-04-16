@@ -325,7 +325,6 @@ class ItStockMoveReport(models.Model):
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
         # TRAEMOS AJUSTE DE COSTOS
-
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6)])
