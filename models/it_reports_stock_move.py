@@ -328,7 +328,6 @@ class ItStockMoveReport(models.Model):
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
-        #('quantity', '=', 0), ('quantity', '=', False)
         for valor in entry_balance:
             json_stock_phisical = {
                 "date": valor.create_date,
@@ -371,11 +370,10 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                    [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
-                # is_saldo = saldo_inicial.in_entrada
-                # for operation in is_saldo:
+                saldo = saldo_inicial.in_entrada
                 #     if operation.in_entrada is not False:
                 #         total = 0.00
                 #         resul = operation.in_entrada + before_in.product_uom_qty
@@ -468,9 +466,9 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                        # "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
-                        # "costo_unit_final": before_in.price_unit,
-                        # "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                        "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                        "costo_unit_final": before_in.price_unit,
+                        "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
 
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -502,9 +500,9 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                                # "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
-                                # "costo_unit_final": before_in.price_unit,
-                                # "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "costo_unit_final": before_in.price_unit,
+                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
 
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
@@ -536,9 +534,9 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                                # "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
-                                # "costo_unit_final": before_in.price_unit,
-                                # "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
+                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "costo_unit_final": before_in.price_unit,
+                                "costo_total_final": ((before_in.product_uom_qty - saldo) * before_in.price_unit),
 
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
@@ -567,9 +565,9 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                        # "cantidad_saldo_final": (before_in.product_uom_qty + saldo),
-                        # "costo_unit_final": before_in.price_unit,
-                        # "costo_total_final": ((before_in.product_uom_qty + saldo) * before_in.price_unit),
+                        "cantidad_saldo_final": (before_in.product_uom_qty + saldo),
+                        "costo_unit_final": before_in.price_unit,
+                        "costo_total_final": ((before_in.product_uom_qty + saldo) * before_in.price_unit),
                     }
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
