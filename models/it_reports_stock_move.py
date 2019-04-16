@@ -370,11 +370,14 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
+                costo_finaly = self.env["product.product"].search([('type', '=', 'product')])
+                costo_final = costo_finaly.stock_value
+
                 saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
                 saldo = saldo_inicial.in_entrada
-                costo_final = saldo_inicial.stock_value
+
                 #     if operation.in_entrada is not False:
                 #         total = 0.00
                 #         resul = operation.in_entrada + before_in.product_uom_qty
