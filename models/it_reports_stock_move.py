@@ -371,7 +371,7 @@ class ItStockMoveReport(models.Model):
                     correlativo = stock_account_after.correlative
 
                 costo_finaly = self.env["product.product"].search(
-                    [('create_date', '=', datetime), ('type', '=', 'product'), ('qty_available', '!=', 0)], limit=1)
+                    [('create_date', '=', self.date_in_time), ('type', '=', 'product'), ('qty_available', '!=', 0)], limit=1)
 
                 costo_final = costo_finaly.stock_value
 
