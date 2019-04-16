@@ -371,8 +371,11 @@ class ItStockMoveReport(models.Model):
                     correlativo = stock_account_after.correlative
 
                 costo_finaly = self.env["product.product"].search(
-                    [('qty_at_date', '=', self.date_in_time), ('qty_available', '!=', 0), ('type', '=', 'product')], limit=1)
-                costo_final = costo_finaly.stock_value
+                    [('qty_at_date', '=', before_in.date), ('id', '=', before_in.product_id.id),
+                     ('type', '=', 'product')], limit=1)
+                if costo_finaly.id:
+                    costo_final = costo_finaly.stock_value
+                    cantidad_saldo = costo_finaly.qty_at_date
 
                 saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
@@ -470,7 +473,7 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                        "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                        "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": before_in.price_unit,
                         "costo_total_final": costo_final,
 
@@ -504,7 +507,7 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": before_in.price_unit,
                                 "costo_total_final": costo_final,
 
@@ -538,7 +541,7 @@ class ItStockMoveReport(models.Model):
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                                "cantidad_saldo_final": (before_in.product_uom_qty - saldo),
+                                "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": before_in.price_unit,
                                 "costo_total_final": costo_final,
 
@@ -569,7 +572,7 @@ class ItStockMoveReport(models.Model):
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
 
-                        "cantidad_saldo_final": (before_in.product_uom_qty + saldo),
+                        "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": before_in.price_unit,
                         "costo_total_final": costo_final,
                     }
@@ -592,6 +595,7 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_phisical_lines:
+            count_sale = 1
             stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
