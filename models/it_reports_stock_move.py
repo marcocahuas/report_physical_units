@@ -327,8 +327,9 @@ class ItStockMoveReport(models.Model):
         # TRAEMOS AJUSTE DE COSTOS
 
         entry_balance = self.env["account.move.line"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5)])
-        #('journal_id', '=', 6), ('quantity', '=', 0)
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
+             ('journal_id', '=', 6), ('quantity', '=', 0)])
+        # ('journal_id', '=', 6), ('quantity', '=', 0)
         for valor in entry_balance:
             json_stock_phisical = {
                 "date": valor.create_date,
@@ -374,7 +375,7 @@ class ItStockMoveReport(models.Model):
                 # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                 #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
-                #is_saldo = saldo_inicial.in_entrada
+                # is_saldo = saldo_inicial.in_entrada
                 # for operation in is_saldo:
                 #     if operation.in_entrada is not False:
                 #         total = 0.00
