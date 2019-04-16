@@ -328,7 +328,8 @@ class ItStockMoveReport(models.Model):
 
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
-             ('journal_id', '=', 6), ('quantity', '=', 0), ('quantity', '=', False)])
+             ('journal_id', '=', 6)])
+        #('quantity', '=', 0), ('quantity', '=', False)
         for valor in entry_balance:
             json_stock_phisical = {
                 "date": valor.create_date,
