@@ -334,6 +334,10 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
         for valor in entry_balance:
+            saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+
+            saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
             costo_final = False
             cantidad_saldo = False
             if before_in.date:
@@ -367,7 +371,7 @@ class ItStockMoveReport(models.Model):
                     "stock_id": valor.id,
                     "units_med": "NIU",
                     "cantidad_saldo_final": cantidad_saldo,
-                    "costo_unit_final": (cantidad_saldo / costo_final),
+                    "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -401,10 +405,11 @@ class ItStockMoveReport(models.Model):
                     _logger.info("COSTO FINAL")
                     _logger.info(costo_finaly.qty_at_date)
 
-                # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
-                #
-                # saldo = saldo_inicial.in_entrada
+                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                    [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+
+                saldo = saldo_inicial.in_entrada
+                saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
