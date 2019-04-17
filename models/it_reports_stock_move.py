@@ -104,7 +104,7 @@ class ItStockMoveReport(models.Model):
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
                     fecha =""
-                    fecha2 = datetime.strptime(stock_account_after.date_invoice, "%Y-%m-%d")
+                    fecha2 = datetime.datetime.strptime(stock_account_after.date_invoice, "%Y-%m-%d")
                     fecha = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                         fecha2.year)
                     tipo_doc = stock_account_after.catalog_01_id.code
