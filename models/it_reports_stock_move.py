@@ -613,9 +613,10 @@ class ItStockMoveReport(models.Model):
         date_gr = ""
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
-            fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
-            date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
-                fecha2.year)
+            if stock_out.date_gr is not False:
+                fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
+                date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+                    fecha2.year)
             stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
@@ -679,9 +680,10 @@ class ItStockMoveReport(models.Model):
         date_gr = ""
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
-            fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
-            date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
-                fecha2.year)
+            if stock_out.date_gr is not False:
+                fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
+                date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+                    fecha2.year)
             stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
