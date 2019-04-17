@@ -87,8 +87,6 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code
-                # "saldo_entrada": 0.0,
-                # "saldo_salida": 0.0
             }
             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
@@ -104,14 +102,10 @@ class ItStockMoveReport(models.Model):
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
                     fecha = stock_account_after.date_invoice
-                    # fecha = ""
-                    # fecha2 = datetime.datetime.strptime(stock_account_after.date_invoice, "%Y-%m-%d")
-                    # fecha = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
-                    #     fecha2.year)
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
-
+                # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
@@ -159,8 +153,8 @@ class ItStockMoveReport(models.Model):
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
-                # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
 
+                # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
                     if before_in.picking_id.it_date_gr is False:
@@ -200,9 +194,7 @@ class ItStockMoveReport(models.Model):
                         "correlative": correlativo,
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
-                        "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        # saldo final
-                        # identificar el saldo inicial
+                        "units_med": before_in.product_id.uom_id.code_unit_measure.code
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -333,11 +325,14 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
         for valor in entry_balance:
-            saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+            # PARA EL PRECIO UNIT SALDO FINAL
+            saldo_price_unit = self.env["it.units.move.report.valuated.line"].search(
                 [("product_id", "=", valor.product_id.id), ("type", "=", 0)], limit=1)
             saldo_unit = False
-            if saldo_inicial.costo_total_final != 0 and saldo_inicial.cantidad_saldo_final != 0:
-                saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
+            if saldo_price_unit.costo_total_final != 0 and saldo_price_unit.cantidad_saldo_final != 0:
+                saldo_unit = saldo_price_unit.costo_total_final / saldo_price_unit.cantidad_saldo_final
+
+            # PARA EL COSTO FINAL SE OBTIENE DEL VALORIZADO
             costo_final = False
             cantidad_saldo = False
             if valor.date:
@@ -347,8 +342,11 @@ class ItStockMoveReport(models.Model):
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
+                    product = costo_finaly.uom_id.code_unit_measure.code
+
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
+
                 json_stock_phisical = {
                     "date": valor.create_date,
                     "in_saldo": valor.debit,
@@ -370,21 +368,20 @@ class ItStockMoveReport(models.Model):
                     "correlative": "0",
                     "existence": "9",
                     "stock_id": valor.id,
-                    "units_med": "NIU",
+                    "units_med": product,
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
-        # OBTENEMOS LOS MOVIMIENTOS
+        # OBTENEMOS LOS MOVIMIENTOS DE STOCK MOVE
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
-
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
@@ -392,13 +389,10 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
+
+                # PARA EL COSTO FINAL SE OBTIENE DEL VALORIZADO
                 costo_final = False
                 cantidad_saldo = False
-                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                    [("product_id", "=", before_in.product_id.id), ("type", "=", 0)], limit=1)
-                saldo_unit = False
-                if saldo_inicial.costo_total_final != 0 and saldo_inicial.cantidad_saldo_final != 0:
-                    saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
                 if before_in.date:
                     context_finally = {'to_date': before_in.date}
                     costo_finaly = self.env["product.product"].with_context(context_finally).search(
@@ -410,12 +404,14 @@ class ItStockMoveReport(models.Model):
                     _logger.info("COSTO FINAL")
                     _logger.info(costo_finaly.qty_at_date)
 
-                # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
-                #
-                # saldo = saldo_inicial.in_entrada
-                # saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
+                # PARA EL PRECIO UNIT SALDO FINAL
+                saldo_price_unit = self.env["it.units.move.report.valuated.line"].search(
+                    [("product_id", "=", before_in.product_id.id), ("type", "=", 0)], limit=1)
+                saldo_unit = False
+                if saldo_price_unit.costo_total_final != 0 and saldo_price_unit.cantidad_saldo_final != 0:
+                    saldo_unit = saldo_price_unit.costo_total_final / saldo_price_unit.cantidad_saldo_final
 
+                # PARA LOS MOVIMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
