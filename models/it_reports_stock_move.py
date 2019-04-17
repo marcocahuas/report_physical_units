@@ -359,6 +359,7 @@ class ItStockMoveReport(models.Model):
                     "product_id": valor.product_id.id,
                     "calculo_unit_out": "0.00",
                     # campos adicionales
+                    "catalogo_existence": "9",
                     "establecimiento": "0001",
                     "existence": "9",
                     "existence_id": "OTROS",
