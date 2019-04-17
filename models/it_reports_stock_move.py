@@ -47,15 +47,15 @@ class ItStockMoveReport(models.Model):
         if self.stock_phisical_lines:
             self.stock_phisical_lines.unlink()
 
-        d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
-        d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
-        d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
+        d_ref = datetime.datetime.strptime(self.date_out, "%d/%m/%y")
+        d_ref_out = datetime.datetime.strptime(self.date_out, "%d/%m/%y")
+        d_ref_in = datetime.datetime.strptime(self.date_in, "%d/%m/%y")
         # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
         month = "%02d" % (d_ref.month,)
         # DECLARAR FECHAS
-        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
+        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.day,  d_ref_in.month, d_ref_in.year),
                                                    datetime.time(0, 0, 0))
-        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
+        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.day,  d_ref_out.month, d_ref_out.year),
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
@@ -372,7 +372,7 @@ class ItStockMoveReport(models.Model):
 
                 costo_finaly = self.env["product.product"].search(
                     [('qty_at_date', '=', before_in.date), ('id', '=', before_in.product_id.id),
-                     ('type', '=', 'product'), ('qty_available', '=', 0)], limit=1)
+                     ('type', '=', 'product')], limit=1)
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
@@ -582,21 +582,21 @@ class ItStockMoveReport(models.Model):
     def download_txt_units_sunat(self):
         content = ""
         count_sale = 0
-        d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
-        d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
-        d_ref_in = datetime.datetime.strptime(self.date_in, "%Y-%m-%d")
+        d_ref = datetime.datetime.strptime(self.date_out, "%d/%m/%y")
+        d_ref_out = datetime.datetime.strptime(self.date_out, "%d/%m/%y")
+        d_ref_in = datetime.datetime.strptime(self.date_in, "%d/%m/%y")
         # d_ref = [datetime.datetime.fromtimestamp(self.date_out, "%Y-%m-%d")]
         month = "%02d" % (d_ref.month,)
-        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.year, d_ref_in.month, d_ref_in.day),
+        date_in_before = datetime.datetime.combine(datetime.date(d_ref_in.day,  d_ref_in.month, d_ref_in.year),
                                                    datetime.time(0, 0, 0))
-        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.year, d_ref_out.month, d_ref_out.day),
+        date_out_after = datetime.datetime.combine(datetime.date(d_ref_out.day,  d_ref_out.month, d_ref_out.year),
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
-            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -613,9 +613,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 entrada
-                stock_out.out_salida or "0.00",  # campo 17  salida
+                str("-") + stock_out.out_salida or "0.00",  # campo 17  salida
                 "",  # campo 18
-                "",  # campo 19
             )
             content += str(stringunits) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
@@ -659,6 +658,7 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
 
         for stock_out in self.stock_valuated_lines:
+            count_sale = 1
             stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
