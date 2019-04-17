@@ -367,7 +367,7 @@ class ItStockMoveReport(models.Model):
                     "stock_id": valor.id,
                     "units_med": "NIU",
                     "cantidad_saldo_final": cantidad_saldo,
-                    "costo_unit_final": (costo_final / cantidad_saldo),
+                    "costo_unit_final": (cantidad_saldo / costo_final),
                     "costo_total_final": costo_final,
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
