@@ -366,12 +366,9 @@ class ItStockMoveReport(models.Model):
                     "type_operation": "99",
                     "stock_id": valor.id,
                     "units_med": "NIU",
-                # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
-
                     "cantidad_saldo_final": cantidad_saldo,
-                    "costo_unit_final": costo_final / cantidad_saldo,
+                    "costo_unit_final": (costo_final / cantidad_saldo),
                     "costo_total_final": costo_final,
-
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
@@ -758,7 +755,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     codigo_propio = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Datetime()
+    date_gr = fields.Date()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
@@ -802,7 +799,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     catalogo_existence = fields.Char()
     codigo_propio = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Datetime()
+    date_gr = fields.Date()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
