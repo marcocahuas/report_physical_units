@@ -692,7 +692,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16
                 stock_out.in_saldo or "0.00",  # campo 17  salida
-                stock_out.out_salida or "0.00",  # campo 18  salida
+                str("-") + str(stock_out.out_salida) or "0.00",  # campo 18  salida
                 stock_out.out_saldo or "0.00",  # campo 19  salida
                 "",  # campo 20
                 "",  # campo 21
