@@ -91,6 +91,8 @@
                                             <field name="out_salida" string="Cantidad Salidas"/>
                                             <field name="calculo_unit_out"/>
                                             <field name="out_saldo"/>
+                                            <field name="cantidad_saldo_final"/>
+                                            <field name="costo_total_final"/>
                                             <field name="saldo_final" string="Saldo Final" invisible="1"/>
 
                                         </tree>
