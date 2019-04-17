@@ -336,6 +336,7 @@ class ItStockMoveReport(models.Model):
         for valor in entry_balance:
             saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                 [("product_id", "=", valor.product_id.id), ("type", "=", 0)], limit=1)
+            saldo_unit = False
             if saldo_inicial is not False:
                 saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
             costo_final = False
