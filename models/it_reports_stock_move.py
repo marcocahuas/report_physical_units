@@ -404,10 +404,10 @@ class ItStockMoveReport(models.Model):
                     _logger.info("COSTO FINAL")
                     _logger.info(costo_finaly.qty_at_date)
 
-                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                    [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
-
-                saldo = saldo_inicial.in_entrada
+                # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+                #
+                # saldo = saldo_inicial.in_entrada
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
@@ -800,7 +800,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     catalogo_existence = fields.Char()
     codigo_propio = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Date()
+    date_gr = fields.Char()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
