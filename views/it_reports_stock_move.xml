@@ -86,13 +86,13 @@
                                             <field name="correlative"/>
                                             <field name="type_operation" string="Tipo operacion"/>
                                             <field name="in_entrada" string="Cantidad Entradas"/>
-                                            <field name="calculo_unit_in"/>
+                                            <field name="calculo_unit_in" invisible="1"/>
                                             <field name="in_saldo" widget="monetary"/>
                                             <field name="out_salida" string="Cantidad Salidas"/>
-                                            <field name="calculo_unit_out"/>
+                                            <field name="calculo_unit_out" invisible="1"/>
                                             <field name="out_saldo"/>
-                                            <field name="cantidad_saldo_final"/>
-                                            <field name="costo_total_final"/>
+                                            <field name="cantidad_saldo_final" invisible="1"/>
+                                            <field name="costo_total_final" invisible="1"/>
                                             <field name="saldo_final" string="Saldo Final" invisible="1"/>
 
                                         </tree>
