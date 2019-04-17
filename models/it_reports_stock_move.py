@@ -337,7 +337,7 @@ class ItStockMoveReport(models.Model):
             saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                 [("product_id", "=", valor.product_id.id), ("type", "=", 0)], limit=1)
             saldo_unit = False
-            if saldo_inicial.costo_total_final is not False and saldo_inicial.cantidad_saldo_final is not False:
+            if saldo_inicial.costo_total_final != 0 and saldo_inicial.cantidad_saldo_final != 0:
                 saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
             costo_final = False
             cantidad_saldo = False
@@ -376,7 +376,6 @@ class ItStockMoveReport(models.Model):
                     "costo_total_final": costo_final,
                 }
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
-
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
@@ -711,7 +710,6 @@ class ItStockMoveReport(models.Model):
                 str("-") + str(stock_out.out_salida) or "0.00",  # campo 18  salida
                 stock_out.out_saldo or "0.00",  # campo 19  salida
                 "1",  # campo 20
-
 
             )
             content += str(stringvaluated) + "\r\n"
