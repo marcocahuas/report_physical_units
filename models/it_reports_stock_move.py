@@ -368,7 +368,7 @@ class ItStockMoveReport(models.Model):
                 "units_med": "NIU",  # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
 
                 "cantidad_saldo_final": cantidad_saldo,
-                "costo_unit_final": costo_final/cantidad_saldo,
+                "costo_unit_final": costo_final / cantidad_saldo,
                 "costo_total_final": costo_final,
 
             }
@@ -406,7 +406,6 @@ class ItStockMoveReport(models.Model):
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
                 saldo = saldo_inicial.in_entrada
-
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
@@ -679,6 +678,10 @@ class ItStockMoveReport(models.Model):
 
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
+            date_gr = ""
+            fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
+            date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+                fecha2.year)
             stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
@@ -688,7 +691,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                stock_out.date_gr or "",  # campo 9
+                date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
