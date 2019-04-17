@@ -613,7 +613,7 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-
+        date_gr = ""
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
@@ -628,7 +628,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr,  # campo 9
+                date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
@@ -679,7 +679,7 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-
+        date_gr = ""
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
@@ -694,7 +694,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr,  # campo 9
+                date_gr or "",  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
@@ -758,7 +758,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     codigo_propio = fields.Char()
     existence = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Date()
+    date_gr = fields.Datetime()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
@@ -802,7 +802,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     catalogo_existence = fields.Char()
     codigo_propio = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Date()
+    date_gr = fields.Datetime()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
