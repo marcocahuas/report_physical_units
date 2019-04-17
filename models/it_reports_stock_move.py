@@ -800,7 +800,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     catalogo_existence = fields.Char()
     codigo_propio = fields.Char()
     existence_id = fields.Char()
-    date_gr = fields.Char()
+    date_gr = fields.Date()
     catalog_01_id = fields.Char()
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
