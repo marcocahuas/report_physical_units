@@ -319,7 +319,6 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code,
-
                 "in_saldo": product.stock_value,  # Entradas Costo Unit.
                 "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 "cantidad_saldo_final": product.qty_at_date,
@@ -361,15 +360,15 @@ class ItStockMoveReport(models.Model):
                     # campos adicionales
                     "catalogo_existence": "9",
                     "establecimiento": "0001",
-                    "existence": "9",
                     "existence_id": "OTROS",
                     "codigo_propio": "6000000000000000",
+                    "type_operation": "99",
                     "product_name": valor.product_id.name,
                     "date_gr": self.date_in_time,
                     "catalog_01_id": "00",
                     "series": "0",
                     "correlative": "0",
-                    "type_operation": "99",
+                    "existence": "9",
                     "stock_id": valor.id,
                     "units_med": "NIU",
                     "cantidad_saldo_final": cantidad_saldo,
