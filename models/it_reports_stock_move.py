@@ -576,7 +576,6 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-
                         "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": before_in.price_unit,
                         "costo_total_final": costo_final,
