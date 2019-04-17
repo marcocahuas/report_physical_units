@@ -675,10 +675,9 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-
+        date_gr = ""
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
-            date_gr = ""
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
             date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                 fecha2.year)
