@@ -345,34 +345,36 @@ class ItStockMoveReport(models.Model):
                     cantidad_saldo = costo_finaly.qty_at_date
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
-            json_stock_phisical = {
-                "date": valor.create_date,
-                "in_saldo": valor.debit,
-                "out_saldo": valor.credit,
-                "reference": "AJUSTE DE COSTOS",
-                "report_id": self.id,
-                "product_id": valor.product_id.id,
-                "calculo_unit_out": "0.00",
-                # campos adicionales
-                "establecimiento": "0001",
-                "existence": "9",
-                "existence_id": "OTROS",
-                "codigo_propio": "6000000000000000",
-                "product_name": valor.product_id.name,
-                "date_gr": self.date_in_time,
-                "catalog_01_id": "00",
-                "series": "0",
-                "correlative": "0",
-                "type_operation": "99",
-                "stock_id": valor.id,
-                "units_med": "NIU",  # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
+                json_stock_phisical = {
+                    "date": valor.create_date,
+                    "in_saldo": valor.debit,
+                    "out_saldo": valor.credit,
+                    "reference": "AJUSTE DE COSTOS",
+                    "report_id": self.id,
+                    "product_id": valor.product_id.id,
+                    "calculo_unit_out": "0.00",
+                    # campos adicionales
+                    "establecimiento": "0001",
+                    "existence": "9",
+                    "existence_id": "OTROS",
+                    "codigo_propio": "6000000000000000",
+                    "product_name": valor.product_id.name,
+                    "date_gr": self.date_in_time,
+                    "catalog_01_id": "00",
+                    "series": "0",
+                    "correlative": "0",
+                    "type_operation": "99",
+                    "stock_id": valor.id,
+                    "units_med": "NIU",
+                # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
 
-                "cantidad_saldo_final": cantidad_saldo,
-                "costo_unit_final": costo_final / cantidad_saldo,
-                "costo_total_final": costo_final,
+                    "cantidad_saldo_final": cantidad_saldo,
+                    "costo_unit_final": costo_final / cantidad_saldo,
+                    "costo_total_final": costo_final,
 
-            }
-            res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                }
+                res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
