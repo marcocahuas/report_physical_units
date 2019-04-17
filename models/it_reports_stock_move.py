@@ -686,7 +686,7 @@ class ItStockMoveReport(models.Model):
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
             date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                 fecha2.year)
-            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -706,8 +706,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.in_saldo or "0.00",  # campo 17  salida
                 str("-") + str(stock_out.out_salida) or "0.00",  # campo 18  salida
                 stock_out.out_saldo or "0.00",  # campo 19  salida
-                "",  # campo 20
-                "",  # campo 21
+                "1",  # campo 20
+
 
             )
             content += str(stringvaluated) + "\r\n"
