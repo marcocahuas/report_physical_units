@@ -405,11 +405,11 @@ class ItStockMoveReport(models.Model):
                     _logger.info("COSTO FINAL")
                     _logger.info(costo_finaly.qty_at_date)
 
-                saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
-                    [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
-
-                saldo = saldo_inicial.in_entrada
-                saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
+                # saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
+                #     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
+                #
+                # saldo = saldo_inicial.in_entrada
+                # saldo_unit = saldo_inicial.costo_total_final / saldo_inicial.cantidad_saldo_final
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
