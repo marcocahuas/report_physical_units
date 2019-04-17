@@ -329,6 +329,17 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
         for valor in entry_balance:
+            costo_final = False
+            cantidad_saldo = False
+            if before_in.date:
+                context_finally = {'to_date': valor.date}
+                costo_finaly = self.env["product.product"].with_context(context_finally).search(
+                    [('id', '=', valor.product_id.id)], limit=1)
+                if costo_finaly.id:
+                    costo_final = costo_finaly.stock_value
+                    cantidad_saldo = costo_finaly.qty_at_date
+                _logger.info("COSTO FINAL")
+                _logger.info(costo_finaly.qty_at_date)
             json_stock_phisical = {
                 "date": valor.create_date,
                 "in_saldo": valor.debit,
@@ -349,7 +360,11 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "type_operation": "99",
                 "stock_id": valor.id,
-                "units_med": "NIU"  # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
+                "units_med": "NIU",  # valor.product_id.uom_id.code_unit_measure.code  # ver si tiene unidad de medida
+
+                "cantidad_saldo_final": cantidad_saldo,
+                "costo_unit_final": costo_final/cantidad_saldo,
+                "costo_total_final": costo_final,
 
             }
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
@@ -386,12 +401,7 @@ class ItStockMoveReport(models.Model):
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
 
                 saldo = saldo_inicial.in_entrada
-                #     if operation.in_entrada is not False:
-                #         total = 0.00
-                #         resul = operation.in_entrada + before_in.product_uom_qty
-                #         total = resul + before_in.product_uom_qty
-                #     if operation.out_salida is not False:
-                #         is_saldo = operation.in_entrada - before_in.product_uom_qty
+
 
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
