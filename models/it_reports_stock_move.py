@@ -613,13 +613,13 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        date_gr = ""
+
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
             date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                 fecha2.year)
-            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -628,7 +628,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr or "",  # campo 9
+                date_gr,  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
@@ -637,8 +637,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 entrada
                 str("-") + str(stock_out.out_salida) or "0.00",  # campo 17  salida
-                "",  # campo 18
-                "",  # campo 19
+                "1",  # campo 18
             )
             content += str(stringunits) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
@@ -680,7 +679,7 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        date_gr = ""
+
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
             fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
@@ -695,7 +694,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr or "",  # campo 9
+                date_gr,  # campo 9
                 stock_out.catalog_01_id or "",  # campo 10
                 stock_out.series or "",  # campo 11
                 stock_out.correlative or "",  # campo 12
