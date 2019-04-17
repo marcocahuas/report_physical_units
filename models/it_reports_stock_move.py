@@ -614,7 +614,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 entrada
                 str("-") + stock_out.out_salida or "0.00",  # campo 17  salida
-                "",  # campo 18
+                "1",  # campo 18
             )
             content += str(stringunits) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
