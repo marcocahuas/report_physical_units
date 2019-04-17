@@ -103,7 +103,10 @@ class ItStockMoveReport(models.Model):
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
-                    fecha = stock_account_after.date_invoice
+                    fecha =""
+                    fecha2 = datetime.strptime(stock_account_after.date_invoice, "%Y-%m-%d")
+                    fecha = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+                        fecha2.year)
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
@@ -156,6 +159,7 @@ class ItStockMoveReport(models.Model):
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
+
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
                     if before_in.picking_id.it_date_gr is False:
