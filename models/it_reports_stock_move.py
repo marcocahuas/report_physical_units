@@ -368,13 +368,18 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
-                context_finally = {'to_date': before_in.date}
-                costo_finaly = self.env["product.product"].with_context(context_finally).search(
-                    [('id', '=', before_in.product_id.id),
-                     ('type', '=', 'product')], limit=1)
-                if costo_finaly.id:
-                    costo_final = costo_finaly.stock_value
-                    cantidad_saldo = costo_finaly.qty_at_date
+                costo_final = False
+                cantidad_saldo = False
+                if before_in.date:
+                    context_finally = {'to_date': before_in.date}
+                    costo_finaly = self.env["product.product"].with_context(context_finally).search(
+                        [('id', '=', before_in.product_id.id),
+                         ('type', '=', 'product')], limit=1)
+                    if costo_finaly.id:
+                        costo_final = costo_finaly.stock_value
+                        cantidad_saldo = costo_finaly.qty_at_date
+                    _logger.info("COSTO FINAL")
+                    _logger.info(costo_finaly.qty_at_date)
 
                 saldo_inicial = self.env["it.units.move.report.valuated.line"].search(
                     [("product_id", "=", before_in.product_id.id), ("type", "=", 1)], limit=1)
