@@ -334,7 +334,7 @@ class ItStockMoveReport(models.Model):
             if before_in.date:
                 context_finally = {'to_date': valor.date}
                 costo_finaly = self.env["product.product"].with_context(context_finally).search(
-                    [('id', '=', valor.product_id.id)], limit=1)
+                    [('id', '=', valor.product_id.id), ('type', '=', 'product')], limit=1)
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
