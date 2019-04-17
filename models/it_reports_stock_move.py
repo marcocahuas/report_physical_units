@@ -31,10 +31,11 @@ class ItStockMoveReport(models.Model):
 
     @api.multi
     def unlink(self):
-        if self.stock_phisical_lines:
-            self.stock_phisical_lines.unlink()
-        if self.stock_valuated_lines:
-            self.stock_valuated_lines.unlink()
+        for item_report in self:
+            if item_report.stock_phisical_lines:
+                item_report.stock_phisical_lines.unlink()
+            if item_report.stock_valuated_lines:
+                item_report.stock_valuated_lines.unlink()
         res = super(ItStockMoveReport, self).unlink()
         return res
 
