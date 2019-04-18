@@ -342,7 +342,6 @@ class ItStockMoveReport(models.Model):
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
-                    product = costo_finaly.uom_id.code_unit_measure.code
 
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
@@ -368,7 +367,7 @@ class ItStockMoveReport(models.Model):
                     "correlative": "0",
                     "existence": "9",
                     "stock_id": valor.id,
-                    "units_med": product,
+                    "units_med": valor.uom_id.code_unit_measure.code,
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
