@@ -173,18 +173,18 @@ class ItStockMoveReport(models.Model):
                     if before_in.picking_id.correlative is False:
                         correlativo = before_in.picking_id.it_correlative_manual
 
-                # Ajuste
-                ajuste_fiscal = "0"
-                date_comprobante = datetime.datetime.strptime(before_in.date, "%Y-%m-%d")
-                mes_comprobante = str(date_comprobante.year) + "" + str("%02d" % (date_comprobante.month))
-                mes_actual = str(d_ref.year) + "" + str(month)
-                if before_in.picking_id.catalog_01_id.code == "01" or before_in.picking_id.catalog_01_id.code == "07":
-                    ajuste_fiscal = "1"
-                    if mes_actual != mes_comprobante:
-                        ajuste_fiscal = "6"
-                if before_in.picking_id.catalog_01_id.code == "03":
-                    if mes_actual != mes_comprobante:
-                        ajuste_fiscal = "7"
+                # # Ajuste
+                # ajuste_fiscal = "0"
+                # date_comprobante = datetime.datetime.strptime(before_in.date, "%Y-%m-%d")
+                # mes_comprobante = str(date_comprobante.year) + "" + str("%02d" % (date_comprobante.month))
+                # mes_actual = str(d_ref.year) + "" + str(month)
+                # if before_in.picking_id.catalog_01_id.code == "01" or before_in.picking_id.catalog_01_id.code == "07":
+                #     ajuste_fiscal = "1"
+                #     if mes_actual != mes_comprobante:
+                #         ajuste_fiscal = "6"
+                # if before_in.picking_id.catalog_01_id.code == "03":
+                #     if mes_actual != mes_comprobante:
+                #         ajuste_fiscal = "7"
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -208,7 +208,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        "ajuste_fiscal": ajuste_fiscal
+                        #"ajuste_fiscal": ajuste_fiscal
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -237,7 +237,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                "ajuste_fiscal": ajuste_fiscal
+                                #"ajuste_fiscal": ajuste_fiscal
                             }
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
@@ -267,7 +267,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                "ajuste_fiscal": ajuste_fiscal
+                                #"ajuste_fiscal": ajuste_fiscal
                             }
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
@@ -294,7 +294,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        "ajuste_fiscal": ajuste_fiscal
+                        #"ajuste_fiscal": ajuste_fiscal
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -656,7 +656,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 entrada
                 str("-") + str(stock_out.out_salida) or "0.00",  # campo 17  salida
-                stock_out.ajuste_fiscal or "",  # Estado
+                "1",  # Estado
             )
             content += str(stringunits) + "\r\n"
         nametxt = 'LE%s%s%s%s%s%s%s%s%s%s.TXT' % (
@@ -790,7 +790,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     type_operation = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
-    ajuste_fiscal = fields.Char()
+    #ajuste_fiscal = fields.Char()
 
 
 class ItStockMoveReportValuatedLine(models.Model):
