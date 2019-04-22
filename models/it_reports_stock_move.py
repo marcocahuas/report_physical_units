@@ -176,7 +176,7 @@ class ItStockMoveReport(models.Model):
                 # Ajuste
 
                 ajuste_fiscal = "0"
-                date_comprobante = datetime.datetime.strptime(before_in.picking_id.date_gr, "%Y-%m-%d")
+                date_comprobante = datetime.datetime.strptime(before_in.date, "%Y-%m-%d")
                 mes_comprobante = str(date_comprobante.year) + "" + str("%02d" % (date_comprobante.month))
                 mes_actual = str(d_ref.year) + "" + str(month)
                 if before_in.picking_id.catalog_01_id.code == "01" or before_in.picking_id.catalog_01_id.code == "07":
