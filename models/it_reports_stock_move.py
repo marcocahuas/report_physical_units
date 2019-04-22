@@ -174,7 +174,6 @@ class ItStockMoveReport(models.Model):
                         correlativo = before_in.picking_id.it_correlative_manual
 
                 # Ajuste
-
                 ajuste_fiscal = "0"
                 date_comprobante = datetime.datetime.strptime(before_in.date, "%Y-%m-%d")
                 mes_comprobante = str(date_comprobante.year) + "" + str("%02d" % (date_comprobante.month))
