@@ -328,6 +328,7 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code,
+                "metodo_valuacion": "1",
                 "in_saldo": product.stock_value,  # Entradas Costo Unit.
                 "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 "cantidad_saldo_final": product.qty_at_date,
@@ -385,6 +386,7 @@ class ItStockMoveReport(models.Model):
                     "existence": "9",
                     "stock_id": valor.id,
                     "units_med": "NIU",
+                    "metodo_valuacion": "1",
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
@@ -512,6 +514,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+                        "metodo_valuacion": "1",
                         "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": saldo_unit,
                         "costo_total_final": costo_final,
@@ -545,7 +548,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-
+                                "metodo_valuacion": "1",
                                 "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": saldo_unit,
                                 "costo_total_final": costo_final,
@@ -579,7 +582,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-
+                                "metodo_valuacion": "1",
                                 "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": saldo_unit,
                                 "costo_total_final": costo_final,
@@ -610,6 +613,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
+                        "metodo_valuacion": "1",
                         "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": saldo_unit,
                         "costo_total_final": costo_final,
@@ -705,7 +709,7 @@ class ItStockMoveReport(models.Model):
                 fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
                 date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
-            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -721,11 +725,12 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
+                stock_out.metodo_valuacion or "",
                 "%.2f" % round(stock_out.in_entrada, 2) or "0.00",  # campo 16 cantidad entrada
-                "%.2f" % round(stock_out.calculo_unit_in, 2) or "0.00",  #  17ENTRADA DEL COSTO UNITARIO
+                "%.2f" % round(stock_out.calculo_unit_in, 2) or "0.00",  # 17ENTRADA DEL COSTO UNITARIO
                 "%.2f" % round(stock_out.in_saldo, 2) or "0.00",  # campo 18  ENTRADA del costo total
                 "%.2f" % round(stock_out.out_salida, 2) or "0.00",  # campo 19  cantidad de salida
-                "%.2f" % round(stock_out.calculo_unit_out, 2) or "0.00",  #  20 SALIDA DE COSTO UNITARIO
+                "%.2f" % round(stock_out.calculo_unit_out, 2) or "0.00",  # 20 SALIDA DE COSTO UNITARIO
                 "%.2f" % round(stock_out.out_saldo, 2) or "0.00",  # 21 SALIDA DEL COSTO TOTAL
                 "%.2f" % round(stock_out.cantidad_saldo_final, 2) or "0.00",  # 22 CANTIDAD DE SALDO FINAL
                 "%.2f" % round(stock_out.costo_unit_final, 2) or "0.00",  # 23 COSTO UNITARIO DEL SALDO FINAL
@@ -833,3 +838,4 @@ class ItStockMoveReportValuatedLine(models.Model):
     type_operation = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
+    metodo_valuacion = fields.Char()
