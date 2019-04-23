@@ -32,7 +32,7 @@ class ItStockMoveReport(models.AbstractModel):
                 for before_in in obj.stock_phisical_lines:
                     array_field = []
                     array_field.append(before_in.date)
-                    array_field.append(before_in.establecimiento)
+                    array_field.append(before_in.establecimiento or "")
                     array_field.append(before_in.product_id.name)
                     array_field.append(before_in.reference)
                     array_field.append(before_in.series or "0")
@@ -82,7 +82,7 @@ class ItStockMoveReport(models.AbstractModel):
                 for before_in in obj.stock_valuated_lines:
                     array_field = []
                     array_field.append(before_in.date)
-                    array_field.append(before_in.establecimiento)
+                    array_field.append(before_in.establecimiento or "")
                     array_field.append(before_in.product_id.name)
                     array_field.append(before_in.reference)
                     array_field.append(before_in.series or "0")
