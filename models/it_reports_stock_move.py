@@ -721,16 +721,16 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or "0.00",  # campo 16 cantidad entrada
-                stock_out.calculo_unit_in or "0.00",  # ENTRADA DEL COSTO UNITARIO
-                stock_out.in_saldo or "0.00",  # campo 17  ENTRADA del costo total
-                str("-") + str(stock_out.out_salida) or "0.00",  # campo 18  cantidad de salida
-                stock_out.calculo_unit_out or "0.00",  # SALIDA DE COSTO UNITARIO
-                stock_out.out_saldo or "0.00",  # SALIDA DEL COSTO TOTAL
-                stock_out.cantidad_saldo_final or "0.00",  # CANTIDAD DE SALDO FINAL
-                stock_out.costo_unit_final or "0.00",  # COSTO UNITARIO DEL SALDO FINAL
-                stock_out.costo_total_final or "0.00",  # COSTO DEL SALDO FINAL
-                "1",  # campo 20  ESTADO
+                "%.2f" % round(stock_out.in_entrada, 2) or "0.00",  # campo 16 cantidad entrada
+                "%.2f" % round(stock_out.calculo_unit_in, 2) or "0.00",  #  17ENTRADA DEL COSTO UNITARIO
+                "%.2f" % round(stock_out.in_saldo, 2) or "0.00",  # campo 18  ENTRADA del costo total
+                "%.2f" % round(stock_out.out_salida, 2) or "0.00",  # campo 19  cantidad de salida
+                "%.2f" % round(stock_out.calculo_unit_out, 2) or "0.00",  #  20 SALIDA DE COSTO UNITARIO
+                "%.2f" % round(stock_out.out_saldo, 2) or "0.00",  # 21 SALIDA DEL COSTO TOTAL
+                "%.2f" % round(stock_out.cantidad_saldo_final, 2) or "0.00",  # 22 CANTIDAD DE SALDO FINAL
+                "%.2f" % round(stock_out.costo_unit_final, 2) or "0.00",  # 23 COSTO UNITARIO DEL SALDO FINAL
+                "%.2f" % round(stock_out.costo_total_final, 2) or "0.00",  # 24 COSTO DEL SALDO FINAL
+                "1",  # campo 25  ESTADO
             )
             content += str(stringvaluated) + "\r\n"
 
