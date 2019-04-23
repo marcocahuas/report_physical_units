@@ -192,7 +192,7 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": before_in.product_uom_qty,
+                        "out_salida": - before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
@@ -208,7 +208,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        #"ajuste_fiscal": ajuste_fiscal
+                        # "ajuste_fiscal": ajuste_fiscal
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -221,7 +221,7 @@ class ItStockMoveReport(models.Model):
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": before_in.product_uom_qty,
+                                "out_salida": - before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
@@ -237,7 +237,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                #"ajuste_fiscal": ajuste_fiscal
+                                # "ajuste_fiscal": ajuste_fiscal
                             }
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
@@ -267,7 +267,7 @@ class ItStockMoveReport(models.Model):
                                 "type_operation": type_operation_sunat,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                #"ajuste_fiscal": ajuste_fiscal
+                                # "ajuste_fiscal": ajuste_fiscal
                             }
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
@@ -294,7 +294,7 @@ class ItStockMoveReport(models.Model):
                         "type_operation": type_operation_sunat,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        #"ajuste_fiscal": ajuste_fiscal
+                        # "ajuste_fiscal": ajuste_fiscal
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
@@ -638,7 +638,7 @@ class ItStockMoveReport(models.Model):
                 fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
                 date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
-            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -655,7 +655,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 entrada
-                str("-") + str(stock_out.out_salida) or "0.00",  # campo 17  salida
+                stock_out.out_salida or "0.00",  # campo 17  salida
                 "1",  # Estado
             )
             content += str(stringunits) + "\r\n"
@@ -705,7 +705,7 @@ class ItStockMoveReport(models.Model):
                 fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
                 date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
-            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
                 stock_out.stock_id,  # campo 2
                 str("M") + str(stock_out.stock_id),  # campo 3
@@ -722,17 +722,15 @@ class ItStockMoveReport(models.Model):
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
                 stock_out.in_entrada or "0.00",  # campo 16 cantidad entrada
-                stock_out.calculo_unit_in or "0.00", #  ENTRADA DEL COSTO UNITARIO
+                stock_out.calculo_unit_in or "0.00",  # ENTRADA DEL COSTO UNITARIO
                 stock_out.in_saldo or "0.00",  # campo 17  ENTRADA del costo total
                 str("-") + str(stock_out.out_salida) or "0.00",  # campo 18  cantidad de salida
-                stock_out.calculo_unit_out or "0.00", # SALIDA DE COSTO UNITARIO
-                stock_out.out_saldo or "0.00", # SALIDA DEL COSTO TOTAL
-                stock_out.cantidad_saldo_final or "0.00", # CANTIDAD DE SALDO FINAL
-                stock_out.costo_unit_final or "0.00", # COSTO UNITARIO DEL SALDO FINAL
-                stock_out.costo_total_final or "0.00", # COSTO DEL SALDO FINAL
+                stock_out.calculo_unit_out or "0.00",  # SALIDA DE COSTO UNITARIO
+                stock_out.out_saldo or "0.00",  # SALIDA DEL COSTO TOTAL
+                stock_out.cantidad_saldo_final or "0.00",  # CANTIDAD DE SALDO FINAL
+                stock_out.costo_unit_final or "0.00",  # COSTO UNITARIO DEL SALDO FINAL
+                stock_out.costo_total_final or "0.00",  # COSTO DEL SALDO FINAL
                 "1",  # campo 20  ESTADO
-
-
             )
             content += str(stringvaluated) + "\r\n"
 
@@ -790,7 +788,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     type_operation = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
-    #ajuste_fiscal = fields.Char()
+    # ajuste_fiscal = fields.Char()
 
 
 class ItStockMoveReportValuatedLine(models.Model):
