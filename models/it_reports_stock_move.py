@@ -504,6 +504,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": "OTROS",
@@ -538,6 +539,7 @@ class ItStockMoveReport(models.Model):
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
+                                "catalogo_existence": "9",
                                 "existence": "9",
                                 "codigo_propio": "6000000000000000",
                                 "existence_id": "OTROS",
@@ -572,6 +574,7 @@ class ItStockMoveReport(models.Model):
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": before_in.id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
+                                "catalogo_existence": "9",
                                 "existence": "9",
                                 "codigo_propio": "6000000000000000",
                                 "existence_id": "OTROS",
@@ -603,6 +606,7 @@ class ItStockMoveReport(models.Model):
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
+                        "catalogo_existence": "9",
                         "existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence_id": "OTROS",
