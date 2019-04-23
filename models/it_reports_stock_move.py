@@ -654,8 +654,8 @@ class ItStockMoveReport(models.Model):
                 stock_out.type_operation or "",  # campo 13
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
-                stock_out.in_entrada or "0.00",  # campo 16 entrada
-                stock_out.out_salida or "0.00",  # campo 17  salida
+                "%.2f" % round(stock_out.in_entrada, 2) or "0.00",  # campo 16 entrada
+                "%.2f" % round(stock_out.out_salida, 2) or "0.00",  # campo 17  salida
                 "1",  # Estado
             )
             content += str(stringunits) + "\r\n"
