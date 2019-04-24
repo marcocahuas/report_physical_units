@@ -464,39 +464,39 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
-                    # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
-                    if (a == "internal") and (b == "production"):
-                        type_operation_sunat = "10"
-                        type_operation_name = "SALIDA A PRODUCCION"
-                        fecha = before_in.date
-                        tipo_doc = "00"
-                        serie = "0"
-                        correlativo = "0"
-                    # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
-                    if (a == "internal") and (b == "customer"):
-                        type_operation_sunat = "01"
-                        type_operation_name = "VENTA NACIONAL"
+                # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
+                if (a == "internal") and (b == "production"):
+                    type_operation_sunat = "10"
+                    type_operation_name = "SALIDA A PRODUCCION"
+                    fecha = before_in.date
+                    tipo_doc = "00"
+                    serie = "0"
+                    correlativo = "0"
+                # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
+                if (a == "internal") and (b == "customer"):
+                    type_operation_sunat = "01"
+                    type_operation_name = "VENTA NACIONAL"
                     # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
-                    if (a == "customer") and (b == "internal"):
-                        type_operation_sunat = "24"
-                        type_operation_name = "ENTRADA POR DEVOLUCIÓN DEL CLIENTE"
-                    # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
-                    if (a == "inventory") and (b == "internal"):
-                        type_operation_sunat = "28"
-                        type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
-                    # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
-                    if (a == "internal") and (b == "inventory"):
-                        type_operation_sunat = "28"
-                        type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
-                    #  INTERNAL INVENTORY IF MERMAS
-                    if (a == "internal") and (b == "inventory"):
-                        if is_scrap is True:
-                            type_operation_sunat = "13"
-                            type_operation_name = "MERMAS"
-                    #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
-                    if (a == "internal") and (b == "supplier"):
-                        type_operation_sunat = "25"
-                        type_operation_name = "SALIDA POR DEVOLUCION AL PROVEEDOR"
+                if (a == "customer") and (b == "internal"):
+                    type_operation_sunat = "24"
+                    type_operation_name = "ENTRADA POR DEVOLUCIÓN DEL CLIENTE"
+                # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
+                if (a == "inventory") and (b == "internal"):
+                    type_operation_sunat = "28"
+                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
+                # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
+                if (a == "internal") and (b == "inventory"):
+                    type_operation_sunat = "28"
+                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
+                #  INTERNAL INVENTORY IF MERMAS
+                if (a == "internal") and (b == "inventory"):
+                    if is_scrap is True:
+                        type_operation_sunat = "13"
+                        type_operation_name = "MERMAS"
+                #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
+                if (a == "internal") and (b == "supplier"):
+                    type_operation_sunat = "25"
+                    type_operation_name = "SALIDA POR DEVOLUCION AL PROVEEDOR"
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
