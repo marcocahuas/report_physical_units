@@ -80,6 +80,7 @@ class ItStockMoveReport(models.Model):
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
                 "type_operation": "16",
+                "operation_name": "SALDO INICIAL",
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
                 "catalog_01_id": "00",
@@ -111,11 +112,13 @@ class ItStockMoveReport(models.Model):
                 it_code = before_in.location_id.it_establishment.code
                 it_des_code = before_in.location_dest_id.it_establishment.code
                 type_operation_sunat = ""
+                type_operation_name = ""
                 is_scrap = before_in.location_dest_id.scrap_location
 
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
+                    type_operation_name = "ENTRADA DE PRODUCCION"
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
@@ -123,6 +126,7 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
                     type_operation_sunat = "10"
+                    type_operation_name = "SALIDA A PRODUCCION"
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
@@ -130,22 +134,28 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
+                    type_operation_name = "VENTA NACIONAL"
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
+                    type_operation_name = "ENTRADA POR DEVOLUCIÓN DEL CLIENTE"
                 # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
                     type_operation_sunat = "28"
+                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
                 # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
                 if (a == "internal") and (b == "inventory"):
                     type_operation_sunat = "28"
+                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
                 #  INTERNAL INVENTORY IF MERMAS
                 if (a == "internal") and (b == "inventory"):
                     if is_scrap is True:
                         type_operation_sunat = "13"
+                        type_operation_name = "MERMAS"
                 #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
                 if (a == "internal") and (b == "supplier"):
                     type_operation_sunat = "25"
+                    type_operation_name = "SALIDA POR DEVOLUCION AL PROVEEDOR"
                 # INTERNAL A PRODUCTION DESECHOS TP=99 => SALIDA
                 # if (a == "internal") and (b == "production"):
                 #     if before_in.location_id.is_kardex is True:
@@ -153,6 +163,8 @@ class ItStockMoveReport(models.Model):
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
+                if before_in.picking_id.type_transaction.description is not False:
+                    type_operation_name = before_in.picking_id.type_transaction.description
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
@@ -206,6 +218,7 @@ class ItStockMoveReport(models.Model):
                         "series": serie,
                         "correlative": correlativo,
                         "type_operation": type_operation_sunat,
+                        "operation_name": type_operation_name,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                         # "ajuste_fiscal": ajuste_fiscal
@@ -235,6 +248,7 @@ class ItStockMoveReport(models.Model):
                                 "series": serie,
                                 "correlative": correlativo,
                                 "type_operation": type_operation_sunat,
+                                "operation_name": type_operation_name,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                                 # "ajuste_fiscal": ajuste_fiscal
@@ -265,6 +279,7 @@ class ItStockMoveReport(models.Model):
                                 "series": serie,
                                 "correlative": correlativo,
                                 "type_operation": type_operation_sunat,
+                                "operation_name": type_operation_name,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                                 # "ajuste_fiscal": ajuste_fiscal
@@ -292,6 +307,7 @@ class ItStockMoveReport(models.Model):
                         "series": serie,
                         "correlative": correlativo,
                         "type_operation": type_operation_sunat,
+                        "operation_name": type_operation_name,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                         # "ajuste_fiscal": ajuste_fiscal
@@ -795,6 +811,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     series = fields.Char(string="Serie")
     correlative = fields.Char(string="N° Comprobante")
     type_operation = fields.Char()
+    operation_name = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
     # ajuste_fiscal = fields.Char()

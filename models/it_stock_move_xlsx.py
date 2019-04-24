@@ -37,7 +37,7 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.reference)
                     array_field.append(before_in.series or "0")
                     array_field.append(before_in.correlative or "0")
-                    array_field.append(before_in.type_operation)
+                    array_field.append(str(before_in.type_operation)+str("-")+str(before_in.operation_name)or "")
                     array_field.append(before_in.in_entrada)
                     array_field.append(before_in.out_salida)
                     array_field.append(before_in.out_salida)
