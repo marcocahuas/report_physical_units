@@ -142,12 +142,12 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
-                    if type_operation_sunat == type_operation.code == "01":
+                    if type_operation_sunat == str(type_operation.code == "01"):
                         type_operation_name = type_operation.description
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
-                    if type_operation_sunat == type_operation.code == "24":
+                    if type_operation_sunat == str(type_operation.code == "24"):
                         type_operation_name = type_operation.description
                 # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
