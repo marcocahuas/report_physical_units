@@ -134,7 +134,7 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
-                    type_operation_name = "VENTA NACIONAL"
+                    type_operation_name = "VENTA NACIONAL 05"
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
@@ -404,7 +404,7 @@ class ItStockMoveReport(models.Model):
                     "existence": valor.product_id.it_existence.code,
                     "stock_id": valor.id,
                     "units_med": "NIU",
-                    "metodo_valuacion": "1",
+                    "metodo_valuacion": "1",# valor.product_id.categ_id.name
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
