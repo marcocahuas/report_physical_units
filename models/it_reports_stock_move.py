@@ -109,28 +109,28 @@ class ItStockMoveReport(models.Model):
 
                 type_operation = self.env["type.of.operation"].search(
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
-                if type_operation.code == "19":
+                if type_operation.code == "19" is not False:
                     prod_code = type_operation.code
                     prod_description = type_operation.description
-                # if type_operation.code == "10":
-                #     prod_sal_code = type_operation.code
-                #     prod_sal_description = type_operation.description
-                if type_operation.code == "01":
+                if type_operation.code == "10" is not False:
+                    prod_sal_code = type_operation.code
+                    prod_sal_description = type_operation.description
+                if type_operation.code == "01" is not False:
                     venta_code = type_operation.code
                     venta_description = type_operation.description
-                if type_operation.code == "24":
+                if type_operation.code == "24" is not False:
                     dev_code = type_operation.code
                     dev_description = type_operation.description
-                if type_operation.code == "28":
+                if type_operation.code == "28" is not False:
                     ajuste_code = type_operation.code
                     ajuste_description = type_operation.description
-                if type_operation.code == "28":
+                if type_operation.code == "28" is not False:
                     ajuste2_code = type_operation.code
                     ajuste2_description = type_operation.description
-                if type_operation.code == "13":
+                if type_operation.code == "13" is not False:
                     mermas_code = type_operation.code
                     mermas_description = type_operation.description
-                if type_operation.code == "25":
+                if type_operation.code == "25" is not False:
                     dev_prov_code = type_operation.code
                     dev_prov_description = type_operation.description
 
@@ -153,8 +153,8 @@ class ItStockMoveReport(models.Model):
                     correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
-                    type_operation_sunat = "10"
-                    type_operation_name = "PROVEEDOR SALIDA"
+                    type_operation_sunat = prod_sal_code
+                    type_operation_name = prod_sal_description
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
@@ -184,7 +184,10 @@ class ItStockMoveReport(models.Model):
                 if (a == "internal") and (b == "supplier"):
                     type_operation_sunat = dev_prov_code
                     type_operation_name = dev_prov_description
-
+                # INTERNAL A PRODUCTION DESECHOS TP=99 => SALIDA
+                # if (a == "internal") and (b == "production"):
+                #     if before_in.location_id.is_kardex is True:
+                #         type_operation_sunat = "99"  # falta analizar
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
