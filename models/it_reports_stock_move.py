@@ -111,7 +111,7 @@ class ItStockMoveReport(models.Model):
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
                 if type_operation.code == "01":
                     venta_code = type_operation.code
-                    venta_description = type_operation.descriptiion
+                    venta_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
