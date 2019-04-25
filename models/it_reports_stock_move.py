@@ -19,7 +19,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento')
+    almacen = fields.Many2one('stock.warehouse', string='')
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
@@ -414,7 +414,7 @@ class ItStockMoveReport(models.Model):
                     "correlative": "0",
                     "existence": valor.product_id.it_existence.code,
                     "stock_id": valor.id,
-                    "units_med": "NIU",
+                    "units_med": valor.product_id.uom_id.code_unit_measure.code,
                     "metodo_valuacion": "1",# valor.product_id.categ_id.name
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
