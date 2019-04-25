@@ -106,6 +106,13 @@ class ItStockMoveReport(models.Model):
                     tipo_doc = stock_account_after.catalog_01_id.code
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
+
+                type_operation = self.env["type.of.operation"].search(
+                    [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
+                if type_operation.code == "01":
+                    venta_code = type_operation.code
+                    venta_description = type_operation.descriptiion
+
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
                 b = before_in.location_dest_id.usage
@@ -133,8 +140,8 @@ class ItStockMoveReport(models.Model):
                     correlativo = "0"
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
-                    type_operation_sunat = "01"
-                    type_operation_name = "VENTA NACIONAL 05"
+                    type_operation_sunat = venta_code
+                    type_operation_name = venta_description
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
