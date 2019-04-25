@@ -109,9 +109,13 @@ class ItStockMoveReport(models.Model):
 
                 type_operation = self.env["type.of.operation"].search(
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
-                if type_operation.code == "01":
-                    venta_code = type_operation.code
-                    venta_description = type_operation.description
+                for list in type_operation:
+                    if list.code == "01":
+                        venta_code = type_operation.code
+                        venta_description = type_operation.description
+                    if list.code == "19":
+                        dev_code = type_operation.code
+                        dev_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
@@ -124,8 +128,8 @@ class ItStockMoveReport(models.Model):
 
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
-                    type_operation_sunat = "19"  # Cambiar
-                    type_operation_name = "ENTRADA DE PRODUCCION"
+                    type_operation_sunat = dev_code  # Cambiar
+                    type_operation_name = dev_description
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
