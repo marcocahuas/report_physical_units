@@ -109,9 +109,30 @@ class ItStockMoveReport(models.Model):
 
                 type_operation = self.env["type.of.operation"].search(
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
+                if type_operation.code == "19":
+                    prod_code = type_operation.code
+                    prod_description = type_operation.description
+                if type_operation.code == "10":
+                    prod_sal_code = type_operation.code
+                    prod_sal_description = type_operation.description
                 if type_operation.code == "01":
                     venta_code = type_operation.code
                     venta_description = type_operation.description
+                if type_operation.code == "24":
+                    dev_code = type_operation.code
+                    dev_description = type_operation.description
+                if type_operation.code == "28":
+                    ajuste_code = type_operation.code
+                    ajuste_description = type_operation.description
+                if type_operation.code == "28":
+                    ajuste2_code = type_operation.code
+                    ajuste2_description = type_operation.description
+                if type_operation.code == "13":
+                    mermas_code = type_operation.code
+                    mermas_description = type_operation.description
+                if type_operation.code == "25":
+                    dev_prov_code = type_operation.code
+                    dev_prov_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
@@ -124,16 +145,16 @@ class ItStockMoveReport(models.Model):
 
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
-                    type_operation_sunat = "19"  # Cambiar
-                    type_operation_name = "ENTRADA DE PRODUCCION"
+                    type_operation_sunat = prod_code  # Cambiar
+                    type_operation_name = prod_description
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
                     correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
-                    type_operation_sunat = "10"
-                    type_operation_name = "SALIDA A PRODUCCION"
+                    type_operation_sunat = prod_sal_code
+                    type_operation_name = prod_sal_description
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
@@ -144,29 +165,26 @@ class ItStockMoveReport(models.Model):
                     type_operation_name = venta_description
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
-                    type_operation_sunat = "24"
-                    type_operation_name = "ENTRADA POR DEVOLUCIÓN DEL CLIENTE"
+                    type_operation_sunat = dev_code
+                    type_operation_name = dev_description
                 # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
                 if (a == "inventory") and (b == "internal"):
-                    type_operation_sunat = "28"
-                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
+                    type_operation_sunat = ajuste_code
+                    type_operation_name = ajuste_description
                 # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
                 if (a == "internal") and (b == "inventory"):
-                    type_operation_sunat = "28"
-                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
+                    type_operation_sunat = ajuste2_code
+                    type_operation_name = ajuste2_description
                 #  INTERNAL INVENTORY IF MERMAS
                 if (a == "internal") and (b == "inventory"):
                     if is_scrap is True:
-                        type_operation_sunat = "13"
-                        type_operation_name = "MERMAS"
+                        type_operation_sunat = mermas_code
+                        type_operation_name = mermas_description
                 #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
                 if (a == "internal") and (b == "supplier"):
-                    type_operation_sunat = "25"
-                    type_operation_name = "SALIDA POR DEVOLUCION AL PROVEEDOR"
-                # INTERNAL A PRODUCTION DESECHOS TP=99 => SALIDA
-                # if (a == "internal") and (b == "production"):
-                #     if before_in.location_id.is_kardex is True:
-                #         type_operation_sunat = "99"  # falta analizar
+                    type_operation_sunat = dev_prov_code
+                    type_operation_name = dev_prov_description
+
 
                 if before_in.picking_id.type_transaction.code is not False:
                     type_operation_sunat = before_in.picking_id.type_transaction.code
