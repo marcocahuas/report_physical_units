@@ -112,9 +112,9 @@ class ItStockMoveReport(models.Model):
                 if type_operation.code == "19":
                     prod_code = type_operation.code
                     prod_description = type_operation.description
-                if type_operation.code == "10":
-                    prod_sal_code = type_operation.code
-                    prod_sal_description = type_operation.description
+                # if type_operation.code == "10":
+                #     prod_sal_code = type_operation.code
+                #     prod_sal_description = type_operation.description
                 if type_operation.code == "01":
                     venta_code = type_operation.code
                     venta_description = type_operation.description
@@ -153,8 +153,8 @@ class ItStockMoveReport(models.Model):
                     correlativo = "0"
                 # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
                 if (a == "internal") and (b == "production"):
-                    type_operation_sunat = prod_sal_code
-                    type_operation_name = prod_sal_description
+                    type_operation_sunat = "10"
+                    type_operation_name = "PROVEEDOR SALIDA"
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
