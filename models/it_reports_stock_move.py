@@ -112,9 +112,9 @@ class ItStockMoveReport(models.Model):
                 if type_operation.code == "01":
                     venta_code = type_operation.code
                     venta_description = type_operation.description
-                if type_operation.code == "19":
-                    prov_code = type_operation.code
-                    prov_description = type_operation.description
+                # if type_operation.code == "19":
+                #     prov_code = type_operation.code
+                #     prov_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
@@ -127,8 +127,8 @@ class ItStockMoveReport(models.Model):
 
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
-                    type_operation_sunat = prov_code
-                    type_operation_name = prov_description
+                    type_operation_sunat = "19"
+                    type_operation_name = "GAME"
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
