@@ -111,11 +111,14 @@ class ItStockMoveReport(models.Model):
                 type_operation = self.env["type.of.operation"].search(
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
                 for line in type_operation:
-                    if line.code == "01":
-                        venta_description = line.description
-                for line2 in type_operation:
-                    if line2.code == "19":
-                        prov_description = line2.description
+                    if line.code is not False:
+                        str_code_id = str(line.code)
+                        if str_code_id == "01" not in type_operation_sunat:
+                            type_operation_sunat.update({str_code_id:"0"})
+                            venta_description = line.description
+                        if str_code_id == "19" not in type_operation_sunat:
+                            type_operation_sunat.update({str_code_id:"0"})
+                            prov_description = line.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
