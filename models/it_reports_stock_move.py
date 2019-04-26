@@ -120,13 +120,11 @@ class ItStockMoveReport(models.Model):
                     [("code", "=", type_operation_sunat or "-")], limit=1)
                 if type_operation.code == "01":
                     venta_description = type_operation.description
-                if type_operation.code == "19":
-                    prov_description = type_operation.description
 
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"
-                    type_operation_name = prov_description
+                    type_operation_name = "--"
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
@@ -412,7 +410,7 @@ class ItStockMoveReport(models.Model):
                     "existence": valor.product_id.it_existence.code,
                     "stock_id": valor.id,
                     "units_med": valor.product_id.uom_id.code_unit_measure.code,
-                    "metodo_valuacion": "1",# valor.product_id.categ_id.name
+                    "metodo_valuacion": "1",  # valor.product_id.categ_id.name
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
@@ -462,8 +460,14 @@ class ItStockMoveReport(models.Model):
                 it_des_code = before_in.location_dest_id.it_establishment.code
                 type_operation_sunat = ""
                 type_operation_name = ""
+                metodo_coste = ""
                 is_scrap = before_in.location_dest_id.scrap_location
-
+                if before_in.product_id.categ_id.name == "average":
+                    metodo_coste = "1"
+                if before_in.product_id.categ_id.name == "fifo":
+                    metodo_coste = "2"
+                if before_in.product_id.categ_id.name == "standard":
+                    metodo_coste = "3"
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"  # Cambiar
@@ -553,7 +557,7 @@ class ItStockMoveReport(models.Model):
                         "operation_name": type_operation_name,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        "metodo_valuacion": "1",
+                        "metodo_valuacion": metodo_coste,
                         "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": saldo_unit,
                         "costo_total_final": costo_final,
@@ -589,7 +593,7 @@ class ItStockMoveReport(models.Model):
                                 "operation_name": type_operation_name,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                "metodo_valuacion": "1",
+                                "metodo_valuacion": metodo_coste,
                                 "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": saldo_unit,
                                 "costo_total_final": costo_final,
@@ -625,7 +629,7 @@ class ItStockMoveReport(models.Model):
                                 "operation_name": type_operation_name,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                                "metodo_valuacion": "1",
+                                "metodo_valuacion": metodo_coste,
                                 "cantidad_saldo_final": cantidad_saldo,
                                 "costo_unit_final": saldo_unit,
                                 "costo_total_final": costo_final,
@@ -658,7 +662,7 @@ class ItStockMoveReport(models.Model):
                         "operation_name": type_operation_name,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
-                        "metodo_valuacion": "1",
+                        "metodo_valuacion": metodo_coste,
                         "cantidad_saldo_final": cantidad_saldo,
                         "costo_unit_final": saldo_unit,
                         "costo_total_final": costo_final,
