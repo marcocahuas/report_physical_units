@@ -108,12 +108,8 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                type_operation = self.env["type.of.operation"].search([], limit=1)
-                for line in type_operation:
-                    if line.code == "01":
-                        venta_description = line.description
-                    if line.code == "19":
-                        con_description = line.description
+                type_operation = self.env["type.of.operation"].search(['code', '=', '19'], limit=1)
+                con_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
@@ -143,7 +139,7 @@ class ItStockMoveReport(models.Model):
                 # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
                 if (a == "internal") and (b == "customer"):
                     type_operation_sunat = "01"
-                    type_operation_name = venta_description
+                    type_operation_name = "de"
                 # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
                 if (a == "customer") and (b == "internal"):
                     type_operation_sunat = "24"
