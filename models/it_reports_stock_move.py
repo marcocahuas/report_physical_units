@@ -329,11 +329,11 @@ class ItStockMoveReport(models.Model):
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
         for product in initial:
             metodo_coste = ""
-            if product.product_id.categ_id.property_cost_method == "average":
+            if product.categ_id.property_cost_method == "average":
                 metodo_coste = "1"
-            if product.product_id.categ_id.property_cost_method == "fifo":
+            if product.categ_id.property_cost_method == "fifo":
                 metodo_coste = "2"
-            if product.product_id.categ_id.property_cost_method == "standard":
+            if product.categ_id.property_cost_method == "standard":
                 metodo_coste = "3"
             json_stock_phisical = {
                 "type": 1,
