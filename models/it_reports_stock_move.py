@@ -116,6 +116,31 @@ class ItStockMoveReport(models.Model):
                 type_operation_sunat = ""
                 type_operation_name = ""
                 is_scrap = before_in.location_dest_id.scrap_location
+
+                code_transaction = False
+                description_transaction = False
+                # VALORES YA ASIGNADOS
+                if before_in.picking_id.id:
+                    if before_in.picking_id.type_transaction.id:
+                        code_transaction = before_in.picking_id.type_transaction.code
+                        description_transaction = before_in.picking_id.type_transaction.description
+
+                # HARDCODING
+
+                if code_transaction is False:
+                    res_operacion = self.env["type.of.operation"]
+                    if (a == "production") and (b == "internal"):
+                        code_transaction = "19"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+
+                    if (a == "production") and (b == "internal"):
+                        code_transaction = "25"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+
+                # REDUNDANTE
+
                 type_operation = self.env["type.of.operation"].search(
                     [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
                 if type_operation.code == "01":
