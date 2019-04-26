@@ -108,7 +108,7 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                type_operation = self.env["type.of.operation"].search(['code', '=', '19'], limit=1)
+                type_operation = self.env["type.of.operation"].search(['code', '=', '19'])
                 con_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
