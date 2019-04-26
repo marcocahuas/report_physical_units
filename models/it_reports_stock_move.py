@@ -108,14 +108,11 @@ class ItStockMoveReport(models.Model):
                     serie = stock_account_after.series.series
                     correlativo = stock_account_after.correlative
 
-                type_operation = self.env["type.of.operation"].search(
-                    [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
+                type_operation = self.env["type.of.operation"].search([], limit=1).id
                 if type_operation.code == "01":
                     venta_description = type_operation.description
-                type_operation2 = self.env["type.of.operation"].search(
-                    [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
-                if type_operation2.code == "19":
-                    prov_description = type_operation2.description
+                if type_operation.code == "19":
+                    con_description = type_operation.description
 
                 # CAMPOS PARA IN OR OUT DE MOMIENTOS DE STOCK_MOVE
                 a = before_in.location_id.usage
@@ -129,7 +126,7 @@ class ItStockMoveReport(models.Model):
                 # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
                 if (a == "production") and (b == "internal"):
                     type_operation_sunat = "19"
-                    type_operation_name = prov_description
+                    type_operation_name = con_description
                     fecha = before_in.date
                     tipo_doc = "00"
                     serie = "0"
