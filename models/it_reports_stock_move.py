@@ -328,6 +328,13 @@ class ItStockMoveReport(models.Model):
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
         for product in initial:
+            metodo_coste = ""
+            if product.product_id.categ_id.property_cost_method == "average":
+                metodo_coste = "1"
+            if product.product_id.categ_id.property_cost_method == "fifo":
+                metodo_coste = "2"
+            if product.product_id.categ_id.property_cost_method == "standard":
+                metodo_coste = "3"
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
@@ -351,7 +358,7 @@ class ItStockMoveReport(models.Model):
                 "correlative": "0",
                 "existence": product.it_existence.code,
                 "units_med": product.uom_id.code_unit_measure.code,
-                "metodo_valuacion": "1",
+                "metodo_valuacion": metodo_coste,
                 "in_saldo": product.stock_value,  # Entradas Costo Unit.
                 "calculo_unit_in": (product.stock_value / product.qty_at_date),
                 "cantidad_saldo_final": product.qty_at_date,
@@ -372,6 +379,13 @@ class ItStockMoveReport(models.Model):
             saldo_unit = False
             if saldo_price_unit.costo_total_final != 0 and saldo_price_unit.cantidad_saldo_final != 0:
                 saldo_unit = saldo_price_unit.costo_total_final / saldo_price_unit.cantidad_saldo_final
+            metodo_coste = ""
+            if valor.product_id.categ_id.property_cost_method == "average":
+                metodo_coste = "1"
+            if valor.product_id.categ_id.property_cost_method == "fifo":
+                metodo_coste = "2"
+            if valor.product_id.categ_id.property_cost_method == "standard":
+                metodo_coste = "3"
 
             # PARA EL COSTO FINAL SE OBTIENE DEL VALORIZADO
             costo_final = False
@@ -410,7 +424,7 @@ class ItStockMoveReport(models.Model):
                     "existence": valor.product_id.it_existence.code,
                     "stock_id": valor.id,
                     "units_med": valor.product_id.uom_id.code_unit_measure.code,
-                    "metodo_valuacion": "1",  # valor.product_id.categ_id.name
+                    "metodo_valuacion": metodo_coste,  # valor.product_id.categ_id.name
                     "cantidad_saldo_final": cantidad_saldo,
                     "costo_unit_final": saldo_unit,
                     "costo_total_final": costo_final,
