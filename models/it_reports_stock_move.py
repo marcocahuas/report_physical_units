@@ -117,7 +117,7 @@ class ItStockMoveReport(models.Model):
                 type_operation_name = ""
                 is_scrap = before_in.location_dest_id.scrap_location
                 type_operation = self.env["type.of.operation"].search(
-                    [("code", "=", type_operation_sunat or "-")], limit=1)
+                    [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
                 if type_operation.code == "01":
                     venta_description = type_operation.description
 
