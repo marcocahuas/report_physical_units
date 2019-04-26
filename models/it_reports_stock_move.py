@@ -460,8 +460,8 @@ class ItStockMoveReport(models.Model):
                 it_des_code = before_in.location_dest_id.it_establishment.code
                 type_operation_sunat = ""
                 type_operation_name = ""
-                metodo_coste = ""
                 is_scrap = before_in.location_dest_id.scrap_location
+
                 if before_in.product_id.categ_id.name == "average":
                     metodo_coste = "1"
                 if before_in.product_id.categ_id.name == "fifo":
