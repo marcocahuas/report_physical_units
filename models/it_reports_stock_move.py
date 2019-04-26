@@ -109,7 +109,7 @@ class ItStockMoveReport(models.Model):
                     correlativo = stock_account_after.correlative
 
                 type_operation = self.env["type.of.operation"].search(
-                    [("code", "=", before_in.picking_id.type_transaction.code or "-")], limit=1)
+                    [("code" or "-")], limit=1)
                 for line in type_operation:
                     if line.code == "01":
                         venta_description = type_operation.description
