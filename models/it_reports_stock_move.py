@@ -19,7 +19,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Char(string='establecimiento', limit=1)
+    establishment = fields.One2many(string='establecimiento', limit=1)
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
