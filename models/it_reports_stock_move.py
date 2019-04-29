@@ -65,6 +65,11 @@ class ItStockMoveReport(models.Model):
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
+
+        res_operacion = self.env["type.of.operation"]
+        code_transaction = "16"
+        description_transaction = res_operacion.search(
+            [("code", "=", code_transaction)], limit=1).description
         for product in initial:
             json_stock_phisical = {
                 "type": 1,
@@ -80,8 +85,8 @@ class ItStockMoveReport(models.Model):
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
-                "type_operation": "16",
-                "operation_name": "SALDO INICIAL",
+                "type_operation": code_transaction,
+                "operation_name": description_transaction,
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
                 "catalog_01_id": "00",
