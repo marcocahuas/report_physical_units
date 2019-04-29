@@ -347,6 +347,11 @@ class ItStockMoveReport(models.Model):
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
+        res_operacion = self.env["type.of.operation"]
+        code_transaction = "16"
+        description_transaction = res_operacion.search(
+            [("code", "=", code_transaction)], limit=1).description
+
         for product in initial:
             metodo_coste = ""
             if product.categ_id.property_cost_method == "average":
@@ -369,8 +374,8 @@ class ItStockMoveReport(models.Model):
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
-                "type_operation": "16",
-                "operation_name": "SALDO INICIAL",
+                "type_operation": code_transaction,
+                "operation_name": description_transaction,
                 "product_name": product.name,
                 "date_gr": self.date_in_time,
                 "catalog_01_id": "00",
@@ -392,6 +397,11 @@ class ItStockMoveReport(models.Model):
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
+        #res_operacion = self.env["type.of.operation"]
+        code_transaction = "99"
+        description_transaction = "DECONSTRUCCIÓN"
+        # description_transaction = res_operacion.search(
+        #     [("code", "=", code_transaction)], limit=1).description
         for valor in entry_balance:
             # PARA EL PRECIO UNIT SALDO FINAL
             saldo_price_unit = self.env["it.units.move.report.valuated.line"].search(
@@ -434,8 +444,8 @@ class ItStockMoveReport(models.Model):
                     "establecimiento": "0001",
                     "existence_id": "OTROS",
                     "codigo_propio": "6000000000000000",
-                    "type_operation": "99",
-                    "operation_name": "DECONSTRUCCIÓN",
+                    "type_operation": code_transaction,
+                    "operation_name": description_transaction,
                     "product_name": valor.product_id.name,
                     "date_gr": self.date_in_time,
                     "catalog_01_id": "00",
