@@ -14,7 +14,7 @@
     ],
     "summary": "Physical units - valued inventory",
     "description": "",
-    "depends": ["base", 'stock'],
+    "depends": ["base", 'stock', 'intitec_localizacion_PE_v11'],
     "data": [
         'views/it_reports_stock_move.xml',
         'security/security.xml',
