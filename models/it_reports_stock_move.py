@@ -19,7 +19,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Char(string='establecimiento')
+    establishment = fields.Char(string='establecimiento', compute="_compute_it_establishment")
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
@@ -29,6 +29,12 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
+
+    @api.one
+    def _compute_it_establishment(self):
+        type_op = self.env["it.stock.warehouse"].search([('code', '=', 'id')])
+        if type_op.id is not False:
+            self.establishment = type_op.id
 
     @api.multi
     def unlink(self):
