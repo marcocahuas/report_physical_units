@@ -111,19 +111,19 @@
             <field name="view_mode">tree,form</field>
         </record>
         <!-- CONFIGURACION UNIDADES FISICAS-->
-        <record id="it_units_move_report_search_form_view" model="ir.ui.view">
-            <field name="name">Reports units move search</field>
-            <field name="model">it.units.move.report</field>
-            <field name="inherit_id" ref="product.product_search_form_view"/>
-            <field name="arch" type="xml">
-                <search>
-                    <group expand="1" string="Group By">
-                        <filter name="groupby_categ_id" context="{'group_by' : 'categ_id'}" string="Category"/>
-                    </group>
-                    <field name="categ_id" position="attributes"/>
-                </search>
-            </field>
-        </record>
+        <!--<record id="it_units_move_report_search_form_view" model="ir.ui.view">-->
+            <!--<field name="name">Reports units move search</field>-->
+            <!--<field name="model">it.units.move.report</field>-->
+            <!--<field name="inherit_id" ref="product.product_search_form_view"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<search>-->
+                    <!--<group expand="1" string="Group By">-->
+                        <!--<filter name="groupby_categ_id" context="{'group_by' : 'categ_id'}" string="Category"/>-->
+                    <!--</group>-->
+                    <!--<field name="categ_id" position="attributes"/>-->
+                <!--</search>-->
+            <!--</field>-->
+        <!--</record>-->
         <menuitem action="it_units_move_report_menu_action" id="it_units_move_report" name="Reportes de Inventario"
                   parent="account.menu_finance_reports" sequence="9"/>
         <report
