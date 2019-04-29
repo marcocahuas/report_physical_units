@@ -19,7 +19,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    almacen = fields.Many2one('stock.warehouse', string='')
+    establishment = fields.Many2one('it.units.move.report.phisical.line', string='establecimiento')
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
@@ -397,7 +397,7 @@ class ItStockMoveReport(models.Model):
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
-        #res_operacion = self.env["type.of.operation"]
+        # res_operacion = self.env["type.of.operation"]
         code_transaction = "99"
         description_transaction = "DECONSTRUCCIÓN"
         # description_transaction = res_operacion.search(
@@ -574,7 +574,6 @@ class ItStockMoveReport(models.Model):
                         code_transaction = "25"
                         description_transaction = res_operacion.search(
                             [("code", "=", code_transaction)], limit=1).description
-
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
@@ -905,7 +904,16 @@ class ItStockMoveReportPhisicalLine(models.Model):
     operation_name = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
+
     # ajuste_fiscal = fields.Char()
+    @api.multi
+    @api.depends('establecimiento')
+    def name_get(self):
+        result = []
+        for table in self:
+            l_name = '%s' % (table.establecimiento)
+            result.append((table.id, l_name))
+        return result
 
 
 class ItStockMoveReportValuatedLine(models.Model):
