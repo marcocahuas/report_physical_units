@@ -17,7 +17,7 @@ class ItStockMoveReport(models.Model):
     date_out = fields.Date(string='Fecha fin')
     date_in_time = fields.Datetime(string='Fecha inicio2')
     date_out_time = fields.Datetime(string='Fecha fin2')
-    business_name = fields.Char('res.company', string='Razon Social')
+    business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
     establishment = fields.Char(string='establecimiento')
     txt_filename = fields.Char()
@@ -29,10 +29,6 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
-
-    @api.multi
-    def search_establishment(self):
-        self.establishment = self.env["it.stock.warehouse"]
 
     @api.multi
     def unlink(self):
@@ -401,7 +397,7 @@ class ItStockMoveReport(models.Model):
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
-        # res_operacion = self.env["type.of.operation"]
+        #res_operacion = self.env["type.of.operation"]
         code_transaction = "99"
         description_transaction = "DECONSTRUCCIÓN"
         # description_transaction = res_operacion.search(
@@ -578,6 +574,7 @@ class ItStockMoveReport(models.Model):
                         code_transaction = "25"
                         description_transaction = res_operacion.search(
                             [("code", "=", code_transaction)], limit=1).description
+
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
@@ -908,7 +905,6 @@ class ItStockMoveReportPhisicalLine(models.Model):
     operation_name = fields.Char()
     product_name = fields.Char()
     units_med = fields.Char()
-
     # ajuste_fiscal = fields.Char()
 
 
