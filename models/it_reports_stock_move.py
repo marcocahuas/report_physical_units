@@ -498,52 +498,69 @@ class ItStockMoveReport(models.Model):
                     metodo_coste = "2"
                 if before_in.product_id.categ_id.property_cost_method == "standard":
                     metodo_coste = "3"
-                # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
-                if (a == "production") and (b == "internal"):
-                    type_operation_sunat = "19"  # Cambiar
-                    type_operation_name = "ENTRADA DE PRODUCCION"
-                    fecha = before_in.date
-                    tipo_doc = "00"
-                    serie = "0"
-                    correlativo = "0"
-                # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
-                if (a == "internal") and (b == "production"):
-                    type_operation_sunat = "10"
-                    type_operation_name = "SALIDA A PRODUCCION"
-                    fecha = before_in.date
-                    tipo_doc = "00"
-                    serie = "0"
-                    correlativo = "0"
-                # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
-                if (a == "internal") and (b == "customer"):
-                    type_operation_sunat = "01"
-                    type_operation_name = "VENTA NACIONAL"
-                    # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
-                if (a == "customer") and (b == "internal"):
-                    type_operation_sunat = "24"
-                    type_operation_name = "ENTRADA POR DEVOLUCIÓN DEL CLIENTE"
-                # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
-                if (a == "inventory") and (b == "internal"):
-                    type_operation_sunat = "28"
-                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
-                # INVENTORY A INTERNAL AJUSTES = 28 =>ENTRADA
-                if (a == "internal") and (b == "inventory"):
-                    type_operation_sunat = "28"
-                    type_operation_name = "AJUSTE POR DIFERENCIA DE INVENTARIO"
-                #  INTERNAL INVENTORY IF MERMAS
-                if (a == "internal") and (b == "inventory"):
-                    if is_scrap is True:
-                        type_operation_sunat = "13"
-                        type_operation_name = "MERMAS"
-                #  INTERNAL INVENTORY SALIDA X DEVOLUCION TP= 25 => SALIDA
-                if (a == "internal") and (b == "supplier"):
-                    type_operation_sunat = "25"
-                    type_operation_name = "SALIDA POR DEVOLUCION AL PROVEEDOR"
 
-                if before_in.picking_id.type_transaction.code is not False:
-                    type_operation_sunat = before_in.picking_id.type_transaction.code
-                if before_in.picking_id.type_transaction.description is not False:
-                    type_operation_name = before_in.picking_id.type_transaction.description
+                code_transaction = False
+                description_transaction = False
+                # VALORES YA ASIGNADOS
+                if before_in.picking_id.id:
+                    if before_in.picking_id.type_transaction.id:
+                        code_transaction = before_in.picking_id.type_transaction.code
+                        description_transaction = before_in.picking_id.type_transaction.description
+
+                # HARDCODING
+
+                if code_transaction is False:
+                    res_operacion = self.env["type.of.operation"]
+                    # PRODUCCION A UNA INTERNAL TP = 19 =>ENTRADA
+                    if (a == "production") and (b == "internal"):
+                        code_transaction = "19"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                        fecha = before_in.date
+                        tipo_doc = "00"
+                        serie = "0"
+                        correlativo = "0"
+                    # INTERNAL A UNA PRODUCCION TP = 10 =>SALIDA
+                    if (a == "internal") and (b == "production"):
+                        code_transaction = "10"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                        fecha = before_in.date
+                        tipo_doc = "00"
+                        serie = "0"
+                        correlativo = "0"
+                    # INTERNAL A UN CLIENTE TP = 01 =>SALIDA
+                    if (a == "internal") and (b == "customer"):
+                        code_transaction = "01"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                    # CUSTOMER A INTERNAL ENTRADA X DEVOLUCION TP=24 => ENTRADA
+                    if (a == "customer") and (b == "internal"):
+                        code_transaction = "24"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                    # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
+                    if (a == "inventory") and (b == "internal"):
+                        code_transaction = "28"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                    # INVENTORY A INTERNAL VS AJUSTES = 28 =>SALIDA
+                    if (a == "internal") and (b == "inventory"):
+                        code_transaction = "28"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                    #  INTERNAL INVENTORY IF MERMAS
+                    if (a == "internal") and (b == "inventory") and is_scrap is True:
+                        code_transaction = "13"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+                    #  INTERNAL INVENTORY IF MERMAS
+                    if (a == "internal") and (b == "supplier"):
+                        code_transaction = "25"
+                        description_transaction = res_operacion.search(
+                            [("code", "=", code_transaction)], limit=1).description
+
+
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
@@ -583,8 +600,8 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": tipo_doc,
                         "series": serie,
                         "correlative": correlativo,
-                        "type_operation": type_operation_sunat,
-                        "operation_name": type_operation_name,
+                        "type_operation": code_transaction,
+                        "operation_name": description_transaction,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                         "metodo_valuacion": metodo_coste,
@@ -619,8 +636,8 @@ class ItStockMoveReport(models.Model):
                                 "catalog_01_id": tipo_doc,
                                 "series": serie,
                                 "correlative": correlativo,
-                                "type_operation": type_operation_sunat,
-                                "operation_name": type_operation_name,
+                                "type_operation": code_transaction,
+                                "operation_name": description_transaction,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                                 "metodo_valuacion": metodo_coste,
@@ -655,8 +672,8 @@ class ItStockMoveReport(models.Model):
                                 "catalog_01_id": tipo_doc,
                                 "series": serie,
                                 "correlative": correlativo,
-                                "type_operation": type_operation_sunat,
-                                "operation_name": type_operation_name,
+                                "type_operation": code_transaction,
+                                "operation_name": description_transaction,
                                 "product_name": before_in.product_id.name,
                                 "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                                 "metodo_valuacion": metodo_coste,
@@ -688,8 +705,8 @@ class ItStockMoveReport(models.Model):
                         "catalog_01_id": tipo_doc,
                         "series": serie,
                         "correlative": correlativo,
-                        "type_operation": type_operation_sunat,
-                        "operation_name": type_operation_name,
+                        "type_operation": code_transaction,
+                        "operation_name": description_transaction,
                         "product_name": before_in.product_id.name,
                         "units_med": before_in.product_id.uom_id.code_unit_measure.code,
                         "metodo_valuacion": metodo_coste,
