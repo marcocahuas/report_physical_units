@@ -19,7 +19,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Many2one('it.units.move.report.phisical.line', string='establecimiento', limit=1)
+    establishment = fields.Char(string='establecimiento', limit=1)
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
@@ -29,6 +29,10 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
+
+    @api.multi
+    def search_establishment(self):
+        self.establishment = self.env["it.stock.warehouse"]
 
     @api.multi
     def unlink(self):
@@ -906,14 +910,6 @@ class ItStockMoveReportPhisicalLine(models.Model):
     units_med = fields.Char()
 
     # ajuste_fiscal = fields.Char()
-    @api.multi
-    @api.depends('establecimiento')
-    def name_get(self):
-        result = []
-        for table in self:
-            l_name = '%s' % (table.establecimiento)
-            result.append((table.id, l_name))
-        return result
 
 
 class ItStockMoveReportValuatedLine(models.Model):
