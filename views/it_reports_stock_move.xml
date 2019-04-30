@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="it_units_move_report_tree" model="ir.ui.view">
-            <field name="name">Reports units move</field>
+            <field name="name">Reporte Inventarios</field>
             <field name="model">it.units.move.report</field>
             <field name="arch" type="xml">
                 <tree string="Reports units move">
@@ -14,7 +14,7 @@
             </field>
         </record>
         <record id="it_units_move_report_form" model="ir.ui.view">
-            <field name="name">Reports units move</field>
+            <field name="name">Reporte Inventarios</field>
             <field name="model">it.units.move.report</field>
             <field name="arch" type="xml">
                 <form string="Reports units move">
@@ -105,7 +105,7 @@
             </field>
         </record>
         <record id="it_units_move_report_menu_action" model="ir.actions.act_window">
-            <field name="name">Reports units move</field>
+            <field name="name">Reporte Inventarios</field>
             <field name="res_model">it.units.move.report</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
