@@ -24,8 +24,10 @@ class ItStockMoveReport(models.Model):
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
     stock_phisical_lines = fields.One2many('it.units.move.report.phisical.line', 'report_id',
+                                           string="Kardex",
                                            ondelete="cascade")
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
+                                           string="Kardex",
                                            ondelete="cascade")
 
     # @api.one
