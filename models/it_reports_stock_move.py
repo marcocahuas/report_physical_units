@@ -30,6 +30,7 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
+    estable= fields.Char()
 
     @api.multi
     def unlink(self):
@@ -66,8 +67,8 @@ class ItStockMoveReport(models.Model):
     #     'selection': fields.selection(get_journals, string='Selection'),
     # }
     def _default_it_cod_ope_ley(self):
-        estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
-        return estable.code
+        self.estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
+        return self.estable.code
 
     @api.one
     def generate_moves(self):
