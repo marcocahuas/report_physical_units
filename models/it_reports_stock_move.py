@@ -30,12 +30,6 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    # @api.one
-    # def _compute_it_establishment(self):
-    #     type_op = self.env["it.stock.warehouse"].search([('code', '=', 'id')])
-    #     if type_op.id is not False:
-    #         self.establishment = type_op.id
-
     @api.multi
     def unlink(self):
         for item_report in self:
@@ -124,8 +118,7 @@ class ItStockMoveReport(models.Model):
                 b = before_in.location_dest_id.usage
                 it_code = before_in.location_id.it_establishment.code
                 it_des_code = before_in.location_dest_id.it_establishment.code
-                type_operation_sunat = ""
-                type_operation_name = ""
+
                 is_scrap = before_in.location_dest_id.scrap_location
                 code_transaction = False
                 description_transaction = False

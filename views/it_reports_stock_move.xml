@@ -25,7 +25,7 @@
                                 <field name="vat" placeholder="RUC"/>
                             </group>
                             <group>
-                                <field name="establishment" invisible="1"/>
+                                <field name="establishment"/>
                             </group>
                         </group>
                         <group>
