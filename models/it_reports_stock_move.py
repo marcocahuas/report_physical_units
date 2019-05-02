@@ -53,18 +53,18 @@ class ItStockMoveReport(models.Model):
     #         for inv in inv_suppliers:
     #             if inv.code == self.establishment:
     #                 raise UserError(_("Ya se registro este documento"))
-    @api.onchange
-    def get_journals(cr, uid, context=None):
-        journal_obj = self.pool.get('it.stock.warehouse')
-        journal_ids = journal_obj.search(cr, uid, [], context=context)
-        lst = []
-        for journal in journal_obj.browse(cr, uid, journal_ids, context=context):
-            lst.append((journal.code, journal.name))
-        return lst
-
-    _columns = {
-        'selection': fields.selection(get_journals, string='Selection'),
-    }
+    # @api.onchange
+    # def get_journals(cr, uid, context=None):
+    #     journal_obj = self.pool.get('it.stock.warehouse')
+    #     journal_ids = journal_obj.search(cr, uid, [], context=context)
+    #     lst = []
+    #     for journal in journal_obj.browse(cr, uid, journal_ids, context=context):
+    #         lst.append((journal.code, journal.name))
+    #     return lst
+    #
+    # _columns = {
+    #     'selection': fields.selection(get_journals, string='Selection'),
+    # }
 
     @api.one
     def generate_moves(self):
