@@ -66,13 +66,15 @@ class ItStockMoveReport(models.Model):
     #     'selection': fields.selection(get_journals, string='Selection'),
     # }
     def _default_it_cod_ope_ley(self):
-        res_amazonia = self.env["it.stock.warehouse"].search([('code', '=', self.establishment)])
-        return res_amazonia.id
+        estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
+        return estable.code
 
     @api.one
     def generate_moves(self):
         if self.stock_phisical_lines:
             self.stock_phisical_lines.unlink()
+        if self.establishment is not False:
+            establecimiento = self.estable.code
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
