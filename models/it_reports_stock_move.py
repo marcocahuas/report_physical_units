@@ -65,6 +65,9 @@ class ItStockMoveReport(models.Model):
     # _columns = {
     #     'selection': fields.selection(get_journals, string='Selection'),
     # }
+    def _default_it_cod_ope_ley(self):
+        res_amazonia = self.env["it.stock.warehouse"].search([('code', '=', self.establishment)])
+        return res_amazonia.id
 
     @api.one
     def generate_moves(self):
