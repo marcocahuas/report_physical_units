@@ -4,6 +4,7 @@ import base64
 import datetime
 import logging
 
+from mock.mock import self
 from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
@@ -43,6 +44,27 @@ class ItStockMoveReport(models.Model):
     @api.onchange("business_name")
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
+
+    # @api.onchange("establishment")
+    # def change_establishment(self):
+    #     if self.establishment is not False:
+    #         inv_suppliers = self.env["it.stock.warehouse"].search(
+    #             [('code', '=', self.establishment)])
+    #         for inv in inv_suppliers:
+    #             if inv.code == self.establishment:
+    #                 raise UserError(_("Ya se registro este documento"))
+    @api.one
+    def get_journals(cr, uid, context=None):
+        journal_obj = self.pool.get('it.stock.warehouse')
+        journal_ids = journal_obj.search(cr, uid, [], context=context)
+        lst = []
+        for journal in journal_obj.browse(cr, uid, journal_ids, context=context):
+            lst.append((journal.code, journal.name))
+        return lst
+
+    _columns = {
+        'selection': fields.selection(get_journals, string='Selection'),
+    }
 
     @api.one
     def generate_moves(self):
