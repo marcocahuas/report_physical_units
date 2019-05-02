@@ -87,7 +87,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
-        self.establishment.code = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
+        establecimiento = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
         #
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
@@ -108,7 +108,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "establecimiento": "0001",
+                "establecimiento": establecimiento,
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
