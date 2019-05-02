@@ -66,16 +66,14 @@ class ItStockMoveReport(models.Model):
     # _columns = {
     #     'selection': fields.selection(get_journals, string='Selection'),
     # }
-    def _default_it_cod_ope_ley(self):
-        self.estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
-        return self.estable.code
+    # def _default_it_cod_ope_ley(self):
+    #     self.estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
+    #     return self.estable.code
 
     @api.one
     def generate_moves(self):
         if self.stock_phisical_lines:
             self.stock_phisical_lines.unlink()
-        if self.establishment is not False:
-            establecimiento = self.estable.code
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
@@ -89,6 +87,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
+        self.establishment.code = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
         #
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
