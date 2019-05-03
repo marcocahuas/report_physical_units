@@ -30,7 +30,17 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
-    estable= fields.Char()
+
+    @api.multi
+    @api.onchange('code')
+    def establishment_id_change(self):
+        res = super(ItStockMoveReport, self).establishment_id_change()
+        if self.code:
+            lot_id = self.env['it.stock.warehouse'].search([('code', '=', self.establishment.id)], limit=1,
+                                                             order="name")
+            if lot_id:
+                self.establishment = lot_id.id
+        return res
 
     @api.multi
     def unlink(self):
@@ -108,7 +118,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "establecimiento": establecimiento,
+                "establecimiento": "0001",
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
