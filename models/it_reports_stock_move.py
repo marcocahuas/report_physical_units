@@ -107,10 +107,8 @@ class ItStockMoveReport(models.Model):
         code_transaction = "16"
         description_transaction = res_operacion.search(
             [("code", "=", code_transaction)], limit=1).description
-        stock_quant = self.env["stock.quant"]
-        estable = stock_quant.search([("product_id", "=", initial.id)], limit=1)
-
         for product in initial:
+            estable = product.stock_quant_ids.it_establishment.code
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
