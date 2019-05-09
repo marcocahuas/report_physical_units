@@ -57,6 +57,7 @@
                                 <group>
                                     <field name="stock_phisical_lines">
                                         <tree>
+                                            <field name="establecimiento"/>
                                             <field name="date"/>
                                             <field name="product_id"/>
                                             <field name="type" invisible="1"/>

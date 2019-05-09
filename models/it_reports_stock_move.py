@@ -31,16 +31,16 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    @api.multi
-    @api.onchange('code')
-    def establishment_id_change(self):
-        res = super(ItStockMoveReport, self).establishment_id_change()
-        if self.code:
-            lot_id = self.env['it.stock.warehouse'].search([('code', '=', self.establishment.id)], limit=1,
-                                                             order="name")
-            if lot_id:
-                self.establishment = lot_id.id
-        return res
+    # @api.multi
+    # @api.onchange('code')
+    # def establishment_id_change(self):
+    #     res = super(ItStockMoveReport, self).establishment_id_change()
+    #     if self.code:
+    #         lot_id = self.env['it.stock.warehouse'].search([('code', '=', self.establishment.id)], limit=1,
+    #                                                          order="name")
+    #         if lot_id:
+    #             self.establishment = lot_id.id
+    #     return res
 
     @api.multi
     def unlink(self):
@@ -97,7 +97,7 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
-        establecimiento = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
+        # establecimiento = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
         #
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
@@ -118,7 +118,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "establecimiento": product.location_id.id,
+                "establecimiento": product.warehouse_id.it_establishment.code,
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
