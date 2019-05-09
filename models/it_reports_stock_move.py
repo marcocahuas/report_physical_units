@@ -118,7 +118,7 @@ class ItStockMoveReport(models.Model):
                 "product_id": product.id,
                 # campos adicionales
                 "stock_id": product.id,
-                "establecimiento": "0001",
+                "establecimiento": establecimiento,
                 "catalogo_existence": "9",
                 "existence_id": "OTROS",
                 "codigo_propio": "6000000000000000",
@@ -223,10 +223,6 @@ class ItStockMoveReport(models.Model):
                 #     if before_in.location_id.is_kardex is True:
                 #         type_operation_sunat = "99"  # falta analizar
 
-                # if before_in.picking_id.type_transaction.code is not False:
-                #     type_operation_sunat = before_in.picking_id.type_transaction.code
-                # if before_in.picking_id.type_transaction.description is not False:
-                #     type_operation_name = before_in.picking_id.type_transaction.description
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
@@ -269,7 +265,7 @@ class ItStockMoveReport(models.Model):
                         "out_salida": - before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.id,
+                        "stock_id": before_in.account_move_ids.id,
                         "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
@@ -299,7 +295,7 @@ class ItStockMoveReport(models.Model):
                                 "out_salida": - before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.id,
+                                "stock_id": before_in.account_move_ids.id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "codigo_propio": "6000000000000000",
@@ -330,7 +326,7 @@ class ItStockMoveReport(models.Model):
                                 "in_entrada": before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.id,
+                                "stock_id": before_in.account_move_ids.id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "codigo_propio": "6000000000000000",
@@ -358,7 +354,7 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.id,
+                        "stock_id": before_in.account_move_ids.id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
