@@ -450,7 +450,6 @@ class ItStockMoveReport(models.Model):
         entry_balance = self.env["account.move.line"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
-        #res_operacion = self.env["type.of.operation"]
         code_transaction = "99"
         description_transaction = "DECONSTRUCCIÓN"
         # description_transaction = res_operacion.search(
@@ -494,7 +493,7 @@ class ItStockMoveReport(models.Model):
                     "calculo_unit_out": "0.00",
                     # campos adicionales
                     "catalogo_existence": "9",
-                    "establecimiento": "0001",
+                    "establecimiento": valor.move_id.stock_move_id.location_id.it_establishment.code,
                     "existence_id": "OTROS",
                     "codigo_propio": "6000000000000000",
                     "type_operation": code_transaction,
