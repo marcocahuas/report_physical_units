@@ -108,7 +108,7 @@ class ItStockMoveReport(models.Model):
         description_transaction = res_operacion.search(
             [("code", "=", code_transaction)], limit=1).description
         for product in initial:
-            estable = product.stock_quant_ids.it_establishment.code
+            estable = product.stock_quant_ids.location_id.it_establishment.code
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
