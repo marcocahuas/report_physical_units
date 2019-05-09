@@ -112,7 +112,7 @@ class ItStockMoveReport(models.Model):
             stock_account_location = self.env["stock.quant"].search(
                 [("product_id", "=", product.id or "-")], limit=1)
             if stock_account_location is not False:
-                estable = stock_account_location.location_id.it_establishment.code
+                estable = stock_account_location.location_id
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
