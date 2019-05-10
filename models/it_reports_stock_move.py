@@ -493,7 +493,7 @@ class ItStockMoveReport(models.Model):
                     "calculo_unit_out": "0.00",
                     # campos adicionales
                     "catalogo_existence": "9",
-                    "establecimiento": valor.product_id.location_id.it_establishment.code,
+                    "establecimiento": valor.product_id.stock_quant_ids.location_id.it_establishment.code,
                     "existence_id": "OTROS",
                     "codigo_propio": "6000000000000000",
                     "type_operation": code_transaction,
