@@ -479,6 +479,7 @@ class ItStockMoveReport(models.Model):
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
+                    #establesh = costo_finaly.stock_quant_ids.location_id.it_establishment.code
 
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
