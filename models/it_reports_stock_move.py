@@ -472,6 +472,7 @@ class ItStockMoveReport(models.Model):
             # PARA EL COSTO FINAL SE OBTIENE DEL VALORIZADO
             costo_final = False
             cantidad_saldo = False
+            establesh = False
             if valor.date:
                 context_finally = {'to_date': valor.date}
                 costo_finaly = self.env["product.product"].with_context(context_finally).search(
