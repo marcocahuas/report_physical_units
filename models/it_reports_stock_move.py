@@ -481,8 +481,6 @@ class ItStockMoveReport(models.Model):
                     costo_final = costo_finaly.stock_value
                     cantidad_saldo = costo_finaly.qty_at_date
 
-                    #establesh = costo_finaly.stock_quant_ids.location_id.it_establishment.code
-
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
                 map_stabl = {}
@@ -491,9 +489,9 @@ class ItStockMoveReport(models.Model):
                         if stock_quant.location_id.it_establishment.code not in map_stabl:
                             map_stabl[stock_quant.location_id.it_establishment.code] = 0
                         value_stock = map_stabl[stock_quant.location_id.it_establishment.code]
-                        value_stock = value_stock + stock_quant.quantity
+                        #value_stock = value_stock + stock_quant.quantity
                         map_stabl[stock_quant.location_id.it_establishment.code] = value_stock
-                for code_estbl, quantity_total in map_stabl.items():
+                for code_estbl in map_stabl.items():
                     json_stock_phisical = {
                         "date": valor.create_date,
                         "in_saldo": valor.debit,
