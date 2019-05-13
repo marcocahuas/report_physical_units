@@ -102,7 +102,7 @@ class ItStockMoveReport(models.Model):
 
         type_op = self.env["it.units.move.report.phisical.line"].search(
             [('establecimiento', '=', self.establishment.code)], limit=1).establecimiento
-        self.locas = type_op.id
+        self.locas = type_op.establecimiento
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
