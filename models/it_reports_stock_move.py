@@ -169,7 +169,7 @@ class ItStockMoveReport(models.Model):
         if stock_move_after:
             for before_in in stock_move_after:
                 type_op = self.env["it.units.move.report.phisical.line"].search(
-                    [('establecimiento', '=', self.establishment.code)])
+                    [('establecimiento', '=', self.establishment.code)], limit=1)
                 self.locas = type_op.establecimiento
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
