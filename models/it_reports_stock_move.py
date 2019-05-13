@@ -155,7 +155,7 @@ class ItStockMoveReport(models.Model):
             [("establecimiento", "=", self.establishment.code)])
 
         if stock_move_after and out_establecimiento:
-            for before_in in stock_move_after:
+            for before_in in stock_move_after, out_establecimiento:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
