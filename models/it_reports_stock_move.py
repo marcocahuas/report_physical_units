@@ -151,7 +151,10 @@ class ItStockMoveReport(models.Model):
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
-        if stock_move_after:
+        out_establecimiento = self.env["it.units.move.report.valuated.line"].search(
+            [("establecimiento", "=", self.establishment)], limit=1)
+
+        if stock_move_after and out_establecimiento:
             for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
@@ -278,7 +281,7 @@ class ItStockMoveReport(models.Model):
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.account_move_ids.id,
-                        "establecimiento": before_in.location_id.it_establishment.code,
+                        "establecimiento":before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
