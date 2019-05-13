@@ -73,11 +73,11 @@ class ItStockMoveReport(models.Model):
     #             if inv.code == estable:
     #                 pass
 
-    @api.one
-    def _compute_it_sunat_sale(self):
-        type_op = self.env["it.units.move.report.phisical.line"].search([('establecimiento', '=', self.establishment.code)])
-        if type_op.id is not False:
-            self.locas = type_op.id
+    # @api.one
+    # def _compute_it_sunat_sale(self):
+    #     type_op = self.env["it.units.move.report.phisical.line"].search([('establecimiento', '=', self.establishment.code)])
+    #     if type_op.id is not False:
+    #         self.locas = type_op.id
 
     # @api.onchange
     # def get_journals(cr, uid, context=None):
@@ -101,7 +101,7 @@ class ItStockMoveReport(models.Model):
             self.stock_phisical_lines.unlink()
 
         type_op = self.env["it.units.move.report.phisical.line"].search(
-            [('establecimiento', '=', self.establishment.code)], limit=1)
+            [('establecimiento', '=', self.establishment.code)])
         self.locas = type_op.establecimiento
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
