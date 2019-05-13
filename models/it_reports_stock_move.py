@@ -21,6 +21,7 @@ class ItStockMoveReport(models.Model):
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
     establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento')
+    locas = fields.Char()
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
     # stock_move_lines = fields.Many2many(comodel_name="stock.move.line", string="Movimientos", ondelete="cascade")
@@ -62,11 +63,21 @@ class ItStockMoveReport(models.Model):
     #     for menor in menores:
     #         print(menor
 
+    # @api.onchange("code")
+    # def change_establishment(self):
+    #     estable = self.establishment.code
+    #     if self.estable is not False:
+    #         inv_suppliers = self.env["it.units.move.report.phisical.line"].search(
+    #             [('establecimiento', '=', estable)])
+    #         for inv in inv_suppliers:
+    #             if inv.code == estable:
+    #                 pass
+
     @api.one
     def _compute_it_sunat_sale(self):
-        type_op = self.env["it.units.move.report.phisical.line"].search([('code', '=', self.establishment.code)])
+        type_op = self.env["it.units.move.report.phisical.line"].search([('establecimiento', '=', self.establishment.code)])
         if type_op.id is not False:
-            self.establishment = type_op.id
+            self.locas = type_op.id
 
     # @api.onchange
     # def get_journals(cr, uid, context=None):
