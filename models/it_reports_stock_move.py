@@ -101,7 +101,7 @@ class ItStockMoveReport(models.Model):
             self.stock_phisical_lines.unlink()
 
         type_op = self.env["it.units.move.report.phisical.line"].search(
-            [('establecimiento', '=', self.establishment.code)], limit=1).establecimiento
+            [('establecimiento', '=', self.establishment.code)], limit=1)
         self.locas = type_op.establecimiento
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
