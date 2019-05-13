@@ -56,14 +56,20 @@ class ItStockMoveReport(models.Model):
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
 
-    # @api.onchange("establishment")
-    # def change_establishment(self):
-    #     if self.establishment is not False:
-    #         inv_suppliers = self.env["it.stock.warehouse"].search(
-    #             [('code', '=', self.establishment)])
-    #         for inv in inv_suppliers:
-    #             if inv.code == self.establishment:
-    #                 raise UserError(_("Ya se registro este documento"))
+    # @api.one
+    # def stablish(self):
+    #     estable = filter(lambda establishment: establishment.code = "=", "establecimiento")
+    #     for menor in menores:
+    #         print(menor
+
+    @api.onchange("establishment")
+    def change_establishment(self):
+        if self.establishment is not False:
+            inv_suppliers = self.env["it.stock.warehouse"].search(
+                [('code', '=', self.establishment.code)])
+            for inv in inv_suppliers:
+                if inv.code == self.establishment.code:
+                    pass
     # @api.onchange
     # def get_journals(cr, uid, context=None):
     #     journal_obj = self.pool.get('it.stock.warehouse')
@@ -151,11 +157,8 @@ class ItStockMoveReport(models.Model):
         stock_move_after = self.env["stock.move"].search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
-        out_establecimiento = self.env["it.units.move.report.valuated.line"].search(
-            [("establecimiento", "=", self.establishment.code)], limit=1)
-
-        if stock_move_after and out_establecimiento:
-            for before_in in stock_move_after, out_establecimiento:
+        if stock_move_after:
+            for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
@@ -281,7 +284,7 @@ class ItStockMoveReport(models.Model):
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": before_in.account_move_ids.id,
-                        "establecimiento":before_in.location_id.it_establishment.code,
+                        "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
                         "existence": before_in.product_id.it_existence.code,
