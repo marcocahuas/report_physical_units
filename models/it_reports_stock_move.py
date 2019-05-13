@@ -152,7 +152,7 @@ class ItStockMoveReport(models.Model):
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         out_establecimiento = self.env["it.units.move.report.valuated.line"].search(
-            [("establecimiento", "=", self.establishment.code)])
+            [("establecimiento", "=", self.establishment.code)], limit=1)
 
         if stock_move_after and out_establecimiento:
             for before_in in stock_move_after, out_establecimiento:
