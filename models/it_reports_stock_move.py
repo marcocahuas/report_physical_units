@@ -62,13 +62,14 @@ class ItStockMoveReport(models.Model):
     #     for menor in menores:
     #         print(menor
 
-    @api.onchange("establishment")
+    @api.onchange("code")
     def change_establishment(self):
-        if self.establishment is not False:
+        estable = self.establishment.code
+        if self.estable is not False:
             inv_suppliers = self.env["it.units.move.report.phisical.line"].search(
-                [('establecimiento', '=', self.establishment)])
+                [('establecimiento', '=', estable)])
             for inv in inv_suppliers:
-                if inv.code == self.establishment:
+                if inv.code == estable:
                     pass
     # @api.onchange
     # def get_journals(cr, uid, context=None):
