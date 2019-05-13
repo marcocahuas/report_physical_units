@@ -65,8 +65,8 @@ class ItStockMoveReport(models.Model):
     @api.onchange("establishment")
     def change_establishment(self):
         if self.establishment is not False:
-            inv_suppliers = self.env["it.stock.warehouse"].search(
-                [('code', '=', self.establishment.code)])
+            inv_suppliers = self.env["it.units.move.report.phisical.line"].search(
+                [('establecimiento', '=', self.establishment.code)])
             for inv in inv_suppliers:
                 if inv.code == self.establishment.code:
                     pass
