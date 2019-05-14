@@ -57,11 +57,6 @@ class ItStockMoveReport(models.Model):
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
 
-    # @api.one
-    # def stablish(self):
-    #     estable = filter(lambda establishment: establishment.code = "=", "establecimiento")
-    #     for menor in menores:
-    #         print(menor
 
     # @api.onchange("code")
     # def change_establishment(self):
@@ -112,8 +107,10 @@ class ItStockMoveReport(models.Model):
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
         # --------------------------------------------------
-        # establecimiento = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
-        #
+        establecimiento = self.env["it.stock.warehouse"]
+        establishment = establecimiento.code
+        estable = self.env['it.stock.warehouse'].search([('code', '=', establishment)], limit=1)
+        self.establishment = estable
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -168,9 +165,9 @@ class ItStockMoveReport(models.Model):
 
         if stock_move_after:
             for before_in in stock_move_after:
-                type_op = self.env["it.units.move.report.phisical.line"].search(
-                    [('establecimiento', '=', self.establishment.code)], limit=1)
-                self.locas = type_op.establecimiento
+                # type_op = self.env["it.units.move.report.phisical.line"].search(
+                #     [('establecimiento', '=', self.establishment.code)], limit=1)
+                # self.locas = type_op.establecimiento
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
