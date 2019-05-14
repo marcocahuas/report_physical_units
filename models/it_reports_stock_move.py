@@ -20,7 +20,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento')
+    establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento', compute="_compute_establecimiento")
     locas = fields.Char()
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
@@ -31,8 +31,15 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
+    def _compute_establecimiento(self):
+        super(ItStockMoveReport, self)._compute_establecimiento()
+        for estable in self.filtered(lambda code: estable.partner_id):
+            address_data = estable.code().address_get(adr_pref=["code"])
+            if address_data["contact"]:
+                self.establishment = estable.partner_id.browse(address_data["code"])
 
-    # @api.multi
+
+   # @api.multi
     # @api.onchange('code')
     # def establishment_id_change(self):
     #     res = super(ItStockMoveReport, self).establishment_id_change()
@@ -108,9 +115,9 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
         # --------------------------------------------------
         establecimiento = self.env["it.stock.warehouse"]
-        self.establishment = establecimiento.code
-        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', self.establishment)])
-        self.locas = estable
+        establishment = establecimiento.code
+        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', establishment)])
+
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
@@ -121,7 +128,6 @@ class ItStockMoveReport(models.Model):
             [("code", "=", code_transaction)], limit=1).description
 
         for product in initial:
-
             map_stabl = {}
             for stock_quant in product.stock_quant_ids:
                 if stock_quant.location_id.it_establishment.id:
