@@ -108,9 +108,9 @@ class ItStockMoveReport(models.Model):
         self.date_out_time = date_out_after
         # --------------------------------------------------
         establecimiento = self.env["it.stock.warehouse"]
-        establishment = establecimiento.code
-        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', establishment)])
-        self.establishment = estable
+        self.establishment = establecimiento.code
+        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', self.establishment)])
+        self.locas = estable
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
