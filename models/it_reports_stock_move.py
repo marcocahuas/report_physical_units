@@ -109,7 +109,7 @@ class ItStockMoveReport(models.Model):
         # --------------------------------------------------
         establecimiento = self.env["it.stock.warehouse"]
         establishment = establecimiento.code
-        estable = self.env['it.stock.warehouse'].search([('code', '=', establishment)], limit=1)
+        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', establishment)], limit=1)
         self.establishment = estable
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
