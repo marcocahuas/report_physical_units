@@ -20,7 +20,7 @@ class ItStockMoveReport(models.Model):
     date_out_time = fields.Datetime(string='Fecha fin2')
     business_name = fields.Many2one('res.company', string='Razon Social')
     vat = fields.Char(string='RUC')
-    establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento', compute="_compute_establecimiento")
+    establishment = fields.Many2one('it.stock.warehouse', string='Establecimiento')
     locas = fields.Char()
     txt_filename = fields.Char()
     txt_binary = fields.Binary(string='Descargar Txt Sunat')
@@ -31,15 +31,8 @@ class ItStockMoveReport(models.Model):
     stock_valuated_lines = fields.One2many('it.units.move.report.valuated.line', 'report_id',
                                            string="Kardex",
                                            ondelete="cascade")
-    def _compute_establecimiento(self):
-        super(ItStockMoveReport, self)._compute_establecimiento()
-        for estable in self.filtered(lambda code: estable.partner_id):
-            address_data = estable.code().address_get(adr_pref=["code"])
-            if address_data["contact"]:
-                self.establishment = estable.partner_id.browse(address_data["code"])
 
-
-   # @api.multi
+    # @api.multi
     # @api.onchange('code')
     # def establishment_id_change(self):
     #     res = super(ItStockMoveReport, self).establishment_id_change()
@@ -128,6 +121,7 @@ class ItStockMoveReport(models.Model):
             [("code", "=", code_transaction)], limit=1).description
 
         for product in initial:
+
             map_stabl = {}
             for stock_quant in product.stock_quant_ids:
                 if stock_quant.location_id.it_establishment.id:
