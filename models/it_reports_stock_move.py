@@ -137,7 +137,7 @@ class ItStockMoveReport(models.Model):
                     "date": self.date_in_time,
                     "reference": "SALDO INICIAL",
                     "is_saldo": "AAAA",
-                    "in_entrada": quantity_total,
+                    "in_entrada": quantity_total, # qyt_at_date
                     "report_id": self.id,
                     "product_id": product.id,
                     # campos adicionales
