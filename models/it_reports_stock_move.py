@@ -32,17 +32,6 @@ class ItStockMoveReport(models.Model):
                                            string="Kardex",
                                            ondelete="cascade")
 
-    # @api.multi
-    # @api.onchange('code')
-    # def establishment_id_change(self):
-    #     res = super(ItStockMoveReport, self).establishment_id_change()
-    #     if self.code:
-    #         lot_id = self.env['it.stock.warehouse'].search([('code', '=', self.establishment.id)], limit=1,
-    #                                                          order="name")
-    #         if lot_id:
-    #             self.establishment = lot_id.id
-    #     return res
-
     @api.multi
     def unlink(self):
         for item_report in self:
@@ -56,39 +45,6 @@ class ItStockMoveReport(models.Model):
     @api.onchange("business_name")
     def _compute_it_ruc(self):
         self.vat = self.business_name.partner_id.vat or ""
-
-
-    # @api.onchange("code")
-    # def change_establishment(self):
-    #     estable = self.establishment.code
-    #     if self.estable is not False:
-    #         inv_suppliers = self.env["it.units.move.report.phisical.line"].search(
-    #             [('establecimiento', '=', estable)])
-    #         for inv in inv_suppliers:
-    #             if inv.code == estable:
-    #                 pass
-
-    # @api.one
-    # def _compute_it_sunat_sale(self):
-    #     type_op = self.env["it.units.move.report.phisical.line"].search([('establecimiento', '=', self.establishment.code)])
-    #     if type_op.id is not False:
-    #         self.locas = type_op.id
-
-    # @api.onchange
-    # def get_journals(cr, uid, context=None):
-    #     journal_obj = self.pool.get('it.stock.warehouse')
-    #     journal_ids = journal_obj.search(cr, uid, [], context=context)
-    #     lst = []
-    #     for journal in journal_obj.browse(cr, uid, journal_ids, context=context):
-    #         lst.append((journal.code, journal.name))
-    #     return lst
-    #
-    # _columns = {
-    #     'selection': fields.selection(get_journals, string='Selection'),
-    # }
-    # def _default_it_cod_ope_ley(self):
-    #     self.estable = self.env["it.stock.warehouse"].search([('code', '=', self.establishment.code)])
-    #     return self.estable.code
 
     @api.one
     def generate_moves(self):
@@ -106,10 +62,7 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        # --------------------------------------------------
-        establecimiento = self.env["it.stock.warehouse"]
-        establishment = establecimiento.code
-        estable = self.env['it.units.move.report.phisical.line'].search([('establecimiento', '=', establishment)])
+        # --------------------------------------------------------
 
         context = {'to_date': self.date_in_time}
         initial = self.env["product.product"].with_context(context).search(
@@ -137,7 +90,7 @@ class ItStockMoveReport(models.Model):
                     "date": self.date_in_time,
                     "reference": "SALDO INICIAL",
                     "is_saldo": "AAAA",
-                    "in_entrada": quantity_total, # qyt_at_date
+                    "in_entrada": quantity_total,  # qyt_at_date
                     "report_id": self.id,
                     "product_id": product.id,
                     # campos adicionales
@@ -161,13 +114,12 @@ class ItStockMoveReport(models.Model):
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done"),
+             ("location_id.it_establishment.code", "=", self.establishment.code)])
 
         if stock_move_after:
             for before_in in stock_move_after:
-                # type_op = self.env["it.units.move.report.phisical.line"].search(
-                #     [('establecimiento', '=', self.establishment.code)], limit=1)
-                # self.locas = type_op.establecimiento
+
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
                 stock_account_after = self.env["account.invoice"].search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
@@ -249,7 +201,6 @@ class ItStockMoveReport(models.Model):
                 # if (a == "internal") and (b == "production"):
                 #     if before_in.location_id.is_kardex is True:
                 #         type_operation_sunat = "99"  # falta analizar
-
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
@@ -487,7 +438,7 @@ class ItStockMoveReport(models.Model):
             # PARA EL COSTO FINAL SE OBTIENE DEL VALORIZADO
             costo_final = False
             cantidad_saldo = False
-            #establesh = False
+            # establesh = False
             if valor.date:
                 context_finally = {'to_date': valor.date}
                 costo_finaly = self.env["product.product"].with_context(context_finally).search(
@@ -504,7 +455,7 @@ class ItStockMoveReport(models.Model):
                         if stock_quant.location_id.it_establishment.code not in map_stabl:
                             map_stabl[stock_quant.location_id.it_establishment.code] = 0
                         value_stock = map_stabl[stock_quant.location_id.it_establishment.code]
-                        #value_stock = value_stock + stock_quant.quantity
+                        # value_stock = value_stock + stock_quant.quantity
                         map_stabl[stock_quant.location_id.it_establishment.code] = value_stock
                 for code_estbl in map_stabl.items():
                     json_stock_phisical = {
@@ -650,7 +601,6 @@ class ItStockMoveReport(models.Model):
                         code_transaction = "25"
                         description_transaction = res_operacion.search(
                             [("code", "=", code_transaction)], limit=1).description
-
 
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
