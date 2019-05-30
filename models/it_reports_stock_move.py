@@ -114,8 +114,7 @@ class ItStockMoveReport(models.Model):
 
         # OBTENEMOS LOS MOVIMIENTOS
         stock_move_after = self.env["stock.move"].search(
-            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done"),
-             ("location_id.it_establishment.code", "=", self.establishment.code)])
+            [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
