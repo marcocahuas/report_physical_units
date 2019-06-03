@@ -75,31 +75,31 @@ class ItStockMoveReport(models.Model):
 
         for product in initial:
 
-            json_stock_phisical = {
-                "type": 1,
-                "date": self.date_in_time,
-                "reference": "SALDO INICIAL",
-                "is_saldo": "AAAA",
-                "in_entrada": product.qty_at_date,
-                "report_id": self.id,
-                "product_id": product.id,
-                # campos adicionales
-                "stock_id": product.id,
-                "establecimiento": "0001",
-                "catalogo_existence": "9",
-                "existence_id": "OTROS",
-                "codigo_propio": "6000000000000000",
-                "type_operation": code_transaction,
-                "operation_name": description_transaction,
-                "product_name": product.name,
-                "date_gr": self.date_in_time,
-                "catalog_01_id": "00",
-                "series": "0",
-                "correlative": "0",
-                "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code
-            }
-            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                json_stock_phisical = {
+                    "type": 1,
+                    "date": self.date_in_time,
+                    "reference": "SALDO INICIAL",
+                    "is_saldo": "AAAA",
+                    "in_entrada": product.qty_at_date,
+                    "report_id": self.id,
+                    "product_id": product.id,
+                    # campos adicionales
+                    "stock_id": product.id,
+                    "establecimiento": "0001",
+                    "catalogo_existence": "9",
+                    "existence_id": "OTROS",
+                    "codigo_propio": "6000000000000000",
+                    "type_operation": code_transaction,
+                    "operation_name": description_transaction,
+                    "product_name": product.name,
+                    "date_gr": self.date_in_time,
+                    "catalog_01_id": "00",
+                    "series": "0",
+                    "correlative": "0",
+                    "existence": product.it_existence.code,
+                    "units_med": product.uom_id.code_unit_measure.code
+                }
+                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
 
         # OBTENEMOS LOS MOVIMIENTOS
@@ -210,6 +210,18 @@ class ItStockMoveReport(models.Model):
                     if before_in.picking_id.correlative is False:
                         correlativo = before_in.picking_id.it_correlative_manual
 
+                # # Ajuste
+                # ajuste_fiscal = "0"
+                # date_comprobante = datetime.datetime.strptime(before_in.date, "%Y-%m-%d")
+                # mes_comprobante = str(date_comprobante.year) + "" + str("%02d" % (date_comprobante.month))
+                # mes_actual = str(d_ref.year) + "" + str(month)
+                # if before_in.picking_id.catalog_01_id.code == "01" or before_in.picking_id.catalog_01_id.code == "07":
+                #     ajuste_fiscal = "1"
+                #     if mes_actual != mes_comprobante:
+                #         ajuste_fiscal = "6"
+                # if before_in.picking_id.catalog_01_id.code == "03":
+                #     if mes_actual != mes_comprobante:
+                #         ajuste_fiscal = "7"
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -347,39 +359,47 @@ class ItStockMoveReport(models.Model):
                 metodo_coste = "2"
             if product.categ_id.property_cost_method == "standard":
                 metodo_coste = "3"
+            map_stabl = {}
+            for stock_quant in product.stock_quant_ids:
+                if stock_quant.location_id.it_establishment.id:
+                    if stock_quant.location_id.it_establishment.code not in map_stabl:
+                        map_stabl[stock_quant.location_id.it_establishment.code] = 0
+                    value_stock = map_stabl[stock_quant.location_id.it_establishment.code]
+                    value_stock = value_stock + stock_quant.quantity
+                    map_stabl[stock_quant.location_id.it_establishment.code] = value_stock
+            for code_estbl, quantity_total in map_stabl.items():
+                json_stock_phisical = {
+                    "type": 1,
+                    "date": self.date_in_time,
+                    "reference": "SALDO INICIAL",
+                    "is_saldo": "AAAA",
+                    "in_entrada": quantity_total,
+                    "report_id": self.id,
+                    "product_id": product.id,
+                    # campos adicionales
+                    "stock_id": product.id,
+                    "establecimiento": code_estbl,
+                    "catalogo_existence": "9",
+                    "existence_id": "OTROS",
+                    "codigo_propio": "6000000000000000",
+                    "type_operation": code_transaction,
+                    "operation_name": description_transaction,
+                    "product_name": product.name,
+                    "date_gr": self.date_in_time,
+                    "catalog_01_id": "00",
+                    "series": "0",
+                    "correlative": "0",
+                    "existence": product.it_existence.code,
+                    "units_med": product.uom_id.code_unit_measure.code,
+                    "metodo_valuacion": metodo_coste,
+                    "in_saldo": product.stock_value,  # Entradas Costo Unit.
+                    "calculo_unit_in": (product.stock_value / product.qty_at_date),
+                    "cantidad_saldo_final": product.qty_at_date,
+                    "costo_unit_final": (product.stock_value / product.qty_at_date),
+                    "costo_total_final": product.stock_value
 
-            json_stock_phisical = {
-                "type": 1,
-                "date": self.date_in_time,
-                "reference": "SALDO INICIAL",
-                "is_saldo": "AAAA",
-                "in_entrada": product.qyt_at_date,
-                "report_id": self.id,
-                "product_id": product.id,
-                # campos adicionales
-                "stock_id": product.id,
-                "establecimiento": "0001",
-                "catalogo_existence": "9",
-                "existence_id": "OTROS",
-                "codigo_propio": "6000000000000000",
-                "type_operation": code_transaction,
-                "operation_name": description_transaction,
-                "product_name": product.name,
-                "date_gr": self.date_in_time,
-                "catalog_01_id": "00",
-                "series": "0",
-                "correlative": "0",
-                "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code,
-                "metodo_valuacion": metodo_coste,
-                "in_saldo": product.stock_value,  # Entradas Costo Unit.
-                "calculo_unit_in": (product.stock_value / product.qty_at_date),
-                "cantidad_saldo_final": product.qty_at_date,
-                "costo_unit_final": (product.stock_value / product.qty_at_date),
-                "costo_total_final": product.stock_value
-
-            }
-            res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                }
+                res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
         # TRAEMOS AJUSTE DE COSTOS
         entry_balance = self.env["account.move.line"].search(
@@ -418,36 +438,44 @@ class ItStockMoveReport(models.Model):
 
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
-
-                json_stock_phisical = {
-                    "date": valor.create_date,
-                    "in_saldo": valor.debit,
-                    "out_saldo": valor.credit,
-                    "reference": "AJUSTE DE COSTOS",
-                    "report_id": self.id,
-                    "product_id": valor.product_id.id,
-                    "calculo_unit_out": "0.00",
-                    # campos adicionales
-                    "catalogo_existence": "9",
-                    "establecimiento": "0001",
-                    "existence_id": "OTROS",
-                    "codigo_propio": "6000000000000000",
-                    "type_operation": code_transaction,
-                    "operation_name": description_transaction,
-                    "product_name": valor.product_id.name,
-                    "date_gr": self.date_in_time,
-                    "catalog_01_id": "00",
-                    "series": "0",
-                    "correlative": "0",
-                    "existence": valor.product_id.it_existence.code,
-                    "stock_id": valor.move_id.id,
-                    "units_med": valor.product_id.uom_id.code_unit_measure.code,
-                    "metodo_valuacion": metodo_coste,  # valor.product_id.categ_id.name
-                    "cantidad_saldo_final": cantidad_saldo,
-                    "costo_unit_final": saldo_unit,
-                    "costo_total_final": costo_final,
-                }
-                res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
+                map_stabl = {}
+                for stock_quant in costo_finaly.stock_quant_ids:
+                    if stock_quant.location_id.it_establishment.id:
+                        if stock_quant.location_id.it_establishment.code not in map_stabl:
+                            map_stabl[stock_quant.location_id.it_establishment.code] = 0
+                        value_stock = map_stabl[stock_quant.location_id.it_establishment.code]
+                        # value_stock = value_stock + stock_quant.quantity
+                        map_stabl[stock_quant.location_id.it_establishment.code] = value_stock
+                for code_estbl in map_stabl.items():
+                    json_stock_phisical = {
+                        "date": valor.create_date,
+                        "in_saldo": valor.debit,
+                        "out_saldo": valor.credit,
+                        "reference": "AJUSTE DE COSTOS",
+                        "report_id": self.id,
+                        "product_id": valor.product_id.id,
+                        "calculo_unit_out": "0.00",
+                        # campos adicionales
+                        "catalogo_existence": "9",
+                        "establecimiento": code_estbl,
+                        "existence_id": "OTROS",
+                        "codigo_propio": "6000000000000000",
+                        "type_operation": code_transaction,
+                        "operation_name": description_transaction,
+                        "product_name": valor.product_id.name,
+                        "date_gr": self.date_in_time,
+                        "catalog_01_id": "00",
+                        "series": "0",
+                        "correlative": "0",
+                        "existence": valor.product_id.it_existence.code,
+                        "stock_id": valor.move_id.id,
+                        "units_med": valor.product_id.uom_id.code_unit_measure.code,
+                        "metodo_valuacion": metodo_coste,  # valor.product_id.categ_id.name
+                        "cantidad_saldo_final": cantidad_saldo,
+                        "costo_unit_final": saldo_unit,
+                        "costo_total_final": costo_final,
+                    }
+                    res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
         # OBTENEMOS LOS MOVIMIENTOS DE STOCK MOVE
         stock_move_after = self.env["stock.move"].search(
