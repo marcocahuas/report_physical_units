@@ -439,7 +439,6 @@ class ItStockMoveReport(models.Model):
                 _logger.info("COSTO FINAL")
                 _logger.info(costo_finaly.qty_at_date)
 
-
                 json_stock_phisical = {
                     "date": valor.create_date,
                     "in_saldo": valor.debit,
