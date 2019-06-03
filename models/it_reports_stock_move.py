@@ -85,31 +85,31 @@ class ItStockMoveReport(models.Model):
             #         map_stabl[stock_quant.location_id.it_establishment.code] = value_stock
             #
             # for code_estbl, quantity_total in map_stabl.items():
-            json_stock_phisical = {
-                "type": 1,
-                "date": self.date_in_time,
-                "reference": "SALDO INICIAL",
-                "is_saldo": "AAAA",
-                "in_entrada": product.qyt_at_date,
-                "report_id": self.id,
-                "product_id": product.id,
-                # campos adicionales
-                "stock_id": product.id,
-                "establecimiento": "0001",
-                "catalogo_existence": "9",
-                "existence_id": "OTROS",
-                "codigo_propio": "6000000000000000",
-                "type_operation": code_transaction,
-                "operation_name": description_transaction,
-                "product_name": product.name,
-                "date_gr": self.date_in_time,
-                "catalog_01_id": "00",
-                "series": "0",
-                "correlative": "0",
-                "existence": product.it_existence.code,
-                "units_med": product.uom_id.code_unit_measure.code
-            }
-            res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
+                json_stock_phisical = {
+                    "type": 1,
+                    "date": self.date_in_time,
+                    "reference": "SALDO INICIAL",
+                    "is_saldo": "AAAA",
+                    "in_entrada": product.qyt_at_date,
+                    "report_id": self.id,
+                    "product_id": product.id,
+                    # campos adicionales
+                    "stock_id": product.id,
+                    "establecimiento": "0001",
+                    "catalogo_existence": "9",
+                    "existence_id": "OTROS",
+                    "codigo_propio": "6000000000000000",
+                    "type_operation": code_transaction,
+                    "operation_name": description_transaction,
+                    "product_name": product.name,
+                    "date_gr": self.date_in_time,
+                    "catalog_01_id": "00",
+                    "series": "0",
+                    "correlative": "0",
+                    "existence": product.it_existence.code,
+                    "units_med": product.uom_id.code_unit_measure.code
+                }
+                res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
         # ---------------------------------------------------
 
         # OBTENEMOS LOS MOVIMIENTOS
