@@ -893,7 +893,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     _order = "product_name, is_saldo, date asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
-    date = fields.Datetime(string="Fecha")
+    date = fields.Date(string="Fecha")
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto", size=80, required=True)
