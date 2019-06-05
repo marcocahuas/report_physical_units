@@ -761,7 +761,7 @@ class ItStockMoveReport(models.Model):
         date = ""
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
-            if stock_out.date_gr is not False:
+            if stock_out.date is not False:
                 fecha2 = datetime.datetime.strptime(stock_out.date, "%Y-%m-%d")
                 date = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
