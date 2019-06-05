@@ -222,7 +222,7 @@ class ItStockMoveReport(models.Model):
                 #     if mes_actual != mes_comprobante:
                 #         ajuste_fiscal = "7"
 
-                stock_id = before_in.account_move_ids.id
+                stock_id = before_in.account_move_ids.it_cuo
                 if stock_id is False:
                     stock_id = before_in.id
 
@@ -605,7 +605,7 @@ class ItStockMoveReport(models.Model):
                     if before_in.picking_id.correlative is False:
                         correlativo = before_in.picking_id.it_correlative_manual
 
-                stock_id = before_in.account_move_ids.id
+                stock_id = before_in.account_move_ids.it_cuo
                 if stock_id is False:
                     stock_id = before_in.id
 
