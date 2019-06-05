@@ -223,6 +223,10 @@ class ItStockMoveReport(models.Model):
                 #     if mes_actual != mes_comprobante:
                 #         ajuste_fiscal = "7"
 
+                stock_id = before_in.account_move_ids.id
+                if stock_id is False:
+                    stock_id = before_in.id
+
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -232,7 +236,7 @@ class ItStockMoveReport(models.Model):
                         "out_salida": - before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.account_move_ids.id,
+                        "stock_id": stock_id,
                         "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
@@ -250,6 +254,7 @@ class ItStockMoveReport(models.Model):
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
+
                 if (a == 'internal') and (b == 'internal') \
                         and (before_in.picking_type_id.it_is_kardex is True):
                     if (it_code is not False) and (it_des_code is False):
@@ -262,7 +267,7 @@ class ItStockMoveReport(models.Model):
                                 "out_salida": - before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.account_move_ids.id,
+                                "stock_id": stock_id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "codigo_propio": "6000000000000000",
@@ -293,7 +298,7 @@ class ItStockMoveReport(models.Model):
                                 "in_entrada": before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.account_move_ids.id,
+                                "stock_id": stock_id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "codigo_propio": "6000000000000000",
@@ -321,7 +326,7 @@ class ItStockMoveReport(models.Model):
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.account_move_ids.id,
+                        "stock_id": stock_id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "codigo_propio": "6000000000000000",
