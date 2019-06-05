@@ -918,7 +918,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     correlative = fields.Char(string="N° Comprobante")
     type_operation = fields.Char()
     operation_name = fields.Char()
-    product_name = fields.Char(size=80, required=True)
+    product_name = fields.Char(string="Producto", size=80, required=True)
     units_med = fields.Char()
     # ajuste_fiscal = fields.Char()
 
@@ -964,6 +964,6 @@ class ItStockMoveReportValuatedLine(models.Model):
     correlative = fields.Char(string="N° Comprobante")
     type_operation = fields.Char()
     operation_name = fields.Char()
-    product_name = fields.Char(size=80, required=True)
+    product_name = fields.Char(string="Producto", size=80, required=True)
     units_med = fields.Char()
     metodo_valuacion = fields.Char()

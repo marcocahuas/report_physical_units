@@ -59,7 +59,7 @@
                                         <tree>
                                             <field name="establecimiento"/>
                                             <field name="date"/>
-                                            <field name="product_id"/>
+                                            <field name="product_name"/>
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
                                             <field name="series"/>
@@ -76,7 +76,7 @@
                                     <field name="stock_valuated_lines">
                                         <tree>
                                             <field name="date"/>
-                                            <field name="product_id"/>
+                                            <field name="product_name"/>
                                             <field name="type" invisible="1"/>
                                             <field name="reference"/>
                                             <field name="series"/>
