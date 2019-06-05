@@ -74,7 +74,6 @@ class ItStockMoveReport(models.Model):
             [("code", "=", code_transaction)], limit=1).description
 
         for product in initial:
-
             json_stock_phisical = {
                 "type": 1,
                 "date": self.date_in_time,
@@ -253,7 +252,6 @@ class ItStockMoveReport(models.Model):
                         # "ajuste_fiscal": ajuste_fiscal
                     }
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
-
 
                 if (a == 'internal') and (b == 'internal') \
                         and (before_in.picking_type_id.it_is_kardex is True):
@@ -606,6 +604,11 @@ class ItStockMoveReport(models.Model):
                     correlativo = before_in.picking_id.correlative
                     if before_in.picking_id.correlative is False:
                         correlativo = before_in.picking_id.it_correlative_manual
+
+                stock_id = before_in.account_move_ids.id
+                if stock_id is False:
+                    stock_id = before_in.id
+
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
                         "type": 0,
@@ -617,7 +620,7 @@ class ItStockMoveReport(models.Model):
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         "calculo_unit_out": (- before_in.price_unit),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.account_move_ids.id,
+                        "stock_id": stock_id,
                         "establecimiento": before_in.location_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
@@ -653,7 +656,7 @@ class ItStockMoveReport(models.Model):
                                 "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                                 "calculo_unit_out": (- before_in.price_unit),
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.account_move_ids.id,
+                                "stock_id": stock_id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "existence": before_in.product_id.it_existence.code,
@@ -689,7 +692,7 @@ class ItStockMoveReport(models.Model):
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 "calculo_unit_in": before_in.price_unit,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
-                                "stock_id": before_in.account_move_ids.id,
+                                "stock_id": stock_id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
                                 "catalogo_existence": "9",
                                 "existence": before_in.product_id.it_existence.code,
@@ -722,7 +725,7 @@ class ItStockMoveReport(models.Model):
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                         "calculo_unit_in": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
-                        "stock_id": before_in.account_move_ids.id,
+                        "stock_id": stock_id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
                         "catalogo_existence": "9",
                         "existence": before_in.product_id.it_existence.code,
@@ -825,12 +828,12 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        date_gr = ""
+        date = ""
         for stock_out in self.stock_valuated_lines:
             count_sale = 1
-            if stock_out.date_gr is not False:
-                fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
-                date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+            if stock_out.date is not False:
+                fecha2 = datetime.datetime.strptime(stock_out.date, "%Y-%m-%d")
+                date = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
             stringvaluated = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
@@ -841,7 +844,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr or "",  # campo 9
+                date or "",  # campo 9
                 stock_out.catalog_01_id or "00",  # campo 10
                 stock_out.series or "0",  # campo 11
                 stock_out.correlative or "0",  # campo 12
@@ -926,7 +929,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     _order = "product_name, date asc"
 
     type = fields.Integer(string="Es Saldo inicial?", help="1. Es saldo inicial, 0. No es saldo incial")
-    date = fields.Datetime(string="Fecha")
+    date = fields.Date(string="Fecha")
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
     product_id = fields.Many2one("product.product", "Producto", size=80, required=True)
@@ -961,6 +964,6 @@ class ItStockMoveReportValuatedLine(models.Model):
     correlative = fields.Char(string="N° Comprobante")
     type_operation = fields.Char()
     operation_name = fields.Char()
-    product_name = fields.Char()
+    product_name = fields.Char(size=80, required=True)
     units_med = fields.Char()
     metodo_valuacion = fields.Char()
