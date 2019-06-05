@@ -770,9 +770,9 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
                 date_gr or "",  # campo 9
-                stock_out.catalog_01_id or "",  # campo 10
-                stock_out.series or "",  # campo 11
-                stock_out.correlative or "",  # campo 12
+                stock_out.catalog_01_id or "00",  # campo 10
+                stock_out.series or "0",  # campo 11
+                stock_out.correlative or "0",  # campo 12
                 stock_out.type_operation or "",  # campo 13
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med
@@ -837,9 +837,9 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
                 date_gr or "",  # campo 9
-                stock_out.catalog_01_id or "",  # campo 10
-                stock_out.series or "",  # campo 11
-                stock_out.correlative or "",  # campo 12
+                stock_out.catalog_01_id or "00",  # campo 10
+                stock_out.series or "0",  # campo 11
+                stock_out.correlative or "0",  # campo 12
                 stock_out.type_operation or "",  # campo 13 tipo operacion efect
                 stock_out.product_name or "",  # campo 14   descripcion de la exist
                 stock_out.units_med or "",  # campo 15  cod uni med

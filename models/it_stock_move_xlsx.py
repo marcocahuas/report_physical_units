@@ -21,7 +21,7 @@ class ItStockMoveReport(models.AbstractModel):
                         'align': 'center',
                         'valign': 'vcenter'
                     })
-                sheet.merge_range('A1:J4', self.env.user.company_id.name, font_titulo_empresa)
+                sheet.merge_range('A1:K4', self.env.user.company_id.name, font_titulo_empresa)
                 # REPORTE STOCK MOVE UNIDADES FISICAS
                 # ======================================
 
@@ -32,6 +32,7 @@ class ItStockMoveReport(models.AbstractModel):
                 for before_in in obj.stock_phisical_lines:
                     array_field = []
                     array_field.append(before_in.date)
+                    array_field.append(before_in.stock_id)
                     array_field.append(before_in.establecimiento or "")
                     array_field.append(before_in.product_id.name)
                     array_field.append(before_in.reference)
@@ -43,9 +44,10 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.out_salida)
                     array_main.append(array_field)
                     contador = contador + 1
-                sheet.set_column('A:J', 20)
-                row_name = 'A8:J%s' % (int(contador + 8))
+                sheet.set_column('A:K', 20)
+                row_name = 'A8:K%s' % (int(contador + 8))
                 sheet.add_table(row_name, {'data': array_main, 'columns': [{'header': 'FECHA'},
+                                                                           {'header': 'CUO'},
                                                                            {'header': 'Establecimiento'},
                                                                            {'header': 'Producto'},
                                                                            {'header': 'Referencia'},
