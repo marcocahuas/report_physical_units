@@ -194,8 +194,8 @@ class ItStockMoveReport(models.Model):
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
-                    if before_in.picking_id.it_date_gr is False:
-                        fecha = before_in.picking_id.scheduled_date
+                    # if before_in.picking_id.it_date_gr is False:
+                    #     fecha = before_in.picking_id.scheduled_date
 
                 if before_in.picking_id.catalog_01_id.code is not False:
                     tipo_doc = before_in.picking_id.catalog_01_id.code
@@ -591,8 +591,8 @@ class ItStockMoveReport(models.Model):
                 # DECLARAMOS LOS CAMPOS DEL TIPO DE DOCUMENTOS PARA MOSTRAR
                 if fecha is False:
                     fecha = before_in.picking_id.it_date_gr
-                    if before_in.picking_id.it_date_gr is False:
-                        fecha = before_in.picking_id.scheduled_date
+                    # if before_in.picking_id.it_date_gr is False:
+                    #     fecha = before_in.picking_id.scheduled_date
 
                 if before_in.picking_id.catalog_01_id.code is not False:
                     tipo_doc = before_in.picking_id.catalog_01_id.code
