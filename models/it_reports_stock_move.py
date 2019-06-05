@@ -758,12 +758,12 @@ class ItStockMoveReport(models.Model):
                                                    datetime.time(23, 59, 59))
         self.date_in_time = date_in_before
         self.date_out_time = date_out_after
-        date_gr = ""
+        date = ""
         for stock_out in self.stock_phisical_lines:
             count_sale = 1
             if stock_out.date_gr is not False:
-                fecha2 = datetime.datetime.strptime(stock_out.date_gr, "%Y-%m-%d")
-                date_gr = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
+                fecha2 = datetime.datetime.strptime(stock_out.date, "%Y-%m-%d")
+                date = "%02d" % (fecha2.day) + "/" + "%02d" % (fecha2.month) + "/" + str(
                     fecha2.year)
             stringunits = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 str(d_ref.year) + "" + str(month) + "00",  # campo 1
@@ -774,7 +774,7 @@ class ItStockMoveReport(models.Model):
                 stock_out.existence or "",  # campo 6
                 stock_out.existence_id or "",  # campo 7
                 stock_out.codigo_propio or "",  # campo 8
-                date_gr or "",  # campo 9
+                date or "",  # campo 9
                 stock_out.catalog_01_id or "00",  # campo 10
                 stock_out.series or "0",  # campo 11
                 stock_out.correlative or "0",  # campo 12
@@ -896,7 +896,7 @@ class ItStockMoveReportPhisicalLine(models.Model):
     date = fields.Datetime(string="Fecha")
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
-    product_id = fields.Many2one("product.product", "Producto")
+    product_id = fields.Many2one("product.product", "Producto", size=80, required=True)
     in_entrada = fields.Float(string="Entrada", digits=(12, 2), default=0.00)
     out_salida = fields.Float(string="Salida", digits=(12, 2), default=0.00)
     # qty_done = fields.Float(string="Cantidad")
@@ -929,7 +929,7 @@ class ItStockMoveReportValuatedLine(models.Model):
     date = fields.Datetime(string="Fecha")
     reference = fields.Char(string="Referencia")
     report_id = fields.Many2one("it.units.move.report", "Reporte")
-    product_id = fields.Many2one("product.product", "Producto")
+    product_id = fields.Many2one("product.product", "Producto", size=80, required=True)
     in_entrada = fields.Float(string="Cantidad Entrada", digits=(12, 2), default=0.00)
     out_salida = fields.Float(string="Cantidad Salida", digits=(12, 2), default=0.00)
     # qty_done = fields.Float(string="Cantidad")
