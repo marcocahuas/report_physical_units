@@ -462,7 +462,7 @@ class ItStockMoveReport(models.Model):
                     "series": "0",
                     "correlative": "0",
                     "existence": valor.product_id.it_existence.code,
-                    "stock_id": valor.move_id.id,
+                    "stock_id": valor.move_id.it_cuo,
                     "units_med": valor.product_id.uom_id.code_unit_measure.code,
                     "metodo_valuacion": metodo_coste,  # valor.product_id.categ_id.name
                     "cantidad_saldo_final": cantidad_saldo,
