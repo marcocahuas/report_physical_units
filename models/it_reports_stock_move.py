@@ -225,6 +225,8 @@ class ItStockMoveReport(models.Model):
                 stock_id = before_in.account_move_ids.it_cuo
                 # if stock_id is False:
                 #     stock_id = before_in.id
+                if before_in.product_id.type == "product":
+                    producto = before_in.product_id.id
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -233,7 +235,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "report_id": self.id,
                         "out_salida": - before_in.product_uom_qty,
-                        "product_id": before_in.product_id.id,
+                        "product_id": producto,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
                         "establecimiento": before_in.location_id.it_establishment.code,
@@ -263,7 +265,7 @@ class ItStockMoveReport(models.Model):
                                 "reference": before_in.reference,
                                 "report_id": self.id,
                                 "out_salida": - before_in.product_uom_qty,
-                                "product_id": before_in.product_id.id,
+                                "product_id": producto,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
@@ -294,7 +296,7 @@ class ItStockMoveReport(models.Model):
                                 "reference": before_in.reference,
                                 "report_id": self.id,
                                 "in_entrada": before_in.product_uom_qty,
-                                "product_id": before_in.product_id.id,
+                                "product_id": producto,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
@@ -322,7 +324,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
-                        "product_id": before_in.product_id.id,
+                        "product_id": producto,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
@@ -608,6 +610,8 @@ class ItStockMoveReport(models.Model):
                 stock_id = before_in.account_move_ids.it_cuo
                 # if stock_id is False:
                 #     stock_id = before_in.id
+                if before_in.product_id.type == "product":
+                    producto = before_in.product_id.id
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -616,7 +620,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "report_id": self.id,
                         "out_salida": before_in.product_uom_qty,
-                        "product_id": before_in.product_id.id,
+                        "product_id": producto,
                         "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                         "calculo_unit_out": (- before_in.price_unit),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
@@ -652,7 +656,7 @@ class ItStockMoveReport(models.Model):
                                 "reference": before_in.reference,
                                 "report_id": self.id,
                                 "out_salida": before_in.product_uom_qty,
-                                "product_id": before_in.product_id.id,
+                                "product_id": producto,
                                 "out_saldo": before_in.price_unit * (- before_in.product_uom_qty),
                                 "calculo_unit_out": (- before_in.price_unit),
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
@@ -688,7 +692,7 @@ class ItStockMoveReport(models.Model):
                                 "reference": before_in.reference,
                                 "report_id": self.id,
                                 "in_entrada": before_in.product_uom_qty,
-                                "product_id": before_in.product_id.id,
+                                "product_id": producto,
                                 "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                                 "calculo_unit_in": before_in.price_unit,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
@@ -721,7 +725,7 @@ class ItStockMoveReport(models.Model):
                         "reference": before_in.reference,
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
-                        "product_id": before_in.product_id.id,
+                        "product_id": producto,
                         "in_saldo": before_in.price_unit * before_in.product_uom_qty,
                         "calculo_unit_in": before_in.price_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
