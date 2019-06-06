@@ -223,8 +223,8 @@ class ItStockMoveReport(models.Model):
                 #         ajuste_fiscal = "7"
 
                 stock_id = before_in.account_move_ids.it_cuo
-                if stock_id is False:
-                    stock_id = before_in.id
+                # if stock_id is False:
+                #     stock_id = before_in.id
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
@@ -606,8 +606,8 @@ class ItStockMoveReport(models.Model):
                         correlativo = before_in.picking_id.it_correlative_manual
 
                 stock_id = before_in.account_move_ids.it_cuo
-                if stock_id is False:
-                    stock_id = before_in.id
+                # if stock_id is False:
+                #     stock_id = before_in.id
 
                 if (a == 'internal') and (b != 'internal'):
                     json_stock_phisical = {
