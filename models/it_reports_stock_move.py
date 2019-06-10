@@ -4,7 +4,6 @@ import base64
 import datetime
 import logging
 
-from mock.mock import self
 from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
@@ -227,12 +226,16 @@ class ItStockMoveReport(models.Model):
                     stock_id = str(str("M") + str(before_in.id))
 
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
+                    out_salida_val = 0.00
+                    if before_in.product_uom_qty < 0:
+                        out_salida_val = -out_salida_val
+
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": - before_in.product_uom_qty,
+                        "out_salida":out_salida_val,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
@@ -254,15 +257,18 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
-                        and (before_in.picking_type_id.it_is_kardex is True)and before_in.product_id.type == "product":
+                        and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
+                            out_salida_val = 0.00
+                            if before_in.product_uom_qty < 0:
+                                out_salida_val = -out_salida_val
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": - before_in.product_uom_qty,
+                                "out_salida": out_salida_val,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
@@ -285,9 +291,10 @@ class ItStockMoveReport(models.Model):
                                 json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
-                        and (before_in.picking_type_id.it_is_kardex is True)and before_in.product_id.type == "product":
+                        and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_des_code is not False) and (it_code is False):
                         if before_in.location_dest_id.is_kardex is False and before_in.location_id.is_kardex is not True:
+
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -315,7 +322,7 @@ class ItStockMoveReport(models.Model):
                             res_phisical = self.env["it.units.move.report.phisical.line"].sudo().create(
                                 json_stock_phisical)
 
-                if (a != 'internal') and (b == 'internal')and before_in.product_id.type == "product":
+                if (a != 'internal') and (b == 'internal') and before_in.product_id.type == "product":
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -613,13 +620,16 @@ class ItStockMoveReport(models.Model):
                 if before_in.price_unit <= 0:
                     costo_unit = + before_in.price_unit
 
-                if (a == 'internal') and (b != 'internal')and before_in.product_id.type == "product":
+                if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
+                    out_salida_val = 0.00
+                    if before_in.product_uom_qty < 0:
+                        out_salida_val = -out_salida_val
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": before_in.product_uom_qty,
+                        "out_salida": out_salida_val,
                         "product_id": before_in.product_id.id,
                         "out_saldo": costo_unit * (- before_in.product_uom_qty),
                         "calculo_unit_out": costo_unit,
@@ -647,15 +657,19 @@ class ItStockMoveReport(models.Model):
                     res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
                 if (a == 'internal') and (b == 'internal') \
-                        and (before_in.picking_type_id.it_is_kardex is True)and before_in.product_id.type == "product":
+                        and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
+
+                            out_salida_val = 0.00
+                            if before_in.product_uom_qty < 0:
+                                out_salida_val = -out_salida_val
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": before_in.product_uom_qty,
+                                "out_salida": out_salida_val,
                                 "product_id": before_in.product_id.id,
                                 "out_saldo": costo_unit * (- before_in.product_uom_qty),
                                 "calculo_unit_out": costo_unit,
@@ -683,7 +697,7 @@ class ItStockMoveReport(models.Model):
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
                                 json_stock_phisical)
                 if (a == 'internal') and (b == 'internal') \
-                        and (before_in.picking_type_id.it_is_kardex is True)and before_in.product_id.type == "product":
+                        and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_des_code is not False) and (it_code is False):
                         if before_in.location_dest_id.is_kardex is False and before_in.location_id.is_kardex is not True:
                             json_stock_phisical = {
@@ -718,7 +732,7 @@ class ItStockMoveReport(models.Model):
                             }
                             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(
                                 json_stock_phisical)
-                if (a != 'internal') and (b == 'internal')and before_in.product_id.type == "product":
+                if (a != 'internal') and (b == 'internal') and before_in.product_id.type == "product":
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
