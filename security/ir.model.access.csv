@@ -2,4 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_it_units_move_report,it.units.move.report,model_it_units_move_report,report_physical_units.group_report_inventory,1,1,1,1
 access_stock_phisical_lines,it.units.move.report.phisical.line,model_it_units_move_report_phisical_line,report_physical_units.group_report_inventory,1,1,1,1
 access_stock_valuated_lines,it.units.move.report.valuated.line,model_it_units_move_report_valuated_line,report_physical_units.group_report_inventory,1,1,1,1
-access_stock_valuated_lines,it.units.move.report.valuated.line,model_it_units_move_report_valuated_line,report_physical_units.group_report_inventory,1,1,1,1
+access_stock_valuated_stock_picking_type,stock.picking.type.line,model_stock_picking_type,report_physical_units.group_report_inventory,1,1,1,1

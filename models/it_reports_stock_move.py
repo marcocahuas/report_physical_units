@@ -228,7 +228,7 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
                     out_salida_val = 0.00
                     if before_in.product_uom_qty < 0:
-                        out_salida_val = -out_salida_val
+                        out_salida_val = -before_in.product_uom_qty
 
                     json_stock_phisical = {
                         "type": 0,
@@ -262,7 +262,7 @@ class ItStockMoveReport(models.Model):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
                             out_salida_val = 0.00
                             if before_in.product_uom_qty < 0:
-                                out_salida_val = -out_salida_val
+                                out_salida_val = - before_in.product_uom_qty
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -623,7 +623,7 @@ class ItStockMoveReport(models.Model):
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
                     out_salida_val = 0.00
                     if before_in.product_uom_qty < 0:
-                        out_salida_val = -out_salida_val
+                        out_salida_val = -before_in.product_uom_qty
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -663,7 +663,7 @@ class ItStockMoveReport(models.Model):
 
                             out_salida_val = 0.00
                             if before_in.product_uom_qty < 0:
-                                out_salida_val = -out_salida_val
+                                out_salida_val = -before_in.product_uom_qty
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
