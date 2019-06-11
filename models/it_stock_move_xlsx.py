@@ -96,7 +96,7 @@ class ItStockMoveReport(models.AbstractModel):
                     array_field.append(before_in.in_saldo)  # COST TOTAL
                     array_field.append(before_in.out_salida)
                     array_field.append(before_in.calculo_unit_out)  # COST UNIT
-                    array_field.append(before_in.out_saldo)  # COST TOTAL
+                    array_field.append(before_in.out_saldo)  # SALIDA COST TOTAL
                     array_field.append(before_in.cantidad_saldo_final)  # cantidad entrada total
                     array_field.append(before_in.costo_unit_final)  # COST unitario entrada total
                     array_field.append(before_in.costo_total_final)  # saldo final total

@@ -226,8 +226,6 @@ class ItStockMoveReport(models.Model):
                     stock_id = str(str("M") + str(before_in.id))
 
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
-
-
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -258,7 +256,6 @@ class ItStockMoveReport(models.Model):
                         and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
-
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -616,7 +613,6 @@ class ItStockMoveReport(models.Model):
                     costo_unit = + before_in.price_unit
 
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
-
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
@@ -624,8 +620,8 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "out_salida": abs(before_in.product_qty),
                         "product_id": before_in.product_id.id,
-                        "out_saldo": costo_unit * (- before_in.product_uom_qty),
-                        "calculo_unit_out": costo_unit,
+                        "out_saldo": abs(before_in.value),
+                        "calculo_unit_out": abs(before_in.price_unit),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
                         "establecimiento": before_in.location_id.it_establishment.code,
@@ -653,8 +649,6 @@ class ItStockMoveReport(models.Model):
                         and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
-
-
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -662,8 +656,9 @@ class ItStockMoveReport(models.Model):
                                 "report_id": self.id,
                                 "out_salida": abs(before_in.product_qty),
                                 "product_id": before_in.product_id.id,
-                                "out_saldo": costo_unit * (- before_in.product_uom_qty),
-                                "calculo_unit_out": costo_unit,
+                                # "out_saldo": abs(costo_unit * (- before_in.product_uom_qty)),
+                                "out_saldo": abs(before_in.value),
+                                "calculo_unit_out": abs(before_in.price_unit),
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
                                 "establecimiento": before_in.location_id.it_establishment.code,
@@ -733,7 +728,7 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        #"in_saldo": costo_unit * before_in.product_uom_qty,
+                        # "in_saldo": costo_unit * before_in.product_uom_qty,
                         "in_saldo": abs(before_in.value),
                         "calculo_unit_in": abs(before_in.price_unit),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
