@@ -235,7 +235,7 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida":out_salida_val,
+                        "out_salida": out_salida_val,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
@@ -294,7 +294,6 @@ class ItStockMoveReport(models.Model):
                         and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_des_code is not False) and (it_code is False):
                         if before_in.location_dest_id.is_kardex is False and before_in.location_id.is_kardex is not True:
-
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
@@ -707,7 +706,9 @@ class ItStockMoveReport(models.Model):
                                 "report_id": self.id,
                                 "in_entrada": before_in.product_uom_qty,
                                 "product_id": before_in.product_id.id,
-                                "in_saldo": costo_unit * before_in.product_uom_qty,
+                                # COSTO TOTAL
+                                # "in_saldo": costo_unit * before_in.product_uom_qty,
+                                "in_saldo": abs(before_in.value),
                                 "calculo_unit_in": costo_unit,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
@@ -740,7 +741,8 @@ class ItStockMoveReport(models.Model):
                         "report_id": self.id,
                         "in_entrada": before_in.product_uom_qty,
                         "product_id": before_in.product_id.id,
-                        "in_saldo": costo_unit * before_in.product_uom_qty,
+                        #"in_saldo": costo_unit * before_in.product_uom_qty,
+                        "in_saldo": abs(before_in.value),
                         "calculo_unit_in": costo_unit,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
