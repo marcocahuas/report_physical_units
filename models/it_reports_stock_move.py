@@ -226,16 +226,14 @@ class ItStockMoveReport(models.Model):
                     stock_id = str(str("M") + str(before_in.id))
 
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
-                    out_salida_val = 0.00
-                    if before_in.product_uom_qty < 0:
-                        out_salida_val = -before_in.product_uom_qty
+
 
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": out_salida_val,
+                        "out_salida": abs(before_in.product_qty),
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
@@ -260,15 +258,13 @@ class ItStockMoveReport(models.Model):
                         and (before_in.picking_type_id.it_is_kardex is True) and before_in.product_id.type == "product":
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
-                            out_salida_val = 0.00
-                            if before_in.product_uom_qty < 0:
-                                out_salida_val = - before_in.product_uom_qty
+
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": out_salida_val,
+                                "out_salida": abs(before_in.product_qty),
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
@@ -620,15 +616,13 @@ class ItStockMoveReport(models.Model):
                     costo_unit = + before_in.price_unit
 
                 if (a == 'internal') and (b != 'internal') and before_in.product_id.type == "product":
-                    out_salida_val = 0.00
-                    if before_in.product_uom_qty < 0:
-                        out_salida_val = -before_in.product_uom_qty
+
                     json_stock_phisical = {
                         "type": 0,
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": out_salida_val,
+                        "out_salida": abs(before_in.product_qty),
                         "product_id": before_in.product_id.id,
                         "out_saldo": costo_unit * (- before_in.product_uom_qty),
                         "calculo_unit_out": costo_unit,
@@ -660,15 +654,13 @@ class ItStockMoveReport(models.Model):
                     if (it_code is not False) and (it_des_code is False):
                         if before_in.location_id.is_kardex is False and before_in.location_dest_id.is_kardex is not True:
 
-                            out_salida_val = 0.00
-                            if before_in.product_uom_qty < 0:
-                                out_salida_val = -before_in.product_uom_qty
+
                             json_stock_phisical = {
                                 "type": 0,
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": out_salida_val,
+                                "out_salida": abs(before_in.product_qty),
                                 "product_id": before_in.product_id.id,
                                 "out_saldo": costo_unit * (- before_in.product_uom_qty),
                                 "calculo_unit_out": costo_unit,
