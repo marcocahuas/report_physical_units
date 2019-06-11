@@ -709,7 +709,7 @@ class ItStockMoveReport(models.Model):
                                 # COSTO TOTAL
                                 # "in_saldo": costo_unit * before_in.product_uom_qty,
                                 "in_saldo": abs(before_in.value),
-                                "calculo_unit_in": costo_unit,
+                                "calculo_unit_in": abs(before_in.price_unit),
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
                                 "establecimiento": before_in.location_dest_id.it_establishment.code,
@@ -743,7 +743,7 @@ class ItStockMoveReport(models.Model):
                         "product_id": before_in.product_id.id,
                         #"in_saldo": costo_unit * before_in.product_uom_qty,
                         "in_saldo": abs(before_in.value),
-                        "calculo_unit_in": costo_unit,
+                        "calculo_unit_in": abs(before_in.price_unit),
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
                         "establecimiento": before_in.location_dest_id.it_establishment.code,
