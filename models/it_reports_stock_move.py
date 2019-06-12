@@ -103,14 +103,14 @@ class ItStockMoveReport(models.Model):
         # ---------------------------------------------------
 
         # OBTENEMOS LOS MOVIMIENTOS
-        stock_move_after = self.env["stock.move"].search(
+        stock_move_after = self.env["stock.move"].sudo().search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
 
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
-                stock_account_after = self.env["account.invoice"].search(
+                stock_account_after = self.env["account.invoice"].sudo().search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
                     fecha = stock_account_after.date_invoice
@@ -348,7 +348,7 @@ class ItStockMoveReport(models.Model):
         #  ====================================================================================================
         # OBTENEMOS EL SALDO INICIAL
         context = {'to_date': self.date_in_time}
-        initial = self.env["product.product"].with_context(context).search(
+        initial = self.env["product.product"].sudo().with_context(context).search(
             [('type', '=', 'product'), ('qty_available', '!=', 0)])
         res_operacion = self.env["type.of.operation"]
         code_transaction = "16"
@@ -405,7 +405,7 @@ class ItStockMoveReport(models.Model):
             res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
         # ========================================================
         # TRAEMOS AJUSTE DE COSTOS
-        entry_balance = self.env["account.move.line"].search(
+        entry_balance = self.env["account.move.line"].sudo().search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ('user_type_id', '=', 5),
              ('journal_id', '=', 6), '|', ('quantity', '=', False), ('quantity', '=', 0)])
         code_transaction = "99"
@@ -433,7 +433,7 @@ class ItStockMoveReport(models.Model):
             # establesh = False
             if valor.date:
                 context_finally = {'to_date': valor.date}
-                costo_finaly = self.env["product.product"].with_context(context_finally).search(
+                costo_finaly = self.env["product.product"].sudo().with_context(context_finally).search(
                     [('id', '=', valor.product_id.id), ('type', '=', 'product')], limit=1)
                 if costo_finaly.id:
                     costo_final = costo_finaly.stock_value
@@ -474,13 +474,13 @@ class ItStockMoveReport(models.Model):
                 res_phisical = self.env["it.units.move.report.valuated.line"].sudo().create(json_stock_phisical)
 
         # OBTENEMOS LOS MOVIMIENTOS DE STOCK MOVE
-        stock_move_after = self.env["stock.move"].search(
+        stock_move_after = self.env["stock.move"].sudo().search(
             [("date", ">=", self.date_in_time), ("date", "<=", self.date_out_time), ("state", "=", "done")])
 
         if stock_move_after:
             for before_in in stock_move_after:
                 # OBTENEMOS LA REFERENCIA PARA EL CAMPO TIPO DOC
-                stock_account_after = self.env["account.invoice"].search(
+                stock_account_after = self.env["account.invoice"].sudo().search(
                     [("origin", "=", before_in.picking_id.origin or "-")], limit=1)
                 if stock_account_after is not False:
                     fecha = stock_account_after.date_invoice
@@ -493,7 +493,7 @@ class ItStockMoveReport(models.Model):
                 cantidad_saldo = False
                 if before_in.date:
                     context_finally = {'to_date': before_in.date}
-                    costo_finaly = self.env["product.product"].with_context(context_finally).search(
+                    costo_finaly = self.env["product.product"].sudo().with_context(context_finally).search(
                         [('id', '=', before_in.product_id.id),
                          ('type', '=', 'product')], limit=1)
                     if costo_finaly.id:
