@@ -49,6 +49,8 @@ class ItStockMoveReport(models.Model):
     def generate_moves(self):
         if self.stock_phisical_lines:
             self.stock_phisical_lines.unlink()
+        if self.stock_valuated_lines:
+            self.stock_valuated_lines.unlink()
 
         d_ref = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
         d_ref_out = datetime.datetime.strptime(self.date_out, "%Y-%m-%d")
@@ -231,7 +233,7 @@ class ItStockMoveReport(models.Model):
                         "date": before_in.date,
                         "reference": before_in.reference,
                         "report_id": self.id,
-                        "out_salida": abs(before_in.product_qty),
+                        "out_salida": before_in.product_qty,
                         "product_id": before_in.product_id.id,
                         # OTROS CAMPOS  PARA EL TXTSUNAT
                         "stock_id": stock_id,
@@ -261,7 +263,7 @@ class ItStockMoveReport(models.Model):
                                 "date": before_in.date,
                                 "reference": before_in.reference,
                                 "report_id": self.id,
-                                "out_salida": abs(before_in.product_qty),
+                                "out_salida": before_in.product_qty,
                                 "product_id": before_in.product_id.id,
                                 # OTROS CAMPOS  PARA EL TXTSUNAT
                                 "stock_id": stock_id,
